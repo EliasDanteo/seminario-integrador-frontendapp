@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="dialog-title">
+    <h2 mat-dialog-title>
+      {{ isEdit ? 'Editar Abogado' : 'Crear Abogado' }}
+    </h2>
+    <button type="button" class="btn-close" title="Cerrar ventana" (click)="onClose()"></button>
+  </div>
+
+  <form [formGroup]="abogadoForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content class="common-dialog">
+      <mat-form-field>
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" placeholder="Ej: Juan" type="text" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Apellido</mat-label>
+        <input matInput formControlName="apellido" placeholder="Ej: Pérez" type="text" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" placeholder="Ej: juanperez@email.com" type="email" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="telefono" placeholder="Ej: 1234567890" type="tel" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Tipo Documento</mat-label>
+        <input matInput formControlName="tipo_doc" placeholder="Ej: DNI" type="text" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Número Documento</mat-label>
+        <input matInput formControlName="nro_doc" placeholder="Ej: 12345678" type="text" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Matrícula</mat-label>
+        <input matInput formControlName="matricula" placeholder="Ej: ABC123" type="text" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Fecha Alta</mat-label>
+        <input matInput formControlName="fecha_alta" placeholder="Ej: 01/01/2023" type="date" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Fecha Baja</mat-label>
+        <input matInput formControlName="fecha_baja" placeholder="Ej: 01/01/2024" type="date" />
+      </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-actions>
+      <button mat-button type="submit" [disabled]="!abogadoForm.valid" class="btn btn-success">
+        {{ isEdit ? 'Actualizar' : 'Crear' }}
+      </button>
+      <button mat-button type="button" class="btn-secondary" (click)="onClose()">
+        Cancelar
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>
