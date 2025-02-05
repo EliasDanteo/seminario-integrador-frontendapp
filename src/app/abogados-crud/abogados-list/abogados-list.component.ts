@@ -17,6 +17,10 @@ import { FormsModule } from '@angular/forms';
 })
 export class AbogadosListComponent {
   abogados: IAbogado[] | null = null;
+  filteredAbogados: IAbogado[] | null = null;
+
+  fullNameFilter: string = '';
+  matriculaFilter: string = '';
 
   constructor(private http: HttpClient, private dialog: MatDialog) {
     this.loadAbogados();
@@ -33,12 +37,43 @@ export class AbogadosListComponent {
     });
   }
 
+  applyFilters(): void {
+    this.filteredAbogados = this.abogados ? [...this.abogados] : [];
+
+    if (this.fullNameFilter) {
+      const filterText = this.normalizeText(this.fullNameFilter);
+
+      this.filteredAbogados = this.filteredAbogados.filter((abogado) => {
+        const fullName1 = this.normalizeText(
+          `${abogado.apellido} ${abogado.nombre}`
+        );
+        const fullName2 = this.normalizeText(
+          `${abogado.nombre} ${abogado.apellido}`
+        );
+
+        return fullName1.includes(filterText) || fullName2.includes(filterText);
+      });
+    }
+    if (this.matriculaFilter) {
+      this.filteredAbogados = this.filteredAbogados.filter((abogado) =>
+        abogado.matricula.includes(this.matriculaFilter)
+      );
+    }
+  }
+  normalizeText(text: string): string {
+    return text
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+  }
+
   loadAbogados() {
     this.http
       .get<{ message: string; data: IAbogado[] }>(environment.abogadosUrl)
       .subscribe({
         next: (res) => {
           this.abogados = res.data;
+          this.applyFilters();
         },
       });
   }

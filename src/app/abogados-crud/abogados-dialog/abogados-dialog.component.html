@@ -52,6 +52,19 @@
         <mat-label>Fecha Baja</mat-label>
         <input matInput formControlName="fecha_baja" placeholder="Ej: 01/01/2024" type="date" />
       </mat-form-field>
+          <mat-form-field>
+            <mat-label>Contraseña</mat-label>
+            <input matInput formControlName="contrasena" placeholder="123456" type="password" />
+          </mat-form-field>
+      <mat-form-field>
+          <mat-label>Rol</mat-label>
+          <mat-select formControlName="rol">
+            <mat-option [value]="1">Admin</mat-option>
+            <mat-option [value]="2">Abogado</mat-option>
+          </mat-select>
+      </mat-form-field>
+
+    
     </mat-dialog-content>
 
     <mat-dialog-actions>
