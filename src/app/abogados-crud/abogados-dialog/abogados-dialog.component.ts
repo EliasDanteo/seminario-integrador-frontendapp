@@ -45,6 +45,8 @@ import { MatOptionModule } from '@angular/material/core';
 export class AbogadosDialogComponent implements OnInit {
   abogadoForm: FormGroup;
   isEdit: boolean = false;
+  selectedFile: File | null = null;
+  previewUrl: string | ArrayBuffer | null = null;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { action: string; abogado: IAbogado },
@@ -59,18 +61,60 @@ export class AbogadosDialogComponent implements OnInit {
       tipo_doc: new FormControl('', Validators.required),
       nro_doc: new FormControl('', Validators.required),
       matricula: new FormControl('', Validators.required),
-      fecha_alta: new FormControl(new Date(), Validators.required),
-      fecha_baja: new FormControl(''),
       rol: new FormControl(null, [Validators.required, Validators.min(1)]),
       contrasena: new FormControl('', Validators.required),
+      foto: new FormControl(null, Validators.required),
     });
   }
 
   ngOnInit(): void {
     if (this.data.action === 'put') {
       this.isEdit = true;
-
       this.abogadoForm.patchValue(this.data.abogado);
+
+      if (this.data.abogado.rol) {
+        this.abogadoForm.patchValue({
+          rol: this.data.abogado.rol.id,
+        });
+      }
+
+      //TODO: ARREGLAR LA CARGA DE FOTO EN EDICION
+
+      if (this.data.abogado.foto) {
+        if (this.data.abogado.foto instanceof Blob) {
+          this.previewUrl = URL.createObjectURL(this.data.abogado.foto);
+        } else if (
+          this.data.abogado.foto.type === 'Buffer' &&
+          Array.isArray(this.data.abogado.foto.data)
+        ) {
+          const blob = new Blob([new Uint8Array(this.data.abogado.foto.data)], {
+            type: 'image/jpeg',
+          });
+          this.previewUrl = URL.createObjectURL(blob);
+          this.abogadoForm.patchValue({
+            foto: blob,
+          });
+        }
+      }
+      this.abogadoForm.get('contrasena')?.clearValidators();
+      this.abogadoForm.get('contrasena')?.updateValueAndValidity();
+    }
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.selectedFile = input.files[0];
+      this.abogadoForm.patchValue({
+        foto: this.selectedFile,
+      });
+      this.abogadoForm.get('foto')?.updateValueAndValidity();
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewUrl = reader.result;
+      };
+      reader.readAsDataURL(this.selectedFile);
     }
   }
 
@@ -78,10 +122,14 @@ export class AbogadosDialogComponent implements OnInit {
     if (this.abogadoForm.valid) {
       const formData = {
         ...this.abogadoForm.value,
-        fecha_alta: this.formatDate(this.abogadoForm.value.fecha_alta),
         id_rol: Number(this.abogadoForm.value.rol),
       };
-
+      if (!formData.contrasena) {
+        delete formData.contrasena;
+      }
+      if (!this.selectedFile) {
+        delete formData.foto;
+      }
       if (this.data.action === 'post') {
         this.http
           .post<any>(environment.abogadosUrl, formData)
@@ -91,17 +139,32 @@ export class AbogadosDialogComponent implements OnInit {
               return of(null);
             })
           )
-          .subscribe();
+          .subscribe({
+            next: (response) => {
+              console.log('Abogado creado:', response);
+              this.dialogRef.close(response);
+            },
+          });
+      } else if (this.data.action === 'put' && this.data.abogado?.id) {
+        this.http
+          .put<any>(
+            `${environment.abogadosUrl}/${this.data.abogado.id}`,
+            formData
+          )
+          .pipe(
+            catchError((error) => {
+              console.error(error);
+              return of(null);
+            })
+          )
+          .subscribe({
+            next: (response) => {
+              console.log('Abogado actualizado:', response);
+              this.dialogRef.close(response);
+            },
+          });
       }
-      console.log('Datos enviados:', formData);
-      this.dialogRef.close(formData);
     }
-  }
-
-  private formatDate(date: Date | string): string {
-    if (!date) return '';
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
   }
 
   onClose(): void {

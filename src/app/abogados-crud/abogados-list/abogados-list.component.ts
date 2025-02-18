@@ -18,7 +18,6 @@ import { FormsModule } from '@angular/forms';
 export class AbogadosListComponent {
   abogados: IAbogado[] | null = null;
   filteredAbogados: IAbogado[] | null = null;
-
   fullNameFilter: string = '';
   matriculaFilter: string = '';
 
@@ -73,6 +72,7 @@ export class AbogadosListComponent {
       .subscribe({
         next: (res) => {
           this.abogados = res.data;
+          console.log('Abogados cargados:', this.abogados);
           this.applyFilters();
         },
       });

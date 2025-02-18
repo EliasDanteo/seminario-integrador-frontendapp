@@ -44,8 +44,10 @@
         <td>{{ abogado.fecha_baja }}</td>
         <td>{{ abogado.matricula }}</td>
         <td>
-          <button class="btn btn-warning btn-sm shadow-sm" (click)="openEditDialog(abogado)">Editar</button>
-          <button class="btn btn-danger btn-sm ms-2 shadow-sm">Eliminar</button>
+          <div class="d-flex justify-content-start gap-2">
+            <button class="btn btn-warning btn-sm shadow-sm" (click)="openEditDialog(abogado)">Editar</button>
+            <button class="btn btn-danger btn-sm shadow-sm">Eliminar</button>
+          </div>
         </td>
       </tr>
       }

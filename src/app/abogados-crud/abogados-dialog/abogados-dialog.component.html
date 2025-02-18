@@ -42,20 +42,10 @@
         <mat-label>Matrícula</mat-label>
         <input matInput formControlName="matricula" placeholder="Ej: ABC123" type="text" />
       </mat-form-field>
-
       <mat-form-field>
-        <mat-label>Fecha Alta</mat-label>
-        <input matInput formControlName="fecha_alta" placeholder="Ej: 01/01/2023" type="date" />
+          <mat-label>Contraseña</mat-label>
+          <input matInput formControlName="contrasena" placeholder="123456" type="password" />
       </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Fecha Baja</mat-label>
-        <input matInput formControlName="fecha_baja" placeholder="Ej: 01/01/2024" type="date" />
-      </mat-form-field>
-          <mat-form-field>
-            <mat-label>Contraseña</mat-label>
-            <input matInput formControlName="contrasena" placeholder="123456" type="password" />
-          </mat-form-field>
       <mat-form-field>
           <mat-label>Rol</mat-label>
           <mat-select formControlName="rol">
@@ -63,8 +53,15 @@
             <mat-option [value]="2">Abogado</mat-option>
           </mat-select>
       </mat-form-field>
-
-    
+<mat-form-field>
+  <mat-label>Foto</mat-label>
+  <input matInput placeholder="Selecciona una imagen" [value]="selectedFile?.name" readonly>
+  <input type="file" (change)="onFileSelected($event)" formControlName="foto" hidden #fileInput />
+  <button mat-button type="button" (click)="fileInput.click()">Subir Foto</button>
+</mat-form-field>
+      @if (previewUrl){
+      <img [src]="previewUrl" alt="Vista previa" style="max-width: 150px; margin-top: 10px;" />
+}
     </mat-dialog-content>
 
     <mat-dialog-actions>
