@@ -21,6 +21,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SnackbarService } from '../../services/snackbar.service.js';
 
 @Component({
   selector: 'app-crud-dialog',
@@ -57,7 +58,8 @@ export class CRUDDialogComponent implements OnInit {
       entity: any;
     },
     private dialogRef: MatDialogRef<CRUDDialogComponent>,
-    private http: HttpClient
+    private http: HttpClient,
+    private snackbarService: SnackbarService
   ) {
     this.entityType = data.entityType;
     this.entityForm = new FormGroup({
@@ -74,7 +76,7 @@ export class CRUDDialogComponent implements OnInit {
       this.entityForm.addControl('es_empresa', new FormControl(false));
     }
 
-    if (this.entityType === 'empresa') {
+    if (this.entityType === 'empresa' || data.entity?.es_empresa) {
       this.entityForm.addControl('es_empresa', new FormControl(true));
       this.entityForm.get('es_empresa')?.setValue(true);
       this.entityForm.get('apellido')?.setValue(null);
@@ -172,6 +174,7 @@ export class CRUDDialogComponent implements OnInit {
           )
           .subscribe({
             next: (response) => {
+              this.snackbarService.showSuccess('¡Creación Exitosa!', 5000);
               this.dialogRef.close(response);
             },
           });
@@ -186,6 +189,7 @@ export class CRUDDialogComponent implements OnInit {
           )
           .subscribe({
             next: (response) => {
+              this.snackbarService.showSuccess('¡Actualización Exitosa!', 5000);
               this.dialogRef.close(response);
             },
           });
@@ -194,6 +198,7 @@ export class CRUDDialogComponent implements OnInit {
   }
 
   onClose(): void {
+    this.snackbarService.showError('Cancelando', 5000);
     this.dialogRef.close('none');
   }
 }

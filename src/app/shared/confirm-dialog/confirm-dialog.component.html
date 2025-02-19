@@ -2,7 +2,7 @@
   <h2 class="fw-bold mb-4">¿Estás seguro de que quieres eliminar este {{ data.entidad }}?</h2>
 
   <p class="lead mb-4">
-    {{ data.entidad === 'cliente' ? 'Cliente' : 'Abogado' }}:
+    {{ data.entidad.charAt(0).toUpperCase() + data.entidad.slice(1) }}:
     <strong class="text-primary">{{ data.nombreCompleto }}</strong>
   </p>
 

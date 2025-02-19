@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { SnackbarService } from '../../services/snackbar.service.js';
 
 @Component({
   selector: 'app-confirm-dialog',
@@ -12,14 +13,17 @@ export class ConfirmDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { nombreCompleto: string; entidad: string }
+    public data: { nombreCompleto: string; entidad: string },
+    private snackbarService: SnackbarService
   ) {}
 
   onConfirm(): void {
+    this.snackbarService.showSuccess('¡Eliminacion Exitosa!', 5000);
     this.dialogRef.close(true);
   }
 
   onCancel(): void {
     this.dialogRef.close(false);
+    this.snackbarService.showError('Cancelando', 5000);
   }
 }
