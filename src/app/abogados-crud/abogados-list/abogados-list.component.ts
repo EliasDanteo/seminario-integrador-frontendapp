@@ -5,8 +5,9 @@ import { environment } from '../../../environments/environment.js';
 import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { MatButtonModule } from '@angular/material/button';
-import { AbogadosDialogComponent } from '../abogados-dialog/abogados-dialog.component.js';
 import { FormsModule } from '@angular/forms';
+import { CRUDDialogComponent } from '../../shared/crud-dialog/crud-dialog.component.js';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component.js';
 
 @Component({
   selector: 'app-abogados-list',
@@ -79,15 +80,53 @@ export class AbogadosListComponent {
   }
 
   openCreateDialog(): void {
-    this.openDialog(AbogadosDialogComponent, {
+    this.openDialog(CRUDDialogComponent, {
       action: 'post',
+      entityType: 'abogado',
+      entity: null,
     });
   }
 
   openEditDialog(abogado: IAbogado): void {
-    this.openDialog(AbogadosDialogComponent, {
-      action: 'put',
-      abogado,
+    if (abogado) {
+      console.log('Abogado a editar:', abogado);
+      this.openDialog(CRUDDialogComponent, {
+        action: 'put',
+        entityType: 'abogado',
+        entity: abogado,
+      });
+    } else {
+      console.error('Abogado no disponible');
+    }
+  }
+  deleteAbogado(abogado: IAbogado): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        nombreCompleto: abogado.nombre,
+        entidad: 'abogado',
+      },
     });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.eliminarAbogado(abogado);
+      }
+    });
+  }
+  eliminarAbogado(abogado: IAbogado): void {
+    this.http
+      .patch(`${environment.abogadosUrl}/deactivate/${abogado.id}`, {})
+      .subscribe({
+        next: (response) => {
+          this.loadAbogados();
+        },
+        error: (err) => {
+          console.error('Error al dar de baja el abogado', err);
+          alert(
+            'Hubo un error al dar de baja el abogado. Inténtalo nuevamente.'
+          );
+        },
+      });
   }
 }
