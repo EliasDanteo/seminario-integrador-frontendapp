@@ -46,14 +46,14 @@ export class CRUDDialogComponent implements OnInit {
   isEdit: boolean = false;
   selectedFile: File | null = null;
   previewUrl: string | ArrayBuffer | null = null;
-  entityType: 'abogado' | 'cliente' | 'empresa';
+  entityType: 'abogado' | 'cliente' | 'empresa' | 'secretario';
   es_empresa: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public data: {
       action: string;
-      entityType: 'abogado' | 'cliente' | 'empresa';
+      entityType: 'abogado' | 'cliente' | 'empresa' | 'secretario';
       entity: any;
     },
     private dialogRef: MatDialogRef<CRUDDialogComponent>,
@@ -69,7 +69,6 @@ export class CRUDDialogComponent implements OnInit {
       nro_doc: new FormControl('', Validators.required),
       contrasena: new FormControl('', Validators.required),
       foto: new FormControl(null),
-      es_empresa: new FormControl(false),
     });
     if (this.entityType === 'cliente') {
       this.entityForm.addControl('es_empresa', new FormControl(false));
@@ -81,7 +80,12 @@ export class CRUDDialogComponent implements OnInit {
       this.entityForm.get('apellido')?.setValue(null);
       this.entityForm.get('apellido')?.clearValidators();
     }
-
+    if (this.entityType === 'secretario') {
+      this.entityForm.addControl(
+        'turno_trabajo',
+        new FormControl('', Validators.required)
+      );
+    }
     if (this.entityType === 'abogado') {
       this.entityForm.addControl(
         'matricula',
@@ -147,10 +151,15 @@ export class CRUDDialogComponent implements OnInit {
       if (!this.selectedFile) {
         delete formData.foto;
       }
-      const apiUrl =
-        this.entityType === 'abogado'
-          ? environment.abogadosUrl
-          : environment.clientesUrl;
+      let apiUrl = '';
+
+      if (this.data.entityType === 'abogado') {
+        apiUrl = environment.abogadosUrl;
+      } else if (this.data.entityType === 'cliente') {
+        apiUrl = environment.clientesUrl;
+      } else if (this.data.entityType === 'secretario') {
+        apiUrl = environment.secretariosUrl;
+      }
 
       if (this.data.action === 'post') {
         this.http

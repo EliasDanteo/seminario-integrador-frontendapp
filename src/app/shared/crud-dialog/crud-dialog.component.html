@@ -14,7 +14,7 @@
         <input matInput formControlName="nombre" placeholder="Ej: Juan" type="text" />
       </mat-form-field>
     
-      @if((data.entityType === 'cliente' || data.entityType === 'abogado')&& (!data.entity?.es_empresa )) {
+      @if((data.entityType === 'cliente' || data.entityType === 'abogado' || data.entityType === 'secretario')&& (!data.entity?.es_empresa )) {
       <mat-form-field>
         <mat-label>Apellido</mat-label>
         <input matInput formControlName="apellido" placeholder="Ej: Pérez" type="text" />
@@ -61,6 +61,17 @@
           <mat-label>Contraseña</mat-label>
           <input matInput formControlName="contrasena" placeholder="123456" type="password" />
         </mat-form-field>
+
+        @if(data.entityType === 'secretario') {
+        <mat-form-field>
+          <mat-label>Turno de Trabajo</mat-label>
+          <mat-select formControlName="turno_trabajo" placeholder="Turno de trabajo">
+            <mat-option value="mañana">Mañana</mat-option>
+            <mat-option value="tarde">Tarde</mat-option>
+            <mat-option value="noche">Noche</mat-option>
+          </mat-select>
+        </mat-form-field>
+        }
       </ng-container>
 
       @if(data.entityType === 'abogado') {
