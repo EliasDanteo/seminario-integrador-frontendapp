@@ -14,9 +14,7 @@
         <input matInput formControlName="nombre" placeholder="Ej: Juan" type="text" />
       </mat-form-field>
     
-
-      <!-- Mostrar apellido solo si es persona -->
-      @if(data.entityType === 'cliente' && (!data.entity?.es_empresa )) {
+      @if((data.entityType === 'cliente' || data.entityType === 'abogado')&& (!data.entity?.es_empresa )) {
       <mat-form-field>
         <mat-label>Apellido</mat-label>
         <input matInput formControlName="apellido" placeholder="Ej: Pérez" type="text" />
@@ -52,7 +50,7 @@
 
         <mat-form-field>
           <mat-label>Rol</mat-label>
-          <mat-select formControlName="rol">
+          <mat-select formControlName="id_rol">
             <mat-option [value]="1">Admin</mat-option>
             <mat-option [value]="2">Abogado</mat-option>
           </mat-select>

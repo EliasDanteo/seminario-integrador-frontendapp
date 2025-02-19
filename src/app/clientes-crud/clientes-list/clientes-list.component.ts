@@ -6,8 +6,8 @@ import { ICliente } from '../../core/interfaces/ICliente.interface.js';
 import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { environment } from '../../../environments/environment.js';
-import { ClientesDialogComponent } from '../clientes-dialog/clientes-dialog.component.js';
 import { CRUDDialogComponent } from '../../shared/crud-dialog/crud-dialog.component.js';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component.js';
 @Component({
   selector: 'app-clientes-list',
   standalone: true,
@@ -61,7 +61,6 @@ export class ClientesListComponent {
       );
     }
 
-    // Filtrar por Empresas o Personas
     this.filteredClientes = this.filteredClientes.filter((cliente) => {
       return (
         (this.showCompanies && cliente.es_empresa) ||
@@ -106,14 +105,46 @@ export class ClientesListComponent {
 
   openEditDialog(cliente: ICliente): void {
     if (cliente) {
-      console.log('Cliente a editar:', cliente); // Verifica que el cliente tenga datos
       this.openDialog(CRUDDialogComponent, {
         action: 'put',
         entityType: 'cliente',
-        entity: cliente, // Aquí pasas el cliente a editar
+        entity: cliente,
       });
     } else {
       console.error('Cliente no disponible');
     }
+  }
+
+  deleteCliente(cliente: ICliente): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        nombreCompleto: `${cliente.nombre} ${cliente.apellido ?? ''}`.trim(),
+
+        entidad: 'cliente',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.eliminarCliente(cliente);
+      }
+    });
+  }
+
+  eliminarCliente(cliente: ICliente): void {
+    this.http
+      .patch(`${environment.clientesUrl}/deactivate/${cliente.id}`, {})
+      .subscribe({
+        next: (response) => {
+          this.loadClientes();
+        },
+        error: (err) => {
+          console.error('Error al dar de baja el cliente', err);
+          alert(
+            'Hubo un error al dar de baja el cliente. Inténtalo nuevamente.'
+          );
+        },
+      });
   }
 }

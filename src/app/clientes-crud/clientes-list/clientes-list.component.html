@@ -37,32 +37,30 @@
   <table class="table table-hover table-bordered shadow-sm">
     <thead class="bg-success text-white">
       <tr>
-        <th>Apellido</th>
-        <th>Nombre</th>
+        <th>Empresa</th>
+        <th>Nombre Completo</th>
         <th>Email</th>
         <th>Teléfono</th>
         <th>Tipo Doc</th>
         <th>Nro Doc</th>
         <th>Fecha Alta</th>
-        <th>Es Empresa</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
       @for (cliente of filteredClientes; track cliente.id) {
       <tr class="align-middle">
-        <td>{{ cliente.apellido }}</td>
-        <td>{{ cliente.nombre }}</td>
+        <td>{{ cliente.es_empresa ? 'Sí' : 'No' }}</td>
+        <td>{{ cliente.nombre + (cliente.apellido ? ' ' + cliente.apellido : '') }}</td>
         <td>{{ cliente.email }}</td>
         <td>{{ cliente.telefono }}</td>
         <td>{{ cliente.tipo_doc }}</td>
         <td>{{ cliente.nro_doc }}</td>
         <td>{{ cliente.fecha_alta }}</td>
-        <td>{{ cliente.es_empresa ? 'Sí' : 'No' }}</td>
         <td>
           <div class="d-flex justify-content-start gap-2">
             <button class="btn btn-warning btn-sm shadow-sm" (click)="openEditDialog(cliente)">Editar</button>
-            <button class="btn btn-danger btn-sm shadow-sm">Eliminar</button>
+            <button class="btn btn-danger btn-sm shadow-sm" (click)="deleteCliente(cliente)">Eliminar</button>
           </div>
         </td>
       </tr>

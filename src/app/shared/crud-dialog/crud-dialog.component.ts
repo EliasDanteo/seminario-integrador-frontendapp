@@ -21,8 +21,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import IAbogado from '../../core/interfaces/IAbogado.interface.js';
-import { ICliente } from '../../core/interfaces/ICliente.interface.js';
 
 @Component({
   selector: 'app-crud-dialog',
@@ -64,7 +62,7 @@ export class CRUDDialogComponent implements OnInit {
     this.entityType = data.entityType;
     this.entityForm = new FormGroup({
       nombre: new FormControl('', Validators.required),
-      apellido: new FormControl('', Validators.required),
+      apellido: new FormControl(undefined, Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
       telefono: new FormControl('', Validators.required),
       tipo_doc: new FormControl('', Validators.required),
@@ -79,7 +77,9 @@ export class CRUDDialogComponent implements OnInit {
 
     if (this.entityType === 'empresa') {
       this.entityForm.addControl('es_empresa', new FormControl(true));
-      this.entityForm.removeControl('apellido');
+      this.entityForm.get('es_empresa')?.setValue(true);
+      this.entityForm.get('apellido')?.setValue(null);
+      this.entityForm.get('apellido')?.clearValidators();
     }
 
     if (this.entityType === 'abogado') {
@@ -88,7 +88,7 @@ export class CRUDDialogComponent implements OnInit {
         new FormControl('', Validators.required)
       );
       this.entityForm.addControl(
-        'rol',
+        'id_rol',
         new FormControl(null, [Validators.required, Validators.min(1)])
       );
     }
@@ -140,6 +140,7 @@ export class CRUDDialogComponent implements OnInit {
   onSubmit(): void {
     if (this.entityForm.valid) {
       const formData = { ...this.entityForm.value };
+
       if (!formData.contrasena) {
         delete formData.contrasena;
       }
