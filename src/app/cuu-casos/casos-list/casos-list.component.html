@@ -1,0 +1,78 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4 text-black p-3 rounded">Listado de Casos</h2>
+
+  <button class="btn btn-success mb-3 shadow">Agregar Caso</button>
+
+  <div class="row mb-3">
+    <div class="col-md-3">
+      <input type="text" class="form-control" placeholder="Filtrar por Cliente" [(ngModel)]="clienteFilter"
+        (ngModelChange)="applyFilters()">
+    </div>
+
+    <div class="col-md-3">
+      <select class="form-control" [(ngModel)]="estadoFilter" (ngModelChange)="applyFilters()">
+        <option value="">Filtrar por Estado</option>
+        <option value="En curso">En curso</option>
+        <option value="Finalizado">Finalizado</option>
+        <option value="Cancelado">Cancelado</option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <select class="form-control" [(ngModel)]="especialidadFilter" (ngModelChange)="applyFilters()">
+        <option value="">Filtrar por Especialidad</option>
+        <option value="civil y comercial">Civil y Comercial</option>
+        <option value="laboral">Laboral</option>
+        <option value="familiar">Familiar</option>
+        <option value="penal">Penal</option>
+        <option value="otro">Otro</option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <input type="text" class="form-control" placeholder="Filtrar por Descripción" [(ngModel)]="descripcionFilter"
+        (ngModelChange)="applyFilters()">
+    </div>
+  </div>
+
+  @if (filteredCasos) {
+  <table class="table table-hover table-bordered shadow-sm">
+    <thead class="bg-success text-white">
+      <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Especialidad</th>
+        <th>Fecha de Inicio</th>
+        <th>Descripción</th>
+        <th>Estado</th>
+        <th>Última Actualización</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (caso of filteredCasos; track caso.id) {
+      <tr class="align-middle">
+        <td>{{ caso.id }}</td>
+        <td>
+          {{ caso.cliente.apellido + ' ' + caso.cliente.nombre }}
+        </td>
+        <td>{{ caso.especialidad.nombre }}</td>
+        <td>{{ caso.fecha_inicio }}</td>
+        <td>{{ caso.descripcion }}</td>
+        <td>{{ caso.estado }}</td>
+        <td>{{ caso.fecha_estado }}</td>
+        <td>
+          <div class="d-flex justify-content-start gap-2">
+            <button class="btn btn-info btn-sm shadow-sm" (click)="verCaso(caso)">
+              Ver Caso
+            </button>
+            <button class="btn btn-warning btn-sm shadow-sm">Editar</button>
+            <button class="btn btn-danger btn-sm shadow-sm">Eliminar</button>
+          </div>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  }
+</div>
