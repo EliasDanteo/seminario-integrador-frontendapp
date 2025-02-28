@@ -1,0 +1,41 @@
+<div class="container mt-4">
+    <h2 class="text-center mb-4 text-black p-3 rounded">Listado de Noticias</h2>
+  
+  <button class="btn btn-success mb-3 shadow" (click)="openCreateDialog()">Agregar Noticia</button>
+  
+    <div class="row mb-3">
+    <div class="col-md-4">
+      <input type="text" class="form-control" placeholder="Filtrar por Titulo" name="fullTitleFilter"
+        id="fullTitleFilter" [(ngModel)]="fullTitleFilter" (ngModelChange)="applyFilters()">
+    </div>
+  
+    </div>
+  
+    @if (filteredNoticias) {
+    <table class="table table-hover table-bordered shadow-sm ">
+      <thead class="bg-success text-white">
+        <tr>
+          <th>Titulo</th>
+          <th>Cuerpo</th>
+          <th>Publicación</th>
+          <th>Vencimiento</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (noticia of filteredNoticias; track noticia.id) {
+        <tr class="align-middle">
+          <td>{{ noticia.titulo}}</td>
+          <td>{{ noticia.cuerpo }}</td>
+          <td>{{ noticia.fecha_publicacion }}</td>
+          <td>{{ noticia.fecha_vencimiento }}</td>
+          <td>
+            <div class="d-flex justify-content-start gap-2">
+              <button class="btn btn-warning btn-sm shadow-sm" (click)="openEditDialog(noticia)">Editar</button>
+              <button class="btn btn-danger btn-sm shadow-sm" (click)="deleteNoticia(noticia)">Eliminar</button>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>}
