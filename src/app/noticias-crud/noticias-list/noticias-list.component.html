@@ -1,41 +1,76 @@
 <div class="container mt-4">
-    <h2 class="text-center mb-4 text-black p-3 rounded">Listado de Noticias</h2>
-  
-  <button class="btn btn-success mb-3 shadow" (click)="openCreateDialog()">Agregar Noticia</button>
-  
-    <div class="row mb-3">
+  <h2 class="text-center mb-4 text-black p-3 rounded">Listado de Noticias</h2>
+
+  <button
+    class="btn btn-success mb-md-0 shadow"
+    (click)="openCreateDialog()"
+  >
+    Agregar Noticia
+  </button>
+
+  <div class="row mb-3 mt-3">
     <div class="col-md-4">
-      <input type="text" class="form-control" placeholder="Filtrar por Titulo" name="fullTitleFilter"
-        id="fullTitleFilter" [(ngModel)]="fullTitleFilter" (ngModelChange)="applyFilters()">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Filtrar por Titulo"
+        [(ngModel)]="fullTitleFilter"
+        (ngModelChange)="applyFilters()"
+      />
     </div>
-  
-    </div>
-  
-    @if (filteredNoticias) {
-    <table class="table table-hover table-bordered shadow-sm ">
+  </div>
+
+  @if (filteredNoticias) {
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered shadow-sm">
       <thead class="bg-success text-white">
         <tr>
           <th>Titulo</th>
-          <th>Cuerpo</th>
-          <th>Publicación</th>
-          <th>Vencimiento</th>
+          <th class="d-none d-lg-table-cell">Cuerpo</th>
+          <th>Publicación</th>
+          <th class="d-none d-sm-table-cell">Vencimiento</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
         @for (noticia of filteredNoticias; track noticia.id) {
         <tr class="align-middle">
-          <td>{{ noticia.titulo}}</td>
-          <td>{{ noticia.cuerpo }}</td>
-          <td>{{ noticia.fecha_publicacion }}</td>
-          <td>{{ noticia.fecha_vencimiento }}</td>
+          <td data-label="Título">{{ noticia.titulo }}</td>
+          <td data-label="Cuerpo" class="d-none d-lg-table-cell">
+            {{ noticia.cuerpo }}
+          </td>
+          <td data-label="Publicación">{{ noticia.fecha_publicacion }}</td>
+          <td data-label="Vencimiento" class="d-none d-sm-table-cell">
+            {{ noticia.fecha_vencimiento }}
+          </td>
           <td>
-            <div class="d-flex justify-content-start gap-2">
-              <button class="btn btn-warning btn-sm shadow-sm" (click)="openEditDialog(noticia)">Editar</button>
-              <button class="btn btn-danger btn-sm shadow-sm" (click)="deleteNoticia(noticia)">Eliminar</button>
+            <div class="d-flex flex-column flex-md-row gap-2">
+              <button
+                class="btn btn-warning btn-sm shadow-sm"
+                (click)="openEditDialog(noticia)"
+              >
+                <i class="bi bi-pencil d-none d-md-inline"></i>
+                Editar
+              </button>
+              <button
+                class="btn btn-danger btn-sm shadow-sm"
+                (click)="deleteNoticia(noticia)"
+              >
+                <i class="bi bi-trash d-none d-md-inline"></i>
+                Eliminar
+              </button>
+              <button
+                class="btn btn-light btn-details d-table-cell d-md-none"
+                (click)="openNewsDetails(noticia)"
+              >
+                <span class="material-icons">Detalles</span>
+              </button>
             </div>
           </td>
         </tr>
         }
       </tbody>
-    </table>}
+    </table>
+  </div>
+  }
+</div>

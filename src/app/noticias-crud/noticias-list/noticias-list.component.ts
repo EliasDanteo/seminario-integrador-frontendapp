@@ -8,6 +8,7 @@ import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dial
 import { NoticiaCrudDialogComponent } from '../../shared/noticia-crud-dialog/noticia-crud-dialog.component.js';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { BottomSheetService } from '../../services/bottom-sheet.service.js';
 
 @Component({
   selector: 'app-noticias-list',
@@ -23,7 +24,7 @@ export class NoticiasListComponent {
     filteredNoticias: INoticia[] | null = null;
     fullTitleFilter: string = '';
   
-    constructor(private http: HttpClient, private dialog: MatDialog) {
+    constructor(private http: HttpClient, private dialog: MatDialog, private bottomSheetService: BottomSheetService) {
       this.loadNoticias();
     }
 
@@ -92,6 +93,19 @@ export class NoticiasListComponent {
       } else {
         console.error('Noticia no disponible');
       }
+    }
+
+    openNewsDetails(noticia: INoticia): void {
+      this.bottomSheetService.open({
+        title: 'Noticia',
+        fields: [
+          { label: 'Título', key: 'titulo' },
+          { label: 'Cuerpo', key: 'cuerpo', type: 'textarea' },
+          { label: 'Publicación', key: 'fecha_publicacion' },
+          { label: 'Vencimiento', key: 'fecha_vencimiento' },
+        ],
+        data: noticia,
+      });
     }
     
     deleteNoticia(noticia: INoticia): void {

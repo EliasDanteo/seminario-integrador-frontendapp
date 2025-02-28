@@ -5,4 +5,5 @@ export const environment = {
   abogadosUrl: apiUrl + '/usuarios/abogados',
   clientesUrl: apiUrl + '/usuarios/clientes',
   secretariosUrl: apiUrl + '/usuarios/secretarios',
+  noticiasUrl: apiUrl + '/misc/noticias',
 };

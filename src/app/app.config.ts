@@ -6,6 +6,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,6 +15,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideAnimations(),
     provideHttpClient(),
-    importProvidersFrom(MatNativeDateModule) //Para los datepickers, sino no me anda
+    importProvidersFrom(MatNativeDateModule),
+    importProvidersFrom(MatBottomSheetModule) //Para los datepickers, sino no me anda
   ],
 };
