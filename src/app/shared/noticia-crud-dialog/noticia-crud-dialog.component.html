@@ -30,6 +30,7 @@
                     <mat-label>Fecha de publicación</mat-label>
                     <input
                     matInput
+                    [min]="todayDate"
                     [matDatepicker]="pickerPub"
                     formControlName="fecha_publicacion"
                     placeholder="Elija la fecha de publicación">
@@ -44,6 +45,7 @@
                     <mat-label>Fecha de vencimiento</mat-label>
                     <input
                     matInput
+                    [min]="getMinVencimientoDate()"
                     [matDatepicker]="pickerVen"
                     formControlName="fecha_vencimiento"
                     placeholder="Elija la fecha de vencimiento">
@@ -56,7 +58,7 @@
 
         <mat-dialog-actions align="end">
             <button mat-button type="button" (click)="dialogRef.close()">Cancelar</button>
-            <button mat-raised-button color="primary" type="submit">
+            <button mat-raised-button color="primary" type="submit" [disabled]="newsForm.invalid">
             {{ isEdit ? 'Actualizar' : 'Crear' }}
             </button>
         </mat-dialog-actions>

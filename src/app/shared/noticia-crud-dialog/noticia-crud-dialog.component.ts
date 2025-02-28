@@ -40,6 +40,7 @@ export class NoticiaCrudDialogComponent implements OnInit {
   newsForm: FormGroup;
   isEdit: boolean = false;
   entityType: 'noticia';
+  todayDate: Date 
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -52,6 +53,8 @@ export class NoticiaCrudDialogComponent implements OnInit {
     private http: HttpClient,
     private snackbarService: SnackbarService
   ) {
+    this.todayDate = new Date();
+    console.log('Today date', this.todayDate);
     this.entityType = data.entityType;
     this.newsForm = new FormGroup({
       titulo: new FormControl('', [Validators.required]),
@@ -157,6 +160,20 @@ export class NoticiaCrudDialogComponent implements OnInit {
   onClose(): void {
     this.snackbarService.showError('Cancelando', 5000);
     this.dialogRef.close('none');
+  }
+
+  getMinVencimientoDate(): Date {
+    const fechaPublicacion = this.newsForm.get('fecha_publicacion')?.value;
+
+    if (fechaPublicacion) {
+      const minDate = new Date(fechaPublicacion);
+      minDate.setDate(minDate.getDate() + 1);
+      return minDate;
+    } else {
+      const minDate = new Date(this.todayDate);
+      minDate.setDate(minDate.getDate() + 1);
+      return minDate;
+    }
   }
 
   formatDateToFrontend(dateString: string): Date {
