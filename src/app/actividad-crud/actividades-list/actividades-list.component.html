@@ -1,0 +1,37 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4 text-black p-3 rounded">Listado de Actividades</h2>
+
+  <div class="d-flex gap-3">
+    <button class="btn btn-success mb-3 shadow" (click)="openCreateDialog()">Agregar Actividad</button>
+  </div>
+
+  @if (actividades){
+  <table class="table table-hover table-bordered shadow-sm">
+    <thead class="bg-success text-white">
+      <tr>
+        <th>Nombre</th>
+        <th>Cantidad de JUS</th>
+        <th>Precio(JUS)</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (act of actividades; track act.id){
+        <tr class="align-middle">
+          <td>{{ act.nombre }}</td>
+          <td>{{ act.cant_jus }}</td>
+          <td>{{ act.precio_pesos }}</td>
+          <td>
+            <div class="d-flex justify-content-start gap-2">
+              <button class="btn btn-warning btn-sm shadow-sm" (click)="openEditDialog(act)">Editar</button>
+              <button class="btn btn-danger btn-sm shadow-sm" (click)="deleteActividad(act)">Eliminar</button>
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
+  
+</div>
