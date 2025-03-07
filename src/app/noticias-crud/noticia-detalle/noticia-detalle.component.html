@@ -1,0 +1,22 @@
+<div class="container mt-4">
+    <ng-container *ngIf="noticia; else noNoticia">
+      <div class="card text-dark bg-light shadow-sm">
+        <div class="card-header text-start">
+          <h2>{{ noticia.titulo }}</h2>
+        </div>
+        <div class="card-body">
+          <p class="card-text">{{ noticia.cuerpo }}</p>
+          <p class="text-muted text-end">{{ noticia.fecha_publicacion }}</p>
+          <div class="text-end mt-3">
+            <a routerLink="/noticias-blog" class="btn btn-secondary">Volver al listado</a>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #noNoticia>
+      <div class="alert alert-info text-center mt-4">
+        La noticia no se encontró.
+      </div>
+    </ng-template>
+  </div>
+  
