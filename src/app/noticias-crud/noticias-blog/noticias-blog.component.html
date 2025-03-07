@@ -8,21 +8,28 @@
       
   
     <div *ngIf="noticias && noticias.length > 0; else noNoticias">
-      <div *ngFor="let noticia of noticias">
-        <div class="card text-dark bg-light mb-3 col-12 col-md-4" >
-          <div class="card-header"><strong>{{ noticia.titulo }}</strong></div>
-          <div class="card-body">
-            <p class="card-text">{{ noticia.cuerpo.length > 300 ? (noticia.cuerpo | slice:0:300) + '...' : noticia.cuerpo }}</p>
-            <p class="card-text text-end"><small class="text-muted">{{ noticia.fecha_publicacion }}</small></p>
-            <hr>
-            <div class="text-center">
-                <a [routerLink]="['/noticias-detalle', noticia.id]" class="btn btn-primary w-100">Ver noticia</a>
+        <div class="row">
+          <div *ngFor="let noticia of noticias" class="col-12 col-md-4 mb-3">
+            <div class="card text-dark bg-light">
+              <div class="card-header">
+                <strong>{{ noticia.titulo }}</strong>
+              </div>
+              <div class="card-body">
+                <p class="card-text">
+                  {{ noticia.cuerpo.length > 300 ? (noticia.cuerpo | slice:0:300) + '...' : noticia.cuerpo }}
+                </p>
+                <p class="card-text text-end">
+                  <small class="text-muted">{{ noticia.fecha_publicacion }}</small>
+                </p>
+                <hr>
+                <div class="text-center">
+                  <a [routerLink]="['/noticias-detalle', noticia.id]" class="btn btn-primary w-100">Ver noticia</a>
+                </div>
+              </div>
             </div>
-            
           </div>
         </div>
       </div>
-    </div>
   
     <ng-template #noNoticias>
       <p class="text-center">No hay noticias recientes.</p>
