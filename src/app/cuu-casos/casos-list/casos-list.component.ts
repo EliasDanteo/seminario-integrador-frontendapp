@@ -35,7 +35,7 @@ export class CasosListComponent {
     });
   }
 
-  verCaso(caso: ICaso): void {
+  showDetails(caso: ICaso): void {
     this.openDialog(CasosInformationDialogComponent, { caso });
   }
 

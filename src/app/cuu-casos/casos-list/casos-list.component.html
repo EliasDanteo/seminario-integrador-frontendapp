@@ -51,7 +51,7 @@
     </thead>
     <tbody>
       @for (caso of filteredCasos; track caso.id) {
-      <tr class="align-middle">
+      <tr class="align-middle clickable-row" (click)="showDetails(caso)">
         <td>{{ caso.id }}</td>
         <td>
           {{ caso.cliente.apellido + ' ' + caso.cliente.nombre }}
@@ -63,11 +63,9 @@
         <td>{{ caso.fecha_estado }}</td>
         <td>
           <div class="d-flex justify-content-start gap-2">
-            <button class="btn btn-info btn-sm shadow-sm" (click)="verCaso(caso)">
-              Ver Caso
-            </button>
-            <button class="btn btn-warning btn-sm shadow-sm">Editar</button>
-            <button class="btn btn-danger btn-sm shadow-sm">Eliminar</button>
+          
+            <button class="btn btn-warning btn-sm shadow-sm" (click)="$event.stopPropagation()">Editar</button>
+            <button class="btn btn-danger btn-sm shadow-sm" (click)="$event.stopPropagation()">Eliminar</button>
           </div>
         </td>
       </tr>

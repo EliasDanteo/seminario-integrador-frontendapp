@@ -5,19 +5,22 @@
 
   <div class="d-flex flex-column me-4 gap-2 p-3 bg-light rounded mx-5">
     <p class = "text-center"><strong>Acciones</strong></p>
-    <button class="btn btn-primary">Ver Notas</button>
-    <button class="btn btn-secondary">Ver Abogados</button>
-    <button class="btn btn-info">Ver Documentos</button>
-    <button class="btn btn-warning">Ver Cuota</button>
-    <button class="btn btn-success">Ver Recordatorio</button>
-    <button class="btn btn-danger">Ver Comentarios</button>
+    <button class="btn-info" (click)="showNotas()">Ver Notas</button>
+    <button class="btn-info" (click)="showAbogados()">Ver Abogados</button>
+    <button class="btn-info" (click)="showDocumentos()">Ver Documentos</button>
+    <button class="btn-info">Ver Cuota</button>
+    <button class="btn-info">Ver Recordatorio</button>
+    <button class="btn-info">Ver Comentarios</button>
   </div>
 
   <div class="d-flex flex-column flex-grow-1 p-3 bg-light rounded mx-5">
+    @if(!currentComponent) {
     <div>
       <p><strong>ID:</strong> {{ data.caso.id }}</p>
-      <p><strong>Cliente:</strong> {{ data.caso.cliente.apellido }} {{ data.caso.cliente.nombre }} <button
-          class="ms-2 btn-info">Ver Cliente</button></p>
+      <p><strong>Cliente:</strong> {{ data.caso.cliente.apellido }} {{ data.caso.cliente.nombre ? data.caso.cliente.nombre :
+        "" }}
+        <button class="ms-2 btn-info">Ver Cliente</button>
+      </p>
       <p><strong>Especialidad:</strong> {{ data.caso.especialidad.nombre }}</p>
       <p><strong>Fecha de Inicio:</strong> {{ data.caso.fecha_inicio }}</p>
     </div>
@@ -26,5 +29,15 @@
       <p><strong>Estado:</strong> {{ data.caso.estado }}</p>
       <p><strong>Última Actualización:</strong> {{ data.caso.fecha_estado }}</p>
     </div>
+    }
+    
+    @if(currentComponent) {
+    <div [ngSwitch]="currentComponent">
+      <app-notas-caso *ngSwitchCase="'notas'"></app-notas-caso>
+      <app-abogados-caso *ngSwitchCase="'abogados'"></app-abogados-caso>
+      <app-documentos-caso *ngSwitchCase="'documentos'"></app-documentos-caso>
+  
+    </div>
+    }
   </div>
 </div>
