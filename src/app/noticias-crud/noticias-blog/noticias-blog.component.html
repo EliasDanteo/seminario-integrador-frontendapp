@@ -1,0 +1,38 @@
+<div class="container">
+    <header class="bg-light py-3 my-4 border-bottom">
+        <div class="container text-center">
+          <h1 class="mb-2">Bienvenido al Blog de nuestro Estudio Jurídico</h1>
+          <p class="lead mb-0">Explora las últimas noticias y artículos de interés, actualizados nuestros profesionales.</p>
+        </div>
+    </header>
+      
+  
+    <div *ngIf="noticias && noticias.length > 0; else noNoticias">
+        <div class="row">
+          <div *ngFor="let noticia of noticias" class="col-12 col-md-4 mb-3">
+            <div class="card text-dark bg-light">
+              <div class="card-header">
+                <strong>{{ noticia.titulo }}</strong>
+              </div>
+              <div class="card-body">
+                <p class="card-text">
+                  {{ noticia.cuerpo.length > 300 ? (noticia.cuerpo | slice:0:300) + '...' : noticia.cuerpo }}
+                </p>
+                <p class="card-text text-end">
+                  <small class="text-muted">{{ noticia.fecha_publicacion }}</small>
+                </p>
+                <hr>
+                <div class="text-center">
+                  <a [routerLink]="['/noticias-detalle', noticia.id]" class="btn btn-primary w-100">Ver noticia</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    <ng-template #noNoticias>
+      <p class="text-center">No hay noticias recientes.</p>
+    </ng-template>
+  </div>
+  
