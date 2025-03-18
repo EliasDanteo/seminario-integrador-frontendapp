@@ -131,7 +131,14 @@ export class FeedbackDialogComponent implements OnInit {
         return;
       }
       const uint8Array = new Uint8Array(fotoData.data);
-      blob = new Blob([uint8Array], { type: fotoData.type || 'image/jpeg' });
+      blob = new Blob([uint8Array], {
+        type:
+          fotoData.type ||
+          'image/jpeg' ||
+          'image/png' ||
+          'image/jpg' ||
+          'image/webp',
+      });
     }
 
     if (blob.size <= 0) {
@@ -172,5 +179,6 @@ export class FeedbackDialogComponent implements OnInit {
 
   onClose(): void {
     this.dialogRef.close();
+    this.snackBarService.showError('Calificación cancelada');
   }
 }
