@@ -1,0 +1,86 @@
+<div class="container" style="width: 800px">
+  <div class="dialog-title">
+    <h2 mat-dialog-title>Calificar Abogado</h2>
+    <button
+      type="button"
+      class="btn-close"
+      title="Cerrar ventana"
+      (click)="onClose()"
+    ></button>
+  </div>
+
+  <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+      <div class="row">
+        <div class="col-md-8">
+          <div
+            class="abogado-container col-md-12"
+            *ngIf="abogados_a_calificar.length > 0"
+          >
+            <mat-form-field>
+              <mat-label>Abogado</mat-label>
+              <mat-select formControlName="id_abogado">
+                @for (abogado of abogados_a_calificar; track abogado.id) {
+                <mat-option [value]="abogado.id">
+                  {{ abogado.nombre }} {{ abogado.apellido }}
+                </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="matricula-container col-md-12">
+            <mat-form-field>
+              <mat-label>Matrícula</mat-label>
+              <input
+                matInput
+                type="text"
+                [value]="selectedMatricula"
+                disabled
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="col-12 foto-container" *ngIf="selectedFoto">
+            <img
+              *ngIf="selectedFoto"
+              [src]="selectedFoto"
+              alt="Foto del abogado"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="puntuacion-container">
+        <label>Puntuación</label>
+        <mat-radio-group
+          formControlName="puntuacion"
+          class="puntuacion-options"
+        >
+          <mat-radio-button
+            *ngFor="let num of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+            [value]="num"
+          >
+            {{ num }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <mat-form-field class="descripcion-field">
+        <textarea
+          matInput
+          formControlName="descripcion"
+          placeholder="Descripción"
+          rows="4"
+        ></textarea>
+      </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="onClose()">Cancelar</button>
+      <button mat-raised-button color="primary" (click)="onSubmit()">
+        Enviar FeedBack
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

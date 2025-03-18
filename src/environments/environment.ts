@@ -6,4 +6,7 @@ export const environment = {
   clientesUrl: apiUrl + '/usuarios/clientes',
   secretariosUrl: apiUrl + '/usuarios/secretarios',
   noticiasUrl: apiUrl + '/misc/noticias',
+  jusUrl: apiUrl + '/misc/precios-jus',
+  feedbackUrl: apiUrl + '/feedbacks',
+  casosUrl: apiUrl + '/casos',
 };
