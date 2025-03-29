@@ -5,12 +5,21 @@
 
   <div class="row mb-3">
     <div class="col-md-3">
-      <input type="text" class="form-control" placeholder="Filtrar por Cliente" [(ngModel)]="clienteFilter"
-        (ngModelChange)="applyFilters()">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Filtrar por Cliente"
+        [(ngModel)]="clienteFilter"
+        (ngModelChange)="applyFilters()"
+      />
     </div>
 
     <div class="col-md-3">
-      <select class="form-control" [(ngModel)]="estadoFilter" (ngModelChange)="applyFilters()">
+      <select
+        class="form-control"
+        [(ngModel)]="estadoFilter"
+        (ngModelChange)="applyFilters()"
+      >
         <option value="">Filtrar por Estado</option>
         <option value="En curso">En curso</option>
         <option value="Finalizado">Finalizado</option>
@@ -19,7 +28,11 @@
     </div>
 
     <div class="col-md-3">
-      <select class="form-control" [(ngModel)]="especialidadFilter" (ngModelChange)="applyFilters()">
+      <select
+        class="form-control"
+        [(ngModel)]="especialidadFilter"
+        (ngModelChange)="applyFilters()"
+      >
         <option value="">Filtrar por Especialidad</option>
         <option value="civil y comercial">Civil y Comercial</option>
         <option value="laboral">Laboral</option>
@@ -30,8 +43,13 @@
     </div>
 
     <div class="col-md-3">
-      <input type="text" class="form-control" placeholder="Filtrar por Descripción" [(ngModel)]="descripcionFilter"
-        (ngModelChange)="applyFilters()">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Filtrar por Descripción"
+        [(ngModel)]="descripcionFilter"
+        (ngModelChange)="applyFilters()"
+      />
     </div>
   </div>
 
@@ -54,7 +72,7 @@
       <tr class="align-middle clickable-row" (click)="showDetails(caso)">
         <td>{{ caso.id }}</td>
         <td>
-          {{ caso.cliente.apellido + ' ' + caso.cliente.nombre }}
+          {{ caso.cliente.apellido + " " + caso.cliente.nombre }}
         </td>
         <td>{{ caso.especialidad.nombre }}</td>
         <td>{{ caso.fecha_inicio }}</td>
@@ -63,9 +81,18 @@
         <td>{{ caso.fecha_estado }}</td>
         <td>
           <div class="d-flex justify-content-start gap-2">
-          
-            <button class="btn btn-warning btn-sm shadow-sm" (click)="$event.stopPropagation()">Editar</button>
-            <button class="btn btn-danger btn-sm shadow-sm" (click)="$event.stopPropagation()">Eliminar</button>
+            <button
+              class="btn btn-warning btn-sm shadow-sm"
+              (click)="$event.stopPropagation(); openEditDialog(caso)"
+            >
+              Editar
+            </button>
+            <button
+              class="btn btn-danger btn-sm shadow-sm"
+              (click)="$event.stopPropagation(); deleteCaso(caso)"
+            >
+              Eliminar
+            </button>
           </div>
         </td>
       </tr>

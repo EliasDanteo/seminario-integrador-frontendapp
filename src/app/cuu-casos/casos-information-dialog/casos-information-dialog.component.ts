@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AbogadosCasoComponent } from './abogados-caso/abogados-caso.component.js';
 import { NotasCasoComponent } from './notas-caso/notas-caso.component.js';
 import { DocumentosCasoComponent } from './documentos-caso/documentos-caso.component.js';
+import { ClienteCasoComponent } from './cliente-caso/cliente-caso.component.js';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,6 +13,7 @@ import { CommonModule } from '@angular/common';
     AbogadosCasoComponent,
     NotasCasoComponent,
     DocumentosCasoComponent,
+    ClienteCasoComponent,
     CommonModule,
   ],
   templateUrl: './casos-information-dialog.component.html',
@@ -31,5 +33,13 @@ export class CasosInformationDialogComponent {
 
   showDocumentos() {
     this.currentComponent = 'documentos';
+  }
+
+  showCliente() {
+    this.currentComponent = 'cliente';
+  }
+
+  limpiar() {
+    this.currentComponent = null;
   }
 }
