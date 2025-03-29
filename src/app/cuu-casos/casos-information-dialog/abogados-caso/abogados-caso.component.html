@@ -1,1 +1,54 @@
-<p>abogados-caso works!</p>
+<div class="modal-container" style="min-width: 400px">
+  <div class="modal-content">
+    <h3>Asociar Abogado</h3>
+
+    <form [formGroup]="formAbogadoCaso" (ngSubmit)="vincularAbogado()">
+      <div class="form-group">
+        <label for="abogadosDisponibles">Abogados Disponibles</label>
+        <select
+          id="abogadosDisponibles"
+          formControlName="abogado"
+          class="form-control"
+        >
+          <option value="" disabled>Seleccione una opción...</option>
+          @for (abogado of posiblesAbogados; track abogado.id) {
+          <option [value]="abogado.id">
+            {{ abogado.nombre }} {{ abogado.apellido }} ({{
+              abogado.matricula
+            }})
+          </option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Abogados Activos</label>
+        <div class="lista-abogados-activos-container">
+          <ul class="lista-abogados-activos">
+            @for (abogado of currentAbogados; track abogado.id) {
+            <li>
+              {{ abogado.nombre }} {{ abogado.apellido }} ({{
+                abogado.matricula
+              }})
+            </li>
+            }
+          </ul>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="indicaciones">Indicaciones</label>
+        <textarea
+          id="indicaciones"
+          formControlName="detalle"
+          class="form-control"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <div class="botones-accion mt-3">
+        <button type="submit" class="btn btn-primary">Vincular</button>
+      </div>
+    </form>
+  </div>
+</div>
