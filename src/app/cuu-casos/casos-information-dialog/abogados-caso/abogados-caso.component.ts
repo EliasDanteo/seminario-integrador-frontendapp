@@ -22,7 +22,7 @@ import { SnackbarService } from '../../../services/snackbar.service.js';
 })
 export class AbogadosCasoComponent implements OnInit {
   @Input() caso!: ICaso;
-  currentAbogados: IAbogado[] = [];
+  abogadosCasos: IAbogadoCaso[] = [];
   posiblesAbogados: IAbogado[] = [];
   formAbogadoCaso: FormGroup;
 
@@ -33,12 +33,17 @@ export class AbogadosCasoComponent implements OnInit {
     this.formAbogadoCaso = new FormGroup({
       id_abogado: new FormControl('', Validators.required),
       detalle: new FormControl(''),
+      abogadoActivo: new FormControl(''),
     });
   }
 
   ngOnInit() {
-    this.loadAbogadosCaso();
+    this.loadAbogados();
+  }
+
+  loadAbogados() {
     this.loadPosiblesAbogados();
+    this.loadAbogadosCaso();
   }
 
   loadAbogadosCaso() {
@@ -49,11 +54,8 @@ export class AbogadosCasoComponent implements OnInit {
         )
         .subscribe({
           next: (response) => {
-            console.log(response);
             if (response.data) {
-              this.currentAbogados = response.data.map(
-                (abogadoCaso) => abogadoCaso.abogado
-              );
+              this.abogadosCasos = response.data;
             } else {
               console.error(
                 'No se encontraron abogados para el caso proporcionado.'
@@ -80,32 +82,66 @@ export class AbogadosCasoComponent implements OnInit {
       });
   }
 
-  desvincularAbogado(abogadoCasoId: number) {}
+  desvincularAbogado() {
+    if (!this.caso) return;
+
+    const idAbogadoCaso = Number(
+      this.formAbogadoCaso.get('abogadoActivo')?.value
+    );
+    if (!idAbogadoCaso) {
+      this.snackBarService.showError(
+        'Por favor, selecciona un abogado activo para desvincular'
+      );
+      return;
+    }
+
+    this.httpClient
+      .patch(
+        `${environment.casosUrl}/abogados-casos/desvincular/${idAbogadoCaso}`,
+        {}
+      )
+      .subscribe({
+        next: () => {
+          this.snackBarService.showSuccess(
+            'Abogado desvinculado correctamente'
+          );
+          this.loadAbogados();
+          this.formAbogadoCaso.reset();
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          this.snackBarService.showError(
+            error.error?.message || 'Error al desvincular'
+          );
+        },
+      });
+  }
 
   vincularAbogado() {
     if (this.formAbogadoCaso.valid) {
-      const formData = {
-        ...this.formAbogadoCaso.value,
-        id_caso: this.caso.id,
+      const data = {
+        id_abogado: Number(this.formAbogadoCaso.get('id_abogado')?.value),
+        id_caso: Number(this.caso.id),
+        detalle: this.formAbogadoCaso.get('detalle')?.value,
       };
+
       this.httpClient
-        .post(`${environment.casosUrl}/abogados-casos/`, {
-          formData,
-        })
+        .post(`${environment.casosUrl}/abogados-casos/`, data)
         .subscribe({
           next: () => {
-            this.snackBarService.showSuccess(
-              'Abogado vinculado correctamente al caso'
-            );
-            this.loadAbogadosCaso();
+            this.snackBarService.showSuccess('Abogado vinculado correctamente');
+            this.loadAbogados();
             this.formAbogadoCaso.reset();
           },
-          error: (error) => console.error('Error al vincular:', error),
+          error: (error) => {
+            console.error('Error completo:', error);
+            this.snackBarService.showError(
+              error.error?.message || 'Error al vincular abogado'
+            );
+          },
         });
     } else {
-      this.snackBarService.showError(
-        'Por favor, completa todos los campos requeridos'
-      );
+      this.snackBarService.showError('Complete todos los campos requeridos');
     }
   }
 }

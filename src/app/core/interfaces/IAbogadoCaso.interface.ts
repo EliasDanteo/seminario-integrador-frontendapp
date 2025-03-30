@@ -5,7 +5,7 @@ export interface IAbogadoCaso {
   id: number;
   abogado: IAbogado;
   caso: ICaso;
-  es_pricnipal: boolean;
+  es_principal: boolean;
   fecha_alta: Date;
   fecha_baja: Date | null;
 }

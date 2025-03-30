@@ -1,16 +1,23 @@
 <div class="modal-container" style="min-width: 400px">
   <div class="modal-content">
-    <h3>Asociar Abogado</h3>
+    <h3>Vincular / Desvincular - Abogado</h3>
 
-    <form [formGroup]="formAbogadoCaso" (ngSubmit)="vincularAbogado()">
-      <div class="form-group">
+    <form [formGroup]="formAbogadoCaso">
+      <div
+        class="form-group"
+        [class.disabled-section]="formAbogadoCaso.get('abogadoActivo')?.value"
+      >
         <label for="abogadosDisponibles">Abogados Disponibles</label>
         <select
           id="abogadosDisponibles"
-          formControlName="abogado"
+          formControlName="id_abogado"
           class="form-control"
+          [disabled]="formAbogadoCaso.get('abogadoActivo')?.value"
+          (change)="formAbogadoCaso.get('abogadoActivo')?.reset()"
         >
-          <option value="" disabled>Seleccione una opción...</option>
+          <option value="" disabled>
+            Seleccione un abogado/a a vincular...
+          </option>
           @for (abogado of posiblesAbogados; track abogado.id) {
           <option [value]="abogado.id">
             {{ abogado.nombre }} {{ abogado.apellido }} ({{
@@ -21,23 +28,34 @@
         </select>
       </div>
 
-      <div class="form-group">
+      <div
+        class="form-group"
+        [class.disabled-section]="formAbogadoCaso.get('id_abogado')?.value"
+      >
         <label>Abogados Activos</label>
-        <div class="lista-abogados-activos-container">
-          <ul class="lista-abogados-activos">
-            @for (abogado of currentAbogados; track abogado.id) {
-            <li>
-              {{ abogado.nombre }} {{ abogado.apellido }} ({{
-                abogado.matricula
-              }})
-            </li>
-            }
-          </ul>
-        </div>
+        <select
+          class="form-select"
+          formControlName="abogadoActivo"
+          aria-label="Seleccionar abogado para desvincular"
+          [disabled]="formAbogadoCaso.get('id_abogado')?.value"
+          (change)="formAbogadoCaso.get('id_abogado')?.reset()"
+        >
+          <option value="" disabled>
+            Seleccione un abogado/a a desvincular...
+          </option>
+          @for (abogadoCaso of abogadosCasos; track abogadoCaso.id) {
+          <option [value]="abogadoCaso.id">
+            {{ abogadoCaso.abogado.nombre }}
+            {{ abogadoCaso.abogado.apellido }} ({{
+              abogadoCaso.abogado.matricula
+            }})
+          </option>
+          }
+        </select>
       </div>
 
       <div class="form-group">
-        <label for="indicaciones">Indicaciones</label>
+        <label for="indicaciones">Indicaciones / Motivo</label>
         <textarea
           id="indicaciones"
           formControlName="detalle"
@@ -46,8 +64,23 @@
         ></textarea>
       </div>
 
-      <div class="botones-accion mt-3">
-        <button type="submit" class="btn btn-primary">Vincular</button>
+      <div class="botones-accion mt-3 d-flex gap-2">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="vincularAbogado()"
+          [disabled]="!formAbogadoCaso.get('id_abogado')?.value"
+        >
+          Vincular
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="desvincularAbogado()"
+          [disabled]="!formAbogadoCaso.get('abogadoActivo')?.value"
+        >
+          Desvincular
+        </button>
       </div>
     </form>
   </div>
