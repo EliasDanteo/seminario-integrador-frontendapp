@@ -13,70 +13,63 @@
     </h2>
   </div>
 
-  <div class="row g-4">
-    <div class="col-md-12">
-      <div class="card h-100 shadow-sm">
-        <div class="card-header bg-info text-white">
-          <h5 class="mb-0">Datos Personales</h5>
-        </div>
-        <div class="card-body">
-          <div class="row mb-2">
-            <div class="col-sm-4 fw-bold">Documento:</div>
-            <div class="col-sm-8">
-              {{ cliente.tipo_doc }}: {{ cliente.nro_doc }}
-            </div>
-          </div>
-
-          <div class="row mb-2">
-            <div class="col-sm-4 fw-bold">Fecha Alta:</div>
-            <div class="col-sm-8">
-              {{ cliente.fecha_alta | date : "dd/MM/yyyy" }}
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm-4 fw-bold">Estado:</div>
-            <div class="col-sm-8">
-              <span
-                class="badge"
-                [ngClass]="cliente.fecha_baja ? 'bg-danger' : 'bg-success'"
-              >
-                {{ cliente.fecha_baja ? "Baja" : "Activo" }}
-              </span>
-              <span *ngIf="cliente.fecha_baja" class="ms-2">
-                ({{ cliente.fecha_baja | date : "dd/MM/yyyy" }})
-              </span>
-            </div>
-          </div>
+  <mat-card appearance="outlined" class="mb-4">
+    <mat-card-header style="background-color: #17a2b8; color: white">
+      <mat-card-title><strong>Datos Personales</strong></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row mb-2 mt-2">
+        <div class="col-sm-4 fw-bold">Documento:</div>
+        <div class="col-sm-8">
+          {{ cliente.tipo_doc }}: {{ cliente.nro_doc }}
         </div>
       </div>
-    </div>
 
-    <div class="col-md-12">
-      <div class="card h-100 shadow-sm">
-        <div class="card-header bg-primary text-white">
-          <h5 class="mb-0">Información de Contacto</h5>
-        </div>
-        <div class="card-body">
-          <div class="row mb-2">
-            <div class="col-sm-4 fw-bold">Email:</div>
-            <div class="col-sm-8">
-              <a href="mailto:{{ cliente.email }}" class="text-decoration-none">
-                {{ cliente.email }}
-              </a>
-            </div>
-          </div>
-
-          <div class="row mb-2">
-            <div class="col-sm-4 fw-bold">Teléfono:</div>
-            <div class="col-sm-8">
-              <a href="tel:{{ cliente.telefono }}" class="text-decoration-none">
-                {{ cliente.telefono }}
-              </a>
-            </div>
-          </div>
+      <div class="row mb-2">
+        <div class="col-sm-4 fw-bold">Fecha Alta:</div>
+        <div class="col-sm-8">
+          {{ cliente.fecha_alta | date : "dd/MM/yyyy" }}
         </div>
       </div>
-    </div>
-  </div>
+
+      <div class="row">
+        <div class="col-sm-4 fw-bold">Estado:</div>
+        <div class="col-sm-8">
+          <span
+            class="badge"
+            [ngClass]="cliente.fecha_baja ? 'bg-danger' : 'bg-success'"
+          >
+            {{ cliente.fecha_baja ? "Baja" : "Activo" }}
+          </span>
+          <span *ngIf="cliente.fecha_baja" class="ms-2">
+            ({{ cliente.fecha_baja | date : "dd/MM/yyyy" }})
+          </span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="outlined">
+    <mat-card-header style="background-color: #007bff; color: white">
+      <mat-card-title><strong>Información de Contacto</strong></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row mt-2 mb-2">
+        <div class="col-sm-4 fw-bold">Email:</div>
+        <div class="col-sm-8">
+          <a href="mailto:{{ cliente.email }}" class="text-decoration-none">
+            {{ cliente.email }}
+          </a>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-sm-4 fw-bold">Teléfono:</div>
+        <div class="col-sm-8">
+          <a href="tel:{{ cliente.telefono }}" class="text-decoration-none">
+            {{ cliente.telefono }}
+          </a>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

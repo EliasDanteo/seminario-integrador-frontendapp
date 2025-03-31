@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatSelectModule } from '@angular/material/select';
 import { ICaso } from '../../../core/interfaces/ICaso.interface.js';
 import IAbogado from '../../../core/interfaces/IAbogado.interface.js';
 import { HttpClient } from '@angular/common/http';
@@ -12,11 +13,29 @@ import {
   Validators,
 } from '@angular/forms';
 import { SnackbarService } from '../../../services/snackbar.service.js';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-abogados-caso',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatOptionModule,
+    MatListModule,
+    MatCardModule,
+  ],
   templateUrl: './abogados-caso.component.html',
   styleUrl: './abogados-caso.component.css',
 })
@@ -68,7 +87,9 @@ export class AbogadosCasoComponent implements OnInit {
 
   loadPosiblesAbogados() {
     this.httpClient
-      .get<{ message: String; data: IAbogado[] }>(environment.abogadosUrl)
+      .get<{ message: String; data: IAbogado[] }>(
+        `${environment.abogadosUrl}/disponibles/caso/${this.caso.id}`
+      )
       .subscribe({
         next: (response) => {
           if (response.data) {
@@ -97,7 +118,7 @@ export class AbogadosCasoComponent implements OnInit {
 
     this.httpClient
       .patch(
-        `${environment.casosUrl}/abogados-casos/desvincular/${idAbogadoCaso}`,
+        `${environment.casosUrl}/abogados-casos/${idAbogadoCaso}/desvincular/`,
         {}
       )
       .subscribe({
