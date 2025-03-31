@@ -69,7 +69,7 @@ export class AbogadosCasoComponent implements OnInit {
     if (this.caso) {
       this.httpClient
         .get<{ message: String; data: IAbogadoCaso[] }>(
-          `${environment.casosUrl}/abogados-casos/${this.caso.id}`
+          `${environment.casosUrl}/${this.caso.id}/abogados`
         )
         .subscribe({
           next: (response) => {
