@@ -1,0 +1,67 @@
+<div class="container" style="width: 500px;">
+    <div class="dialog-title">
+    <h2 mat-dialog-title>{{ isEdit ? 'Editar Noticia' : 'Crear Noticia' }}</h2>
+    <button type="button" class="btn-close" title="Cerrar ventana" (click)="onClose()"></button>
+    </div>
+
+<form [formGroup]="newsForm" (ngSubmit)="onSubmit()">
+        <mat-dialog-content>
+            <div class="mb-3 col-12">
+                <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Título</mat-label>
+                <input matInput formControlName="titulo" placeholder="Ingrese el título">
+                <mat-error *ngIf="newsForm.get('titulo')?.hasError('required')">
+                    El título es obligatorio.
+                </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="mb-3 col-12">
+                <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Cuerpo</mat-label>
+                <textarea matInput formControlName="cuerpo" placeholder="Ingrese el contenido" rows="5"></textarea>
+                <mat-error *ngIf="newsForm.get('cuerpo')?.hasError('required')">
+                    El contenido es obligatorio.
+                </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="mb-3 col-12">
+                <div class="date-fields">
+                <mat-form-field appearance="fill">
+                    <mat-label>Fecha de publicación</mat-label>
+                    <input
+                    matInput
+                    [min]="todayDate"
+                    [matDatepicker]="pickerPub"
+                    formControlName="fecha_publicacion"
+                    placeholder="Elija la fecha de publicación">
+                    <mat-datepicker-toggle matSuffix [for]="pickerPub"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerPub></mat-datepicker>
+                </mat-form-field>
+                </div>
+            </div>
+            <div class="mb-3 col-12">
+                <div class="date-fields">
+                <mat-form-field appearance="fill">
+                    <mat-label>Fecha de vencimiento</mat-label>
+                    <input
+                    matInput
+                    [min]="getMinVencimientoDate()"
+                    [matDatepicker]="pickerVen"
+                    formControlName="fecha_vencimiento"
+                    placeholder="Elija la fecha de vencimiento">
+                    <mat-datepicker-toggle matSuffix [for]="pickerVen"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerVen></mat-datepicker>
+                </mat-form-field>
+                </div>
+            </div>
+            </mat-dialog-content>
+
+        <mat-dialog-actions align="end">
+            <button mat-button type="button" (click)="dialogRef.close()">Cancelar</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="newsForm.invalid">
+            {{ isEdit ? 'Actualizar' : 'Crear' }}
+            </button>
+        </mat-dialog-actions>
+    </form>
+</div>
+

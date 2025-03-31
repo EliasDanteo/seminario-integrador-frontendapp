@@ -1,0 +1,19 @@
+<div class="bottom-sheet-container">
+  <h3 class="bottom-sheet-title">{{ config.title }}</h3>
+  <div class="bottom-sheet-content">
+    <div *ngFor="let field of config.fields" class="bottom-sheet-field">
+        <strong>{{ field.label }}:</strong>
+      <p *ngIf="field.type !== 'textarea'">
+        {{ getNestedValue(config.data, field.key) }}
+      </p>
+      <textarea
+        *ngIf="field.type === 'textarea'"
+        [(ngModel)]="config.data[field.key]"
+        rows="4"
+        cols="50"
+        disabled
+      ></textarea>
+    </div>
+  </div>
+  <button mat-button class="close-button" (click)="closeSheet()">Cerrar</button>
+</div>
