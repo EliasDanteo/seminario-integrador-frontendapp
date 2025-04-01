@@ -34,7 +34,10 @@
     </div>
     } @if(currentComponent) {
     <div [ngSwitch]="currentComponent">
-      <app-notas-caso *ngSwitchCase="'notas'"></app-notas-caso>
+      <app-notas-caso
+        *ngSwitchCase="'notas'"
+        [caso]="data.caso"
+      ></app-notas-caso>
       <app-abogados-caso
         *ngSwitchCase="'abogados'"
         [caso]="data.caso"

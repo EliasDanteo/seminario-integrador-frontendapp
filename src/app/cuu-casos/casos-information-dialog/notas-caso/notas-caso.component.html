@@ -1,1 +1,35 @@
-<p>notas-caso works!</p>
+@for (nota of notasCaso; track nota.id ) {
+<mat-card appearance="outlined">
+  <mat-card-header class="d-flex justify-content-between">
+    <mat-card-title class="fw-bold">{{ nota.titulo }}</mat-card-title>
+    <p class="text-muted">
+      Autor: {{ nota.abogado.nombre }} {{ nota.abogado.apellido }}
+    </p>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card-content class="mt-2">
+    <p>{{ nota.descripcion }}</p>
+  </mat-card-content>
+  <mat-card-actions class="d-flex justify-content-between">
+    <div class="acciones">
+      <button
+        mat-raised-button
+        class="ms-3"
+        color="primary"
+        (click)="editNota(nota)"
+      >
+        Editar
+      </button>
+      <button
+        mat-raised-button
+        class="ms-3"
+        color="warn"
+        (click)="deleteNota(nota)"
+      >
+        Eliminar
+      </button>
+    </div>
+    <p class="text-muted">{{ nota.fecha_hora | date : "dd/MM/yyyy HH:mm" }}</p>
+  </mat-card-actions>
+</mat-card>
+}
