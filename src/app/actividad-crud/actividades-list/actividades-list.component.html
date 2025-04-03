@@ -10,6 +10,7 @@
     <thead class="bg-success text-white">
       <tr>
         <th>Nombre</th>
+        <th>Última actualización</th>
         <th>Cantidad de JUS</th>
         <th>Precio(JUS)</th>
         <th>Acciones</th>
@@ -20,12 +21,14 @@
       @for (act of actividades; track act.id){
         <tr class="align-middle">
           <td>{{ act.nombre }}</td>
+          <td>{{ act.fecha_hora_desde }}</td>
           <td>{{ act.cant_jus }}</td>
-          <td>{{ act.precio_pesos }}</td>
+          <td>${{ act.precio_pesos }}</td>
           <td>
             <div class="d-flex justify-content-start gap-2">
-              <button class="btn btn-warning btn-sm shadow-sm" (click)="openEditDialog(act)">Editar</button>
+              <button class="btn btn-warning btn-sm shadow-sm" (click)="openEditDialog(act, 'name')">Editar</button>
               <button class="btn btn-danger btn-sm shadow-sm" (click)="deleteActividad(act)">Eliminar</button>
+              <button class="btn btn-sm shadow-sm" style="background-color: cornflowerblue;" (click)="openEditDialog(act, 'price')">Actualizar precio</button>
             </div>
           </td>
         </tr>

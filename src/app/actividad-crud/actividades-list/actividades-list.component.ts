@@ -47,38 +47,42 @@ export class ActividadesListComponent {
 
   openCreateDialog(): void {
     this.openDialog(ActividadDialogComponent, {
-      action: 'put',
+      action: 'post',
       entityType: 'actividad',
       entity: null,
+      actividades: this.actividades || [],
     });
   }
 
-  openEditDialog(act: IActividad): void {
+  openEditDialog(act: IActividad, type: string): void {
     if (act) {
       this.openDialog(ActividadDialogComponent, {
-        action: 'post',
+        action: 'put',
         entityType: 'actividad',
         entity: act,
+        type: type,
+        actividades: this.actividades || [],
       });
     }
   }
+
   deleteActividad(act: IActividad): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: {
-        nombreCompleto: `${act.nombre}`.trim(),
+        nombreCompleto: act.nombre,
         entidad: 'actividad',
       },
     });
 
     dialogRef.afterClosed().subscribe((res) => {
       if (res) {
-        this.EliminarActividad(act);
+        this.eliminarActividad(act);
       }
     });
   }
 
-  EliminarActividad(act: IActividad): void {
+  eliminarActividad(act: IActividad): void {
     this.http
       .patch(environment.actividadesUrl + '/deactivate/' + act.id, {})
       .subscribe({
