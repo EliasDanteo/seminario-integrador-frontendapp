@@ -21,7 +21,7 @@
       @for (act of actividades; track act.id){
         <tr class="align-middle">
           <td>{{ act.nombre }}</td>
-          <td>{{ act.fecha_hora_desde }}</td>
+          <td>{{ act.fecha_hora_desde | date: 'dd/MM/yyyy, h:mm a'}}</td>
           <td>{{ act.cant_jus }}</td>
           <td>${{ act.precio_pesos }}</td>
           <td>

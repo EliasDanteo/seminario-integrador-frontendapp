@@ -9,57 +9,57 @@
   <form [formGroup]="entityForm" (ngSubmit)="onSubmit()">
     <mat-dialog-content *ngIf="isEdit">
       <ng-container *ngIf="data.type === 'name'">
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Nombre actual</mat-label>
-          <input matInput formControlName="nombre_actual" readonly/>
+          <input matInput [value]="data.entity.nombre" disabled/>
         </mat-form-field>
       
         <br>
       
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Nombre nuevo</mat-label>
-          <input matInput formControlName="nombre" placeholder="Ingrese nuevo nombre"  />
+          <input matInput formControlName="nombre" placeholder="Ingrese nuevo nombre" required/>
         </mat-form-field>
       </ng-container>
       
       <ng-container *ngIf="data.type === 'price'">
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Nombre</mat-label>
           <input matInput [value]="data.entity.nombre" disabled />
         </mat-form-field>
 
         <br>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Precio actual</mat-label>
-          <input matInput formControlName="cant_jus_actual" readonly />
+          <input matInput [value]="data.entity.cant_jus" disabled />
         </mat-form-field>
         
         <br>
         
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Precio nuevo</mat-label>
-          <input matInput formControlName="cant_jus" type="number" placeholder="Ingrese nuevo precio"/>
+          <input matInput formControlName="cant_jus" type="number" step="0.001" placeholder="Ingrese nuevo precio" required/>
         </mat-form-field>
       </ng-container>    
     </mat-dialog-content>
       
     <mat-dialog-content *ngIf="!isEdit" class="common-dialog">
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
         <input matInput formControlName="nombre" type="text" />
       </mat-form-field>
 
       <br>
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Fecha</mat-label>
-        <input matInput [value]="currentDateTime" readonly/>
+        <input matInput [value]="currentDateTime" disabled/>
       </mat-form-field>
       <br />
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Cantidad de JUS</mat-label>
-        <input matInput formControlName="cant_jus" type="number" />
+        <input matInput formControlName="cant_jus" type="number" step="0.001" />
       </mat-form-field>
     </mat-dialog-content>    
 

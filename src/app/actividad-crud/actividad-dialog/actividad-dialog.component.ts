@@ -42,7 +42,6 @@ export class ActividadDialogComponent {
   entityType = 'actividad';
   isEdit: boolean = false;
   currentDateTime: string = '';
-  actividadesExistentes: string | null = null;
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -51,45 +50,36 @@ export class ActividadDialogComponent {
       entityType: 'actividad';
       entity: any;
       type?: 'name' | 'price';
-      actividades?: any[]; //para luego validar si los nombres act se repiten
+      actividades?: any[];
     },
     public dialogRef: MatDialogRef<ActividadDialogComponent>,
     private http: HttpClient,
     private snackbarService: SnackbarService
   ) {
-    console.log('Datos recibidos: ', this.data);
-
     this.entityType = data.entityType;
     this.entityForm = new FormGroup({
-      nombre_actual: new FormControl({ value: '', disabled: true }),
       nombre: new FormControl(null, [Validators.required]),
-      cant_jus_actual: new FormControl({ value: '', disabled: true }),
       cant_jus: new FormControl(null, [
         Validators.required,
-        Validators.min(0.01),
+        Validators.min(0.001),
       ]),
     });
   }
 
   ngOnInit(): void {
-    console.log('Datos recibidos para editar:', this.data.entity);
-
     if (this.data.action === 'put' && this.data.entity) {
       if (this.data.type === 'name') {
         this.entityForm.patchValue({
-          nombre_actual: this.data.entity.nombre,
           nombre: '',
           cant_jus: this.data.entity.cant_jus ?? 0,
         });
       } else if (this.data.type === 'price') {
         this.entityForm.patchValue({
           nombre: this.data.entity.nombre,
-          cant_jus_actual: this.data.entity.cant_jus,
           cant_jus: 0,
         });
       }
 
-      console.log('Formulario inicializado con:', this.entityForm.value);
       this.isEdit = true;
     }
 
@@ -99,15 +89,49 @@ export class ActividadDialogComponent {
     }, 1000);
   }
 
+  normalizeText(text: string): string {
+    return text
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+  }
+
   onSubmit(): void {
     if (this.entityForm.valid) {
+      const nuevoNombre = this.normalizeText(
+        this.entityForm.value.nombre ?? ''
+      ).trim();
+
+      const nombreExistente = this.data.actividades?.some(
+        (actividad) => this.normalizeText(actividad.nombre) === nuevoNombre
+      );
+
+      if (
+        (this.data.action === 'post' || this.data.type === 'name') &&
+        nombreExistente
+      ) {
+        this.snackbarService.showError('Ese nombre ya existe.', 5000);
+        return;
+      }
+
+      if (
+        this.data.action === 'put' &&
+        this.data.type === 'price' &&
+        Number(this.entityForm.value.cant_jus) ===
+          Number(this.data.entity.cant_jus)
+      ) {
+        this.snackbarService.showError(
+          'El nuevo precio debe ser distinto al actual.',
+          5000
+        );
+        return;
+      }
+
       const formData = {
         ...this.entityForm.value,
+        nombre: (this.entityForm.value.nombre ?? '').trim(),
+        cant_jus: parseFloat(this.entityForm.value.cant_jus),
       };
-
-      console.log('Acción:', this.data.action);
-      console.log('ID de la entidad:', this.data.entity?.id);
-      console.log('Datos enviados:', formData);
 
       if (this.data.action === 'post') {
         this.http

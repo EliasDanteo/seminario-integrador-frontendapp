@@ -6,11 +6,12 @@ import { environment } from '../../../environments/environment.js';
 import { ComponentType } from '@angular/cdk/portal';
 import { ActividadDialogComponent } from '../actividad-dialog/actividad-dialog.component.js';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component.js';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-actividades-list',
   standalone: true,
-  imports: [HttpClientModule],
+  imports: [HttpClientModule, CommonModule],
   templateUrl: './actividades-list.component.html',
   styleUrl: './actividades-list.component.css',
 })
@@ -30,7 +31,6 @@ export class ActividadesListComponent {
       .subscribe({
         next: (res) => {
           this.actividades = res.data;
-          console.log('Actividades cargadas', this.actividades);
         },
       });
   }
@@ -84,7 +84,7 @@ export class ActividadesListComponent {
 
   eliminarActividad(act: IActividad): void {
     this.http
-      .patch(environment.actividadesUrl + '/deactivate/' + act.id, {})
+      .patch(environment.actividadesUrl + '/' + act.id + '/deactivate/', {})
       .subscribe({
         next: () => {
           this.getActividades();
