@@ -1,14 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { SnackbarService } from '../../../services/snackbar.service.js';
-import { INota } from '../../../core/interfaces/INota.interface.js';
-import { ICaso } from '../../../core/interfaces/ICaso.interface.js';
-import { environment } from '../../../../environments/environment.js';
+import { SnackbarService } from '../../../../services/snackbar.service.js';
+import { INota } from '../../../../core/interfaces/INota.interface.js';
+import { ICaso } from '../../../../core/interfaces/ICaso.interface.js';
+import { environment } from '../../../../../environments/environment.js';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ComponentType } from '@angular/cdk/portal';
+import { MatDialog } from '@angular/material/dialog';
+import { NotasCasoDialogComponent } from '../notas-caso-dialog/notas-caso-dialog.component.js';
 
 @Component({
   selector: 'app-notas-caso',
@@ -25,7 +28,8 @@ export class NotasCasoComponent implements OnInit {
 
   constructor(
     private httpClient: HttpClient,
-    private snackBarService: SnackbarService
+    private snackBarService: SnackbarService,
+    private dialog: MatDialog
   ) {
     this.formNota = new FormGroup({
       titulo: new FormControl('', Validators.required),
@@ -35,6 +39,18 @@ export class NotasCasoComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadNotasCaso();
+  }
+
+  openDialog(dialog: ComponentType<unknown>, data: object): void {
+    const dialogRef = this.dialog.open(dialog, {
+      data: data,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== 'none') {
+        this.loadNotasCaso();
+      }
+    });
   }
 
   loadNotasCaso() {
@@ -53,52 +69,22 @@ export class NotasCasoComponent implements OnInit {
       });
   }
 
-  addNota() {
-    if (this.formNota.invalid) {
-      this.snackBarService.showError('Formulario inválido');
-      return;
-    }
-
-    const newNota: INota = {
-      ...this.formNota.value,
-      // id_abogado: this.caso.abogado.id, FALTA OBTENER EL ID DE LA SESION
-      id_caso: this.caso.id,
-    };
-
-    this.httpClient
-      .post<{ message: string }>(`${environment.casosUrl}/notas/`, newNota)
-      .subscribe({
-        next: (response) => {
-          this.snackBarService.showSuccess(response.message);
-          this.loadNotasCaso();
-          this.formNota.reset();
-        },
-        error: () => {
-          this.snackBarService.showError('Error al agregar la nota');
-        },
-      });
+  openCreateDialog(): void {
+    this.openDialog(NotasCasoDialogComponent, {
+      action: 'post',
+      nota: null,
+    });
   }
 
-  editNota(nota: INota) {
-    if (this.formNota.invalid) {
-      this.snackBarService.showError('Formulario inválido');
-      return;
-    }
-
-    this.httpClient
-      .put<{ message: string }>(
-        `${environment.casosUrl}/notas/${this.caso.id}/${nota.abogado.id}/${nota.fecha_hora}`,
-        this.formNota.value
-      )
-      .subscribe({
-        next: (response) => {
-          this.snackBarService.showSuccess(response.message);
-          this.loadNotasCaso();
-        },
-        error: () => {
-          this.snackBarService.showError('Error al editar la nota');
-        },
+  openEditDialog(nota: INota): void {
+    if (nota) {
+      this.openDialog(NotasCasoDialogComponent, {
+        action: 'put',
+        nota: nota,
       });
+    } else {
+      console.error('Nota no disponible');
+    }
   }
 
   deleteNota(nota: INota) {

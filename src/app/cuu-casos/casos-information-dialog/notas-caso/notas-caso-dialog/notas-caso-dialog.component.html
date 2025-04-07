@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Modificar nota:</h2>
+
+<mat-dialog-content [formGroup]="notaForm" style="min-width: 400px">
+  <div class="my-3">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Título</mat-label>
+      <input matInput formControlName="titulo" />
+    </mat-form-field>
+  </div>
+
+  <div class="mb-3">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="descripcion" rows="6"></textarea>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" [disabled]="notaForm.invalid">
+    GUARDAR
+  </button>
+</mat-dialog-actions>
