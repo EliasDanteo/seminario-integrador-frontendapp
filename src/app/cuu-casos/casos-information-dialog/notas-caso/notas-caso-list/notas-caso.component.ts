@@ -73,50 +73,25 @@ export class NotasCasoComponent implements OnInit {
     this.openDialog(NotasCasoDialogComponent, {
       action: 'post',
       nota: null,
-      caso: this.caso,
     });
   }
 
   openEditDialog(nota: INota): void {
-    if (!nota) {
+    if (nota) {
+      this.openDialog(NotasCasoDialogComponent, {
+        action: 'put',
+        nota: nota,
+      });
+    } else {
       console.error('Nota no disponible');
-      return;
     }
-    const abogadoData = localStorage.getItem('abogado');
-    if (!abogadoData) {
-      this.snackBarService.showError('No se reconoce el abogado en la sesión');
-      return;
-    }
-    const parsedAbogado = JSON.parse(abogadoData);
-
-    if (nota.abogado.id !== parsedAbogado.id) {
-      this.snackBarService.showError('Solo el autor puede editar esta nota');
-      return;
-    }
-
-    if (!this.validarHora(nota)) {
-      this.snackBarService.showError(
-        'No puedes editar esta nota, han pasado más de 2 horas desde su creación'
-      );
-      return;
-    }
-
-    this.openDialog(NotasCasoDialogComponent, {
-      action: 'put',
-      nota: nota,
-      caso: null,
-    });
   }
 
   deleteNota(nota: INota) {
-    if (!this.validarHora(nota)) {
-      this.snackBarService.showError(
-        'No puedes eliminar esta nota, han pasado más de 2 horas desde su creación'
-      );
-      return;
-    }
     this.httpClient
-      .delete<{ message: string }>(`${environment.casosUrl}/notas/${nota.id}`)
+      .delete<{ message: string }>(
+        `${environment.casosUrl}/notas/${this.caso.id}/${nota.abogado.id}/${nota.fecha_hora}`
+      )
       .subscribe({
         next: (response) => {
           this.snackBarService.showSuccess(response.message);
@@ -126,11 +101,5 @@ export class NotasCasoComponent implements OnInit {
           this.snackBarService.showError('Error al eliminar la nota');
         },
       });
-  }
-
-  private validarHora(nota: INota): boolean {
-    const fechaCreacion = new Date(nota.fecha_hora);
-    const diferenciaMs = Date.now() - fechaCreacion.getTime();
-    return diferenciaMs <= 120 * 60 * 1000;
   }
 }

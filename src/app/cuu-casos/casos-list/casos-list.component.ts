@@ -6,8 +6,6 @@ import { ComponentType } from '@angular/cdk/portal';
 import { environment } from '../../../environments/environment.js';
 import { FormsModule } from '@angular/forms';
 import { CasosInformationDialogComponent } from '../casos-information-dialog/casos-information-dialog.component.js';
-import { CRUDDialogComponent } from '../../shared/crud-dialog/crud-dialog.component.js';
-import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component.js';
 
 @Component({
   selector: 'app-casos-list',
@@ -39,6 +37,10 @@ export class CasosListComponent {
 
   showDetails(caso: ICaso): void {
     this.openDialog(CasosInformationDialogComponent, { caso });
+  }
+
+  verCliente(cliente: any): void {
+    alert(`Ver información del cliente: ${cliente.apellido} ${cliente.nombre}`);
   }
 
   applyFilters(): void {
@@ -86,7 +88,7 @@ export class CasosListComponent {
         },
       });
   }
-
+  /*
   openCreateDialog(): void {
     this.openDialog(CRUDDialogComponent, {
       action: 'post',
@@ -132,4 +134,5 @@ export class CasosListComponent {
         },
       });
   }
+      */
 }
