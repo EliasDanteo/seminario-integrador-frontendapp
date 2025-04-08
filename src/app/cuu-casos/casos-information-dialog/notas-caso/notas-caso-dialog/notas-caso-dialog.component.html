@@ -1,23 +1,40 @@
-<h2 mat-dialog-title>Modificar nota:</h2>
+<h2 mat-dialog-title class="m-0 ps-3">
+  {{ isEdit ? "Modificar Nota" : "Nueva Nota" }}
+</h2>
+<hr />
+<form [formGroup]="notaForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content style="min-width: 400px">
+    <div class="my-3">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Título</mat-label>
+        <input matInput formControlName="titulo" />
+      </mat-form-field>
+    </div>
 
-<mat-dialog-content [formGroup]="notaForm" style="min-width: 400px">
-  <div class="my-3">
-    <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Título</mat-label>
-      <input matInput formControlName="titulo" />
-    </mat-form-field>
-  </div>
+    <div class="mb-3">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="descripcion" rows="6"></textarea>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
 
-  <div class="mb-3">
-    <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Descripción</mat-label>
-      <textarea matInput formControlName="descripcion" rows="6"></textarea>
-    </mat-form-field>
-  </div>
-</mat-dialog-content>
-
-<mat-dialog-actions align="end">
-  <button mat-raised-button color="primary" [disabled]="notaForm.invalid">
-    GUARDAR
-  </button>
-</mat-dialog-actions>
+  <mat-dialog-actions align="end">
+    <button
+      mat-raised-button
+      type="button"
+      color="secondary"
+      (click)="onClose()"
+    >
+      Cancelar
+    </button>
+    <button
+      mat-raised-button
+      type="submit"
+      color="primary"
+      [disabled]="notaForm.invalid"
+    >
+      Guardar
+    </button>
+  </mat-dialog-actions>
+</form>

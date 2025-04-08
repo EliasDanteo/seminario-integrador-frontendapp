@@ -1,3 +1,17 @@
+<div
+  class="encabezado mb-3"
+  style="display: flex; justify-content: space-between; align-items: center"
+>
+  <h3>Listado de Notas</h3>
+  <button
+    class="btn btn-success mb-md-0 shadow"
+    (click)="openCreateDialog()"
+    [disabled]="caso.estado !== 'En curso'"
+  >
+    Agregar Nota
+  </button>
+</div>
+
 @for (nota of notasCaso; track nota.id ) {
 <mat-card appearance="outlined">
   <mat-card-header class="d-flex justify-content-between">
@@ -17,6 +31,7 @@
         class="ms-3"
         color="primary"
         (click)="openEditDialog(nota)"
+        [disabled]="caso.estado !== 'En curso'"
       >
         Editar
       </button>
@@ -25,6 +40,7 @@
         class="ms-3"
         color="warn"
         (click)="deleteNota(nota)"
+        [disabled]="caso.estado !== 'En curso'"
       >
         Eliminar
       </button>
