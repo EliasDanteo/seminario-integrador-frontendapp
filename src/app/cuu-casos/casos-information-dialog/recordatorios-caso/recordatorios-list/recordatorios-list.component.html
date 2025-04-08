@@ -1,1 +1,56 @@
-<p>recordatorios-list works!</p>
+<div
+  class="encabezado mb-3"
+  style="display: flex; justify-content: space-between; align-items: center"
+>
+  <h3>Listado de Recordatorios</h3>
+  <button
+    class="btn btn-success mb-md-0 shadow"
+    (click)="openCreateDialog()"
+    [disabled]="caso.estado !== 'En curso'"
+  >
+    Agregar Recordatorio
+  </button>
+</div>
+
+@for (recordatorio of recordatoriosCaso; track recordatorio.id ) {
+<mat-card appearance="outlined" class="mb-3">
+  <mat-card-header>
+    <div style="display: flex; justify-content: space-between; width: 100%">
+      <p class="text-muted ms-0">
+        Fecha Recordatorio
+        {{ recordatorio.fecha_hora_limite | date : "dd/MM/yyyy HH:mm" }}
+      </p>
+      <p class="text-muted">
+        Autor: {{ recordatorio.abogado.nombre }}
+        {{ recordatorio.abogado.apellido }}
+      </p>
+    </div>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card-content class="mt-2">
+    <p>{{ recordatorio.descripcion }}</p>
+  </mat-card-content>
+  <mat-card-actions class="d-flex justify-content-between">
+    <div class="acciones">
+      <button
+        mat-raised-button
+        class="ms-3"
+        color="primary"
+        (click)="openEditDialog(recordatorio)"
+        [disabled]="caso.estado !== 'En curso'"
+      >
+        Editar
+      </button>
+      <button
+        mat-raised-button
+        class="ms-3"
+        color="warn"
+        (click)="deleteRecordatorio(recordatorio)"
+        [disabled]="caso.estado !== 'En curso'"
+      >
+        Eliminar
+      </button>
+    </div>
+  </mat-card-actions>
+</mat-card>
+}
