@@ -1,0 +1,40 @@
+<h2>FALTA FILTRAR POR EL USUARIO LOS CASOS, DE MOMENTO HICE FIND ALL, HASTA QUE NO TENGAMOS EL USUARIO EN LA SESION Y EXISTA EL ENDPOINT NO PUEDO SEGUIR</h2>
+
+<div class="container">
+  @if (casos_usuario) {
+  <table class="table table-hover table-bordered shadow-sm">
+    <thead class="bg-success text-white">
+      <tr>
+        <th>Descripción</th>
+        <th>Especialidad</th>
+        <th>Fecha Inicio</th>
+        <th>Fecha Fin</th>
+        <th>Abogado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (caso of casos_usuario; track caso.id) {
+      <tr class="align-middle">
+        <td>{{ caso.descripcion }}</td>
+        <td>{{ caso.especialidad.nombre }}</td>
+        <td>{{ caso.fecha_inicio }}</td>
+        <td>{{ caso.estado === 'Finalizado' ? caso.fecha_estado : 'Sin Finalizar'}}</td>
+        <td>falta el populate de abogados</td>
+        <td>
+          <div class="d-flex justify-content-start gap-2">
+            <button
+              class="btn btn-warning btn-sm shadow-sm"
+              (click)="openFeedbackDialog(caso.id)"
+              [disabled]="caso.estado !== 'Finalizado'"
+              >
+              Feedback
+            </button>
+          </div>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  }
+</div>
