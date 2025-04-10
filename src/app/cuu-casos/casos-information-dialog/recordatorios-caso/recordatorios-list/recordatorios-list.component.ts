@@ -23,6 +23,7 @@ import { IAbogadoCaso } from '../../../../core/interfaces/IAbogadoCaso.interface
 export class RecordatoriosListComponent implements OnInit {
   recordatoriosCaso: IRecordatorio[] = [];
   abogadosActivos: IAbogadoCaso[] = [];
+  currentDate: Date = new Date();
 
   @Input() caso!: ICaso;
 

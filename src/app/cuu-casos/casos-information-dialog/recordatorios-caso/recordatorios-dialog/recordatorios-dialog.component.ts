@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { SnackbarService } from '../../../../services/snackbar.service.js';
 import { HttpClient } from '@angular/common/http';
 import {
@@ -32,8 +32,8 @@ import { CommonModule } from '@angular/common';
     MatInputModule,
     MatButtonModule,
     MatDatepickerModule,
+
     CommonModule,
-    MatDatepickerModule,
     FormsModule,
   ],
   templateUrl: './recordatorios-dialog.component.html',
@@ -54,25 +54,28 @@ export class RecordatoriosDialogComponent {
       recordatorio: IRecordatorio;
     }
   ) {
+    this.minDate = new Date(new Date().getTime() + 60 * 60 * 1000);
     this.recordatorioForm = new FormGroup({
       descripcion: new FormControl('', Validators.required),
-      fecha_limite: new FormControl('', [
+      fecha_hora_limite: new FormControl('', [
         Validators.required,
-        Validators.min(new Date().getDay()),
-      ]),
-      hora_limite: new FormControl('', [
-        Validators.required,
-        Validators.min(new Date().getHours()),
+        this.minDateValidator.bind(this),
       ]),
     });
-    this.minDate = new Date();
   }
 
   ngOnInit(): void {
     if (this.data.action === 'put') {
+      const fechaOriginal = new Date(this.data.recordatorio.fecha_hora_limite);
+
+      const fechaLocal = new Date(
+        fechaOriginal.getTime() - fechaOriginal.getTimezoneOffset() * 60000
+      );
+      const fechaFormatoInput = fechaLocal.toISOString().slice(0, 16);
+
       this.recordatorioForm.patchValue({
         descripcion: this.data.recordatorio.descripcion,
-        fecha_hora_limite: new Date(this.data.recordatorio.fecha_hora_limite),
+        fecha_hora_limite: fechaFormatoInput,
       });
     }
   }
@@ -84,13 +87,13 @@ export class RecordatoriosDialogComponent {
         id_caso: this.data.caso.id,
         id_abogado: (() => {
           const abogado = localStorage.getItem('abogado');
-          return abogado ? JSON.parse(abogado).id : null;
+          return abogado ? JSON.parse(abogado).id : null; //FALTA ABOGADO
         })(),
       };
       if (this.data.action === 'post') {
         this.httpClient
           .post<{ message: string; data: IRecordatorio }>(
-            `${environment.casosUrl}/recordatorios/${this.data.caso.id}`,
+            `${environment.casosUrl}/recordatorios`,
             recordatorio
           )
           .subscribe({
@@ -119,6 +122,13 @@ export class RecordatoriosDialogComponent {
           });
       }
     }
+  }
+
+  private minDateValidator(
+    control: FormControl
+  ): { [key: string]: any } | null {
+    const selectedDate = new Date(control.value).getTime();
+    return selectedDate >= this.minDate.getTime() ? null : { minDate: true };
   }
 
   onClose(): void {

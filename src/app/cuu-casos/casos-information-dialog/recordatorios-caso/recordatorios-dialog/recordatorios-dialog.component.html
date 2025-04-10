@@ -1,1 +1,64 @@
-<p>recordatorios-dialog works!</p>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=calendar_month"
+/>
+
+<form [formGroup]="recordatorioForm" (ngSubmit)="onSubmit()">
+  <h2 mat-dialog-title>
+    {{ data.action === "post" ? "Agregar" : "Editar" }} Recordatorio
+  </h2>
+  <hr />
+  <mat-dialog-content class="mt-3">
+    <mat-form-field appearance="outline" class="w-100 mt-4">
+      <mat-label>Fecha Recordatorio</mat-label>
+      <input
+        #inputDate
+        matInput
+        type="datetime-local"
+        [min]="minDate | date : 'yyyy-MM-ddTHH:mm'"
+        formControlName="fecha_hora_limite"
+      />
+      <button (click)="inputDate.showPicker()" mat-icon-button matIconSuffix>
+        <span class="material-symbols-outlined"> calendar_month </span>
+      </button>
+      <mat-error
+        *ngIf="recordatorioForm.get('fecha_hora_limite')?.hasError('required')"
+      >
+        La fecha limite es requerida
+      </mat-error>
+      <mat-error
+        *ngIf="recordatorioForm.get('fecha_hora_limite')?.hasError('minDate')"
+      >
+        La fecha debe ser al menos 1 hora en el futuro
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100 mt-4">
+      <mat-label>Descripción</mat-label>
+      <textarea
+        matInput
+        formControlName="descripcion"
+        cdkTextareaAutosize
+        placeholder="Ingrese la descripción del recordatorio"
+        rows="3"
+      ></textarea>
+      <mat-error
+        *ngIf="recordatorioForm.get('descripcion')?.hasError('required')"
+      >
+        La descripción es requerida
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="p-3">
+    <button mat-button type="button" (click)="onClose()">Cancelar</button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!recordatorioForm.valid"
+    >
+      {{ data.action === "post" ? "Agregar" : "Guardar" }}
+    </button>
+  </mat-dialog-actions>
+</form>
