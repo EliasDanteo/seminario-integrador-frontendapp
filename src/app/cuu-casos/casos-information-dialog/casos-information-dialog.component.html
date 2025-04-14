@@ -8,7 +8,9 @@
     <button class="btn-info" (click)="showAbogados()">Ver Abogados</button>
     <button class="btn-info" (click)="showDocumentos()">Ver Documentos</button>
     <button class="btn-info">Ver Cuota</button>
-    <button class="btn-info">Ver Recordatorio</button>
+    <button class="btn-info" (click)="showRecordatorios()">
+      Ver Recordatorios
+    </button>
     <button class="btn-info">Ver Comentarios</button>
     <button class="btn-info" (click)="limpiar()">Volver</button>
   </div>
@@ -47,6 +49,10 @@
         *ngSwitchCase="'cliente'"
         [cliente]="data.caso.cliente"
       ></app-cliente-caso>
+      <app-recordatorios-list
+        *ngSwitchCase="'recordatorios'"
+        [caso]="data.caso"
+      ></app-recordatorios-list>
     </div>
     }
   </div>
