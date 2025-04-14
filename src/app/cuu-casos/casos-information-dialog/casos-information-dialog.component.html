@@ -11,7 +11,9 @@
     <button class="btn-info" (click)="showRecordatorios()">
       Ver Recordatorios
     </button>
-    <button class="btn-info">Ver Comentarios</button>
+    <button class="btn-info" (click)="showComentarios()">
+      Ver Comentarios
+    </button>
     <button class="btn-info" (click)="limpiar()">Volver</button>
   </div>
 
@@ -53,6 +55,10 @@
         *ngSwitchCase="'recordatorios'"
         [caso]="data.caso"
       ></app-recordatorios-list>
+      <app-comentarios-list
+        *ngSwitchCase="'comentarios'"
+        [caso]="data.caso"
+      ></app-comentarios-list>
     </div>
     }
   </div>

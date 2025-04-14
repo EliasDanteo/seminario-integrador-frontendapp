@@ -6,6 +6,7 @@ import { DocumentosCasoComponent } from './documentos-caso/documentos-caso.compo
 import { RecordatoriosListComponent } from './recordatorios-caso/recordatorios-list/recordatorios-list.component.js';
 import { ClienteCasoComponent } from './cliente-caso/cliente-caso.component.js';
 import { CommonModule } from '@angular/common';
+import { ComentariosListComponent } from './comentarios-caso/comentarios-list/comentarios-list.component.js';
 
 @Component({
   selector: 'app-casos-information-dialog',
@@ -16,6 +17,7 @@ import { CommonModule } from '@angular/common';
     DocumentosCasoComponent,
     ClienteCasoComponent,
     RecordatoriosListComponent,
+    ComentariosListComponent,
     CommonModule,
   ],
   templateUrl: './casos-information-dialog.component.html',
@@ -43,6 +45,10 @@ export class CasosInformationDialogComponent {
 
   showRecordatorios() {
     this.currentComponent = 'recordatorios';
+  }
+
+  showComentarios() {
+    this.currentComponent = 'comentarios';
   }
 
   limpiar() {
