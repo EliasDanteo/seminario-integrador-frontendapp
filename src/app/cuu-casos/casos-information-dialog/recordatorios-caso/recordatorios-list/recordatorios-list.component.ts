@@ -57,7 +57,13 @@ export class RecordatoriosListComponent implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          this.recordatoriosCaso = response.data;
+          this.recordatoriosCaso = response.data.map((recordatorio) => {
+            return {
+              ...recordatorio,
+              vencido:
+                new Date(recordatorio.fecha_hora_limite) < this.currentDate,
+            };
+          });
         },
         error: (err) => {
           this.snackBarService.showError('Error al cargar recordatorios');

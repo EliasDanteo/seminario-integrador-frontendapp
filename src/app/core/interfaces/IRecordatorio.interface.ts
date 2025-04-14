@@ -7,4 +7,5 @@ export interface IRecordatorio {
   abogado: { nombre: string; apellido: string } | IAbogado;
   descripcion: string;
   fecha_hora_limite: Date;
+  vencido: boolean;
 }

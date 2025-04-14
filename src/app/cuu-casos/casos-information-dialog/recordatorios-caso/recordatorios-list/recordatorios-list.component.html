@@ -37,7 +37,7 @@
         class="ms-3"
         color="primary"
         (click)="openEditDialog(recordatorio)"
-        [disabled]="caso.estado !== 'En curso'"
+        [disabled]="caso.estado !== 'En curso' || recordatorio.vencido === true"
       >
         Editar
       </button>
