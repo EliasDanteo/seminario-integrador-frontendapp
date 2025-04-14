@@ -1,1 +1,83 @@
-<p>comentarios-list works!</p>
+<div
+  class="encabezado mb-3"
+  style="display: flex; justify-content: space-between; align-items: center"
+>
+  <h3>Listado de Comentarios</h3>
+  <button
+    class="btn btn-success mb-md-0 shadow"
+    (click)="openCreateDialog()"
+    [disabled]="caso.estado !== 'En curso'"
+  >
+    Agregar Comentario
+  </button>
+</div>
+
+@for (comentario of comentariosCaso; track comentario.id) {
+<mat-card appearance="outlined" class="mb-3">
+  <mat-card-header>
+    <div style="display: flex; justify-content: space-between; width: 100%">
+      <p class="text-muted ms-0">
+        Fecha Comentario
+        {{ comentario.fecha_hora | date : "dd/MM/yyyy HH:mm" }}
+      </p>
+      <p class="text-muted">
+        Autor: {{ comentario.abogado.nombre }}
+        {{ comentario.abogado.apellido }}
+      </p>
+    </div>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card-content class="mt-2">
+    <p>{{ comentario.comentario }}</p>
+  </mat-card-content>
+
+  @if (mostrarRespuestas) {
+  <div class="respuestas-container">
+    @for (respuesta of comentario.respuestas; track respuesta.id) {
+    <mat-card appearance="outlined" class="mt-2 mx-4">
+      <mat-card-header>
+        <div style="display: flex; justify-content: space-between; width: 100%">
+          <p class="text-muted ms-0">
+            {{ respuesta.fecha_hora | date : "dd/MM/yyyy HH:mm" }}
+          </p>
+          <p class="text-muted">
+            Autor: {{ respuesta.abogado.nombre }}
+            {{ respuesta.abogado.apellido }}
+          </p>
+        </div>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content class="mt-2">
+        <p>{{ respuesta.comentario }}</p>
+      </mat-card-content>
+    </mat-card>
+    }
+  </div>
+  }
+
+  <mat-card-actions class="d-flex justify-content-between">
+    <div class="acciones">
+      <button
+        mat-raised-button
+        class="ms-3"
+        color="warn"
+        (click)="deleteComentario(comentario)"
+        [disabled]="caso.estado !== 'En curso'"
+      >
+        Eliminar
+      </button>
+    </div>
+    <div class="hilo">
+      @if (comentario.respuestas?.length) {
+      <button mat-raised-button color="secondary" (click)="toggleRespuestas()">
+        {{ mostrarRespuestas ? "Ocultar" : "Ver" }} Respuestas ({{
+          comentario.respuestas?.length
+        }})
+      </button>
+      }
+    </div>
+  </mat-card-actions>
+</mat-card>
+}
+
+<p>CONSIDERAR RESPUESTAS ANIDADAS Y VALIDACION DE ABOGADO PARA ELIMINAR</p>
