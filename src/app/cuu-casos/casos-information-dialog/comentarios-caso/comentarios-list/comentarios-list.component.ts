@@ -11,17 +11,23 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { ComentariosDialogComponent } from '../comentarios-dialog/comentarios-dialog.component.js';
+import { ComentariosUnidadComponent } from '../comentarios-unidad/comentarios-unidad.component.js';
 
 @Component({
   selector: 'app-comentarios-list',
   standalone: true,
-  imports: [MatCardModule, MatDividerModule, MatButtonModule, CommonModule],
+  imports: [
+    MatCardModule,
+    MatDividerModule,
+    MatButtonModule,
+    CommonModule,
+    ComentariosUnidadComponent,
+  ],
   templateUrl: './comentarios-list.component.html',
   styleUrl: './comentarios-list.component.css',
 })
 export class ComentariosListComponent implements OnInit {
   comentariosCaso: IComentario[] = [];
-  mostrarRespuestas: boolean = false;
 
   @Input() caso!: ICaso;
 
@@ -64,27 +70,25 @@ export class ComentariosListComponent implements OnInit {
       });
   }
 
-  openShowCommentsBelowDialog(comentario: IComentario) {
-    const replies = {
-      respuestas: comentario.respuestas,
-    };
-    this.openDialog(ComentariosDialogComponent, replies);
-  }
-
-  openCreateDialog() {
+  openCreateDialog(action: string, comentarioPadre?: IComentario) {
     const data = {
-      action: 'create',
-      comentario: null,
-      casoId: this.caso.id,
+      action: action,
+      comentario: comentarioPadre,
+      caso: this.caso,
     };
     this.openDialog(ComentariosDialogComponent, data);
   }
 
-  deleteComentario(comentario: IComentario) {
-    console.log('Borrar comentario', comentario);
+  openDeleteDialog(comentario: IComentario) {
+    const data = {
+      action: 'delete',
+      comentario: comentario,
+      caso: this.caso,
+    };
+    this.openDialog(ComentariosDialogComponent, data);
   }
 
-  toggleRespuestas(): void {
-    this.mostrarRespuestas = !this.mostrarRespuestas;
+  toggleRespuestas(comentario: IComentario): void {
+    comentario.mostrarRespuestas = !comentario.mostrarRespuestas;
   }
 }

@@ -7,4 +7,5 @@ export interface IComentario {
   respuestas: IComentario[] | null;
   fecha_hora: Date;
   comentario: string;
+  mostrarRespuestas?: boolean;
 }
