@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import IAbogado from '../../../core/interfaces/IAbogado.interface.js';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { environment } from '../../../../environments/environment.js';
+import { HttpClientModule } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { CRUDDialogComponent } from '../../../shared/crud-dialog/crud-dialog.component.js';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
+import { AbogadoService } from '../../../core/services/abogados.service.js';
 
 @Component({
   selector: 'app-abogados-list',
@@ -22,7 +22,10 @@ export class AbogadosListComponent {
   fullNameFilter: string = '';
   matriculaFilter: string = '';
 
-  constructor(private http: HttpClient, private dialog: MatDialog) {
+  constructor(
+    private dialog: MatDialog,
+    private abogadoService: AbogadoService
+  ) {
     this.loadAbogados();
   }
   openDialog(dialog: ComponentType<unknown>, data: object): void {
@@ -68,15 +71,17 @@ export class AbogadosListComponent {
   }
 
   loadAbogados() {
-    this.http
-      .get<{ message: string; data: IAbogado[] }>(environment.abogadosUrl)
-      .subscribe({
-        next: (res) => {
-          this.abogados = res.data;
-          console.log('Abogados cargados:', this.abogados);
-          this.applyFilters();
-        },
-      });
+    this.abogadoService.getAll().subscribe({
+      next: (response) => {
+        this.abogados = response.data;
+        this.filteredAbogados = [...this.abogados];
+        this.applyFilters();
+      },
+      error: (err) => {
+        console.error('Error al cargar los abogados', err);
+        alert('Hubo un error al cargar los abogados. Inténtalo nuevamente.');
+      },
+    });
   }
 
   openCreateDialog(): void {
@@ -115,18 +120,14 @@ export class AbogadosListComponent {
     });
   }
   eliminarAbogado(abogado: IAbogado): void {
-    this.http
-      .patch(`${environment.abogadosUrl}/deactivate/${abogado.id}`, {})
-      .subscribe({
-        next: (response) => {
-          this.loadAbogados();
-        },
-        error: (err) => {
-          console.error('Error al dar de baja el abogado', err);
-          alert(
-            'Hubo un error al dar de baja el abogado. Inténtalo nuevamente.'
-          );
-        },
-      });
+    this.abogadoService.delete(abogado.id).subscribe({
+      next: () => {
+        this.loadAbogados();
+      },
+      error: (err) => {
+        console.error('Error al eliminar el abogado', err);
+        alert('Hubo un error al eliminar el abogado. Inténtalo nuevamente.');
+      },
+    });
   }
 }

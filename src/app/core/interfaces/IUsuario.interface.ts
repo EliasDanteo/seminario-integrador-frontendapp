@@ -1,5 +1,6 @@
 import IAbogado from './IAbogado.interface.js';
 import { ICliente } from './ICliente.interface.js';
+import { ISecretario } from './ISecretario.interface.js';
 
 export interface IUsuario {
   id: number;
@@ -12,6 +13,6 @@ export interface IUsuario {
   fecha_alta: Date;
   fecha_baja?: Date;
   abogado?: IAbogado;
-  cliente?: ICliente; //TODO: HASTA CREAR LA INTERFAZ DE CLIENTE
-  secretario?: string; //TODO: HASTA CREAR LA INTERFAZ DE SECRETARIO
+  cliente?: ICliente;
+  secretario?: ISecretario;
 }
