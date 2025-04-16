@@ -1,65 +1,74 @@
-<div class="mb-3 mt-2">
-  <h4 class="modal-title text-center">Detalles del Caso</h4>
-</div>
-<div class="modal-body d-flex mb-4">
-  <div class="d-flex flex-column me-4 gap-2 p-3 bg-light rounded mx-5">
-    <p class="text-center"><strong>Acciones</strong></p>
-    <button class="btn-info" (click)="showNotas()">Ver Notas</button>
-    <button class="btn-info" (click)="showAbogados()">Ver Abogados</button>
-    <button class="btn-info" (click)="showDocumentos()">Ver Documentos</button>
-    <button class="btn-info">Ver Cuota</button>
-    <button class="btn-info" (click)="showRecordatorios()">
-      Ver Recordatorios
-    </button>
-    <button class="btn-info" (click)="showComentarios()">
-      Ver Comentarios
-    </button>
-    <button class="btn-info" (click)="limpiar()">Volver</button>
-  </div>
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white text-center">
+      <h2 class="mb-0">Detalles del Caso</h2>
+    </div>
+    <div class="card-body" *ngIf="caso">
+      <ul class="list-group list-group-flush mb-4">
+        <li class="list-group-item"><strong>ID:</strong> {{ caso.id }}</li>
+        <li class="list-group-item">
+          <strong>Cliente:</strong> {{ caso.cliente.apellido }}
+          {{ caso.cliente.nombre }}
+        </li>
+        <li class="list-group-item">
+          <strong>Especialidad:</strong> {{ caso.especialidad.nombre }}
+        </li>
+        <li class="list-group-item">
+          <strong>Fecha de Inicio:</strong>
+          {{ caso.fecha_inicio | date : "dd/MM/yyyy" }}
+        </li>
+        <li class="list-group-item">
+          <strong>Descripción:</strong> {{ caso.descripcion }}
+        </li>
+        <li class="list-group-item">
+          <strong>Estado:</strong> {{ caso.estado }}
+        </li>
+        <li class="list-group-item">
+          <strong>Última Actualización:</strong>
+          {{ caso.fecha_estado | date : "dd/MM/yyyy" }}
+        </li>
+      </ul>
 
-  <div class="d-flex flex-column flex-grow-1 p-3 bg-light rounded mx-5">
-    @if(!currentComponent) {
-    <div>
-      <p><strong>ID:</strong> {{ data.caso.id }}</p>
-      <p>
-        <strong>Cliente:</strong> {{ data.caso.cliente.apellido }}
-        {{ data.caso.cliente.nombre ? data.caso.cliente.nombre : "" }}
-        <button class="ms-2 btn-info" (click)="showCliente()">
-          Ver Cliente
+      <div class="d-flex flex-wrap gap-2 justify-content-center">
+        <button class="btn btn-outline-primary" (click)="showNotas()">
+          Ver Notas
         </button>
-      </p>
-      <p><strong>Especialidad:</strong> {{ data.caso.especialidad.nombre }}</p>
-      <p><strong>Fecha de Inicio:</strong> {{ data.caso.fecha_inicio }}</p>
+        <button class="btn btn-outline-primary" (click)="showAbogados()">
+          Ver Abogados
+        </button>
+        <button class="btn btn-outline-primary" (click)="showDocumentos()">
+          Ver Documentos
+        </button>
+        <button class="btn btn-outline-primary" (click)="showRecordatorios()">
+          Ver Recordatorios
+        </button>
+        <button class="btn btn-outline-primary" (click)="showComentarios()">
+          Ver Comentarios
+        </button>
+      </div>
     </div>
-    <div>
-      <p><strong>Descripción:</strong> {{ data.caso.descripcion }}</p>
-      <p><strong>Estado:</strong> {{ data.caso.estado }}</p>
-      <p><strong>Última Actualización:</strong> {{ data.caso.fecha_estado }}</p>
-    </div>
-    } @if(currentComponent) {
-    <div [ngSwitch]="currentComponent">
-      <app-notas-caso
-        *ngSwitchCase="'notas'"
-        [caso]="data.caso"
-      ></app-notas-caso>
-      <app-abogados-caso
-        *ngSwitchCase="'abogados'"
-        [caso]="data.caso"
-      ></app-abogados-caso>
-      <app-documentos-caso *ngSwitchCase="'documentos'"></app-documentos-caso>
-      <app-cliente-caso
-        *ngSwitchCase="'cliente'"
-        [cliente]="data.caso.cliente"
-      ></app-cliente-caso>
-      <app-recordatorios-list
-        *ngSwitchCase="'recordatorios'"
-        [caso]="data.caso"
-      ></app-recordatorios-list>
-      <app-comentarios-list
-        *ngSwitchCase="'comentarios'"
-        [caso]="data.caso"
-      ></app-comentarios-list>
-    </div>
-    }
   </div>
+</div>
+
+<div class="mt-4">
+  <app-notas-caso
+    *ngIf="selectedSection === 'notas' && caso"
+    [caso]="caso!"
+  ></app-notas-caso>
+  <app-abogados-caso
+    *ngIf="selectedSection === 'abogados' && caso"
+    [caso]="caso"
+  ></app-abogados-caso>
+  <app-documentos-caso
+    *ngIf="selectedSection === 'documentos' && caso"
+    [caso]="caso"
+  ></app-documentos-caso>
+  <app-recordatorios-list
+    *ngIf="selectedSection === 'recordatorios' && caso"
+    [caso]="caso"
+  ></app-recordatorios-list>
+  <app-comentarios-list
+    *ngIf="selectedSection === 'comentarios' && caso"
+    [caso]="caso"
+  ></app-comentarios-list>
 </div>

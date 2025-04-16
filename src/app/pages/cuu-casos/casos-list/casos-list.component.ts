@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { CasosInformationDialogComponent } from '../casos-information-dialog/casos-information-dialog.component.js';
 import { CRUDDialogComponent } from '../../../shared/crud-dialog/crud-dialog.component.js';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-casos-list',
   standalone: true,
@@ -24,7 +24,11 @@ export class CasosListComponent {
   especialidadFilter: string = '';
   descripcionFilter: string = '';
 
-  constructor(private http: HttpClient, private dialog: MatDialog) {
+  constructor(
+    private http: HttpClient,
+    private dialog: MatDialog,
+    private router: Router
+  ) {
     this.loadCasos();
   }
 
@@ -38,7 +42,8 @@ export class CasosListComponent {
   }
 
   showDetails(caso: ICaso): void {
-    this.openDialog(CasosInformationDialogComponent, { caso });
+    // Navegar a la ruta de detalle de caso y pasar los datos necesarios
+    this.router.navigate(['/casos', caso.id]);
   }
 
   /*

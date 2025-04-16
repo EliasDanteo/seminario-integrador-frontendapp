@@ -7,6 +7,7 @@ import { ActividadesListComponent } from './pages/actividad-crud/actividades-lis
 import { NoticiasListComponent } from './pages/noticias-crud/noticias-list/noticias-list.component.js';
 import { NoticiasBlogComponent } from './pages/noticias-crud/noticias-blog/noticias-blog.component.js';
 import { NoticiaDetalleComponent } from './pages/noticias-crud/noticia-detalle/noticia-detalle.component.js';
+import { CasosInformationDialogComponent } from './pages/cuu-casos/casos-information-dialog/casos-information-dialog.component.js';
 
 export const routes: Routes = [
   {
@@ -30,6 +31,7 @@ export const routes: Routes = [
     path: 'casos-list',
     component: CasosListComponent,
   },
+  { path: 'casos/:id', component: CasosInformationDialogComponent },
   {
     path: 'noticias-list',
     component: NoticiasListComponent,
