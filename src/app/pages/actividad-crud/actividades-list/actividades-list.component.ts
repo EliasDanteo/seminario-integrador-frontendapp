@@ -7,6 +7,7 @@ import { ComponentType } from '@angular/cdk/portal';
 import { ActividadDialogComponent } from '../actividad-dialog/actividad-dialog.component.js';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
 import { CommonModule } from '@angular/common';
+import { JusDialogComponent } from '../../jus-dialog/jus-dialog.component.js';
 
 @Component({
   selector: 'app-actividades-list',
@@ -64,6 +65,10 @@ export class ActividadesListComponent {
         actividades: this.actividades || [],
       });
     }
+  }
+
+  openJusDialog(): void {
+    this.openDialog(JusDialogComponent, {});
   }
 
   deleteActividad(act: IActividad): void {
