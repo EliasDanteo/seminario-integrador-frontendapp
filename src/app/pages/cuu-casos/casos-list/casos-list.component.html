@@ -4,22 +4,13 @@
   <button class="btn btn-success mb-3 shadow">Agregar Caso</button>
 
   <div class="row mb-3">
-    <div class="col-md-3">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Filtrar por Cliente"
-        [(ngModel)]="clienteFilter"
-        (ngModelChange)="applyFilters()"
-      />
+    <div class="col-md-3 mb-2">
+      <input type="text" class="form-control" placeholder="Filtrar por Cliente" [(ngModel)]="clienteFilter"
+        (ngModelChange)="applyFilters()" />
     </div>
 
-    <div class="col-md-3">
-      <select
-        class="form-control"
-        [(ngModel)]="estadoFilter"
-        (ngModelChange)="applyFilters()"
-      >
+    <div class="col-md-3 mb-2">
+      <select class="form-control" [(ngModel)]="estadoFilter" (ngModelChange)="applyFilters()">
         <option value="">Filtrar por Estado</option>
         <option value="En curso">En curso</option>
         <option value="Finalizado">Finalizado</option>
@@ -27,12 +18,8 @@
       </select>
     </div>
 
-    <div class="col-md-3">
-      <select
-        class="form-control"
-        [(ngModel)]="especialidadFilter"
-        (ngModelChange)="applyFilters()"
-      >
+    <div class="col-md-3 mb-2">
+      <select class="form-control" [(ngModel)]="especialidadFilter" (ngModelChange)="applyFilters()">
         <option value="">Filtrar por Especialidad</option>
         <option value="civil y comercial">Civil y Comercial</option>
         <option value="laboral">Laboral</option>
@@ -42,62 +29,52 @@
       </select>
     </div>
 
-    <div class="col-md-3">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Filtrar por Descripción"
-        [(ngModel)]="descripcionFilter"
-        (ngModelChange)="applyFilters()"
-      />
+    <div class="col-md-3 mb-2">
+      <input type="text" class="form-control" placeholder="Filtrar por Descripción" [(ngModel)]="descripcionFilter"
+        (ngModelChange)="applyFilters()" />
     </div>
   </div>
 
   @if (filteredCasos) {
-  <table class="table table-hover table-bordered shadow-sm">
-    <thead class="bg-success text-white">
-      <tr>
-        <th>ID</th>
-        <th>Cliente</th>
-        <th>Especialidad</th>
-        <th>Fecha de Inicio</th>
-        <th>Descripción</th>
-        <th>Estado</th>
-        <th>Última Actualización</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (caso of filteredCasos; track caso.id) {
-      <tr class="align-middle clickable-row" (click)="showDetails(caso)">
-        <td>{{ caso.id }}</td>
-        <td>
-          {{ caso.cliente.apellido + " " + caso.cliente.nombre }}
-        </td>
-        <td>{{ caso.especialidad.nombre }}</td>
-        <td>{{ caso.fecha_inicio }}</td>
-        <td>{{ caso.descripcion }}</td>
-        <td>{{ caso.estado }}</td>
-        <td>{{ caso.fecha_estado }}</td>
-        <td>
-          <div class="d-flex justify-content-start gap-2">
-            <button
-              class="btn btn-warning btn-sm shadow-sm"
-              (click)="$event.stopPropagation(); openEditDialog(caso)"
-            >
-              Editar
-            </button>
-            <button
-              class="btn btn-danger btn-sm shadow-sm"
-              (click)="$event.stopPropagation(); deleteCaso(caso)"
-            >
-              Eliminar
-            </button>
-          </div>
-        </td>
-      </tr>
-      }
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered shadow-sm">
+      <thead class="bg-success text-white">
+        <tr>
+          <th>ID</th>
+          <th>Cliente</th>
+          <th>Especialidad</th>
+          <th>Fecha de Inicio</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          <th>Última Actualización</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (caso of filteredCasos; track caso.id) {
+        <tr class="align-middle clickable-row" (click)="showDetails(caso)">
+          <td>{{ caso.id }}</td>
+          <td>{{ caso.cliente.apellido + ' ' + caso.cliente.nombre }}</td>
+          <td>{{ caso.especialidad.nombre }}</td>
+          <td>{{ caso.fecha_inicio }}</td>
+          <td>{{ caso.descripcion }}</td>
+          <td>{{ caso.estado }}</td>
+          <td>{{ caso.fecha_estado }}</td>
+          <td>
+            <div class="d-flex justify-content-start gap-2 flex-wrap">
+              <button class="btn btn-warning btn-sm shadow-sm mt-1"
+                (click)="$event.stopPropagation(); openEditDialog(caso)">
+                Editar
+              </button>
+              <button class="btn btn-danger btn-sm shadow-sm mt-1" (click)="$event.stopPropagation(); deleteCaso(caso)">
+                Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
   }
 </div>

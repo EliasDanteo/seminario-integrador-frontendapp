@@ -1,40 +1,44 @@
-<h2>FALTA FILTRAR POR EL USUARIO LOS CASOS, DE MOMENTO HICE FIND ALL, HASTA QUE NO TENGAMOS EL USUARIO EN LA SESION Y EXISTA EL ENDPOINT NO PUEDO SEGUIR</h2>
+<div class="container mt-4">
+  <h2 class="text-center mb-4 text-black p-3 rounded">Listado de Casos del Usuario</h2>
 
-<div class="container">
+  <div class="alert alert-warning shadow-sm" role="alert">
+    Falta filtrar por el usuario los casos. De momento se realiza un <strong>findAll</strong>. Hasta que no tengamos el
+    usuario en la sesión y exista el endpoint, no se puede continuar correctamente.
+  </div>
+
   @if (casos_usuario) {
-  <table class="table table-hover table-bordered shadow-sm">
-    <thead class="bg-success text-white">
-      <tr>
-        <th>Descripción</th>
-        <th>Especialidad</th>
-        <th>Fecha Inicio</th>
-        <th>Fecha Fin</th>
-        <th>Abogado</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (caso of casos_usuario; track caso.id) {
-      <tr class="align-middle">
-        <td>{{ caso.descripcion }}</td>
-        <td>{{ caso.especialidad.nombre }}</td>
-        <td>{{ caso.fecha_inicio }}</td>
-        <td>{{ caso.estado === 'Finalizado' ? caso.fecha_estado : 'Sin Finalizar'}}</td>
-        <td>falta el populate de abogados</td>
-        <td>
-          <div class="d-flex justify-content-start gap-2">
-            <button
-              class="btn btn-warning btn-sm shadow-sm"
-              (click)="openFeedbackDialog(caso.id)"
-              [disabled]="caso.estado !== 'Finalizado'"
-              >
-              Feedback
-            </button>
-          </div>
-        </td>
-      </tr>
-      }
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered shadow-sm">
+      <thead class="bg-success text-white">
+        <tr>
+          <th>Descripción</th>
+          <th>Especialidad</th>
+          <th>Fecha Inicio</th>
+          <th>Fecha Fin</th>
+          <th>Abogado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (caso of casos_usuario; track caso.id) {
+        <tr class="align-middle">
+          <td>{{ caso.descripcion }}</td>
+          <td>{{ caso.especialidad.nombre }}</td>
+          <td>{{ caso.fecha_inicio }}</td>
+          <td>{{ caso.estado === 'Finalizado' ? caso.fecha_estado : 'Sin Finalizar' }}</td>
+          <td>Falta el populate de abogados</td>
+          <td>
+            <div class="d-flex justify-content-start gap-2 flex-wrap">
+              <button class="btn btn-warning btn-sm shadow-sm mt-1" (click)="openFeedbackDialog(caso.id)"
+                [disabled]="caso.estado !== 'Finalizado'">
+                Feedback
+              </button>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
   }
 </div>

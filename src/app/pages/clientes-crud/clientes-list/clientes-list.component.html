@@ -1,24 +1,23 @@
 <div class="container mt-4">
   <h2 class="text-center mb-4 text-black p-3 rounded">Listado de Clientes</h2>
 
-<div class="d-flex gap-3">
-  <button class="btn btn-success mb-3 shadow" (click)="openCreateDialog()">Agregar Cliente</button>
-  <button class="btn btn-success mb-3 shadow" (click)="openCreateDialogEmpresa()">Agregar Empresa</button>
-</div>
-
+  <div class="d-flex flex-wrap gap-2 mb-3">
+    <button class="btn btn-success shadow" (click)="openCreateDialog()">Agregar Cliente</button>
+    <button class="btn btn-success shadow" (click)="openCreateDialogEmpresa()">Agregar Empresa</button>
+  </div>
 
   <div class="row mb-3">
-    <div class="col-md-4">
+    <div class="col-md-4 mb-2">
       <input type="text" class="form-control" placeholder="Filtrar por Apellido y Nombre" name="fullNameFilter"
         id="fullNameFilter" [(ngModel)]="fullNameFilter" (ngModelChange)="applyFilters()">
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-4 mb-2">
       <input type="text" class="form-control" placeholder="Filtrar por Número de Documento" name="nroDocFilter"
         id="nroDocFilter" [(ngModel)]="nroDocFilter" (ngModelChange)="applyFilters()">
     </div>
 
-    <div class="col-md-4 d-flex align-items-center gap-3">
+    <div class="col-md-4 d-flex flex-wrap align-items-center gap-3 mb-2">
       <div class="form-check">
         <input class="form-check-input" type="checkbox" id="showCompanies" [(ngModel)]="showCompanies"
           (change)="applyFilters()" checked>
@@ -34,37 +33,40 @@
   </div>
 
   @if (filteredClientes) {
-  <table class="table table-hover table-bordered shadow-sm">
-    <thead class="bg-success text-white">
-      <tr>
-        <th>Empresa</th>
-        <th>Nombre Completo</th>
-        <th>Email</th>
-        <th>Teléfono</th>
-        <th>Tipo Doc</th>
-        <th>Nro Doc</th>
-        <th>Fecha Alta</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (cliente of filteredClientes; track cliente.id) {
-      <tr class="align-middle">
-        <td>{{ cliente.es_empresa ? 'Sí' : 'No' }}</td>
-        <td>{{ cliente.nombre + (cliente.apellido ? ' ' + cliente.apellido : '') }}</td>
-        <td>{{ cliente.email }}</td>
-        <td>{{ cliente.telefono }}</td>
-        <td>{{ cliente.tipo_doc }}</td>
-        <td>{{ cliente.nro_doc }}</td>
-        <td>{{ cliente.fecha_alta }}</td>
-        <td>
-          <div class="d-flex justify-content-start gap-2">
-            <button class="btn btn-warning btn-sm shadow-sm" (click)="openEditDialog(cliente)">Editar</button>
-            <button class="btn btn-danger btn-sm shadow-sm" (click)="deleteCliente(cliente)">Eliminar</button>
-          </div>
-        </td>
-      </tr>
-      }
-    </tbody>
-  </table>}
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered shadow-sm">
+      <thead class="bg-success text-white">
+        <tr>
+          <th>Empresa</th>
+          <th>Nombre Completo</th>
+          <th>Email</th>
+          <th>Teléfono</th>
+          <th>Tipo Doc</th>
+          <th>Nro Doc</th>
+          <th>Fecha Alta</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (cliente of filteredClientes; track cliente.id) {
+        <tr class="align-middle">
+          <td>{{ cliente.es_empresa ? 'Sí' : 'No' }}</td>
+          <td>{{ cliente.nombre + (cliente.apellido ? ' ' + cliente.apellido : '') }}</td>
+          <td>{{ cliente.email }}</td>
+          <td>{{ cliente.telefono }}</td>
+          <td>{{ cliente.tipo_doc }}</td>
+          <td>{{ cliente.nro_doc }}</td>
+          <td>{{ cliente.fecha_alta }}</td>
+          <td>
+            <div class="d-flex justify-content-start gap-2 flex-wrap">
+              <button class="btn btn-warning btn-sm shadow-sm mt-1" (click)="openEditDialog(cliente)">Editar</button>
+              <button class="btn btn-danger btn-sm shadow-sm mt-1" (click)="deleteCliente(cliente)">Eliminar</button>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  }
 </div>

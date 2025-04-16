@@ -1,40 +1,48 @@
 <div class="container mt-4">
   <h2 class="text-center mb-4 text-black p-3 rounded">Listado de Actividades</h2>
 
-  <div class="d-flex gap-3">
-    <button class="btn btn-success mb-3 shadow" (click)="openCreateDialog()">Agregar Actividad</button>
+  <div class="d-flex gap-3 mb-3">
+    <button class="btn btn-success shadow" (click)="openCreateDialog()">Agregar Actividad</button>
   </div>
 
-  @if (actividades){
-  <table class="table table-hover table-bordered shadow-sm">
-    <thead class="bg-success text-white">
-      <tr>
-        <th>Nombre</th>
-        <th>Última actualización</th>
-        <th>Cantidad de JUS</th>
-        <th>Precio(JUS)</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
+  @if (actividades) {
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered shadow-sm">
+      <thead class="bg-success text-white">
+        <tr>
+          <th>Nombre</th>
+          <th>Última actualización</th>
+          <th>Cantidad de JUS</th>
+          <th>Precio (JUS)</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      @for (act of actividades; track act.id){
+      <tbody>
+        @for (act of actividades; track act.id) {
         <tr class="align-middle">
           <td>{{ act.nombre }}</td>
-          <td>{{ act.fecha_hora_desde | date: 'dd/MM/yyyy, h:mm a'}}</td>
+          <td>{{ act.fecha_hora_desde | date: 'dd/MM/yyyy, h:mm a' }}</td>
           <td>{{ act.cant_jus }}</td>
           <td>${{ act.precio_pesos }}</td>
           <td>
-            <div class="d-flex justify-content-start gap-2">
-              <button class="btn btn-warning btn-sm shadow-sm" (click)="openEditDialog(act, 'name')">Editar</button>
-              <button class="btn btn-danger btn-sm shadow-sm" (click)="deleteActividad(act)">Eliminar</button>
-              <button class="btn btn-sm shadow-sm" style="background-color: cornflowerblue;" (click)="openEditDialog(act, 'price')">Actualizar precio</button>
+            <div class="d-flex justify-content-start gap-2 flex-wrap">
+              <button class="btn btn-warning btn-sm shadow-sm mt-1" (click)="openEditDialog(act, 'name')">
+                Editar
+              </button>
+              <button class="btn btn-danger btn-sm shadow-sm mt-1" (click)="deleteActividad(act)">
+                Eliminar
+              </button>
+              <button class="btn btn-sm shadow-sm mt-1" style="background-color: cornflowerblue;"
+                (click)="openEditDialog(act, 'price')">
+                Actualizar precio
+              </button>
             </div>
           </td>
         </tr>
-      }
-    </tbody>
-  </table>
-}
-  
+        }
+      </tbody>
+    </table>
+  </div>
+  }
 </div>

@@ -3,49 +3,52 @@
 
 <button class="btn btn-success mb-3 shadow" (click)="openCreateDialog()">Agregar Abogado</button>
 
-  <div class="row mb-3">
-  <div class="col-md-4">
+<div class="row mb-3">
+  <div class="col-md-4 mb-2">
     <input type="text" class="form-control" placeholder="Filtrar por Apellido y Nombre" name="fullNameFilter"
       id="fullNameFilter" [(ngModel)]="fullNameFilter" (ngModelChange)="applyFilters()">
   </div>
 
-    <div class="col-md-4">
-      <input type="text" class="form-control" placeholder="Filtrar por Matrícula" name="matriculaFilter"
-        id="matriculaFilter" [(ngModel)]="matriculaFilter" (ngModelChange)="applyFilters()">
-    </div>
+  <div class="col-md-4 mb-2">
+    <input type="text" class="form-control" placeholder="Filtrar por Matrícula" name="matriculaFilter"
+      id="matriculaFilter" [(ngModel)]="matriculaFilter" (ngModelChange)="applyFilters()">
   </div>
+</div>
 
   @if (filteredAbogados) {
-  <table class="table table-hover table-bordered shadow-sm ">
-    <thead class="bg-success text-white">
-      <tr>
-        <th>Nombre Completo</th>
-        <th>Email</th>
-        <th>Teléfono</th>
-        <th>Tipo Doc</th>
-        <th>Nro Doc</th>
-        <th>Fecha Alta</th>
-        <th>Matrícula</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (abogado of filteredAbogados; track abogado.id) {
-      <tr class="align-middle">
-        <td>{{ abogado.apellido + ' ' + abogado.nombre }}</td>
-        <td>{{ abogado.email }}</td>
-        <td>{{ abogado.telefono }}</td>
-        <td>{{ abogado.tipo_doc }}</td>
-        <td>{{ abogado.nro_doc }}</td>
-        <td>{{ abogado.fecha_alta }}</td>
-        <td>{{ abogado.matricula }}</td>
-        <td>
-          <div class="d-flex justify-content-start gap-2">
-            <button class="btn btn-warning btn-sm shadow-sm" (click)="openEditDialog(abogado)">Editar</button>
-            <button class="btn btn-danger btn-sm shadow-sm" (click)="deleteAbogado(abogado)">Eliminar</button>
-          </div>
-        </td>
-      </tr>
-      }
-    </tbody>
-  </table>}
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered shadow-sm">
+      <thead class="bg-success text-white">
+        <tr>
+          <th>Nombre Completo</th>
+          <th>Email</th>
+          <th>Teléfono</th>
+          <th>Tipo Doc</th>
+          <th>Nro Doc</th>
+          <th>Fecha Alta</th>
+          <th>Matrícula</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (abogado of filteredAbogados; track abogado.id) {
+        <tr class="align-middle">
+          <td>{{ abogado.apellido + ' ' + abogado.nombre }}</td>
+          <td>{{ abogado.email }}</td>
+          <td>{{ abogado.telefono }}</td>
+          <td>{{ abogado.tipo_doc }}</td>
+          <td>{{ abogado.nro_doc }}</td>
+          <td>{{ abogado.fecha_alta }}</td>
+          <td>{{ abogado.matricula }}</td>
+          <td>
+            <div class="d-flex justify-content-start gap-2 flex-wrap">
+              <button class="btn btn-warning btn-sm shadow-sm" (click)="openEditDialog(abogado)">Editar</button>
+              <button class="btn btn-danger btn-sm shadow-sm" (click)="deleteAbogado(abogado)">Eliminar</button>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  }
