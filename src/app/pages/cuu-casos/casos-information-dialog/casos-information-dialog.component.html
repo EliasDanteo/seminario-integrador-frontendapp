@@ -67,6 +67,7 @@
     [caso]="caso!"
   ></app-notas-caso>
   <app-abogados-caso
+    class="d-flex justify-content-center"
     *ngIf="selectedSection === 'abogados' && caso"
     [caso]="caso"
   ></app-abogados-caso>
@@ -75,10 +76,12 @@
     [caso]="caso"
   ></app-documentos-caso>
   <app-recordatorios-list
+    class="d-flex justify-content-center"
     *ngIf="selectedSection === 'recordatorios' && caso"
     [caso]="caso"
   ></app-recordatorios-list>
   <app-comentarios-list
+    class="d-flex justify-content-center"
     *ngIf="selectedSection === 'comentarios' && caso"
     [caso]="caso"
   ></app-comentarios-list>

@@ -1,59 +1,61 @@
-<div
-  class="encabezado mb-3"
-  style="display: flex; justify-content: space-between; align-items: center"
->
-  <h3>Listado de Recordatorios</h3>
-  <button
-    class="btn btn-success mb-md-0 shadow"
-    (click)="openCreateDialog()"
-    [disabled]="caso.estado !== 'En curso'"
-  >
-    Agregar Recordatorio
-  </button>
-</div>
-
-@for (recordatorio of recordatoriosCaso; track recordatorio.id ) {
-<mat-card appearance="outlined" class="mb-3">
-  <mat-card-header>
-    <div style="display: flex; justify-content: space-between; width: 100%">
-      <p class="text-muted ms-0">
-        Fecha Recordatorio
-        {{ recordatorio.fecha_hora_limite | date : "dd/MM/yyyy HH:mm" }}
-      </p>
-      <p class="text-muted">
-        Autor: {{ recordatorio.abogado.nombre }}
-        {{ recordatorio.abogado.apellido }}
-      </p>
-    </div>
-  </mat-card-header>
-  <mat-divider></mat-divider>
-  <mat-card-content class="mt-2">
-    <p>{{ recordatorio.descripcion }}</p>
-  </mat-card-content>
-  <mat-card-actions class="d-flex justify-content-between">
-    <div class="acciones">
+<div class="container mt-4">
+  <div class="card shadow-sm mt-4">
+    <div
+      class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
+    >
+      <h3 class="mb-0">Listado de Recordatorios</h3>
       <button
-        mat-raised-button
-        class="ms-3"
-        color="primary"
-        (click)="openEditDialog(recordatorio)"
-        [disabled]="caso.estado !== 'En curso' || recordatorio.vencido === true"
-      >
-        Editar
-      </button>
-      <button
-        mat-raised-button
-        class="ms-3"
-        color="warn"
-        (click)="deleteRecordatorio(recordatorio)"
+        class="btn btn-success shadow"
+        (click)="openCreateDialog()"
         [disabled]="caso.estado !== 'En curso'"
       >
-        Eliminar
+        Agregar Recordatorio
       </button>
     </div>
-  </mat-card-actions>
-</mat-card>
-}
-
-<p>ver comentario archivo</p>
-<!--FALTA DESHABILITAR LOS BOTONES SI NO ES EL ABOGADO AUTOR (HACER VAR EN EL COMPONENTE GUARDANDO EL OBJETO DEL ABOGADO DE LA SESIÓN)-->
+    <div class="card-body">
+      @for (recordatorio of recordatoriosCaso; track recordatorio.id) {
+      <div class="mb-3">
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <div
+              class="d-flex justify-content-between align-items-center w-100"
+            >
+              <p class="text-muted mb-0">
+                Fecha Recordatorio:
+                {{ recordatorio.fecha_hora_limite | date : "dd/MM/yyyy HH:mm" }}
+              </p>
+              <p class="text-muted mb-0">
+                Autor: {{ recordatorio.abogado.nombre }}
+                {{ recordatorio.abogado.apellido }}
+              </p>
+            </div>
+          </mat-card-header>
+          <mat-divider></mat-divider>
+          <mat-card-content class="mt-2">
+            <p>{{ recordatorio.descripcion }}</p>
+          </mat-card-content>
+          <mat-card-actions class="d-flex justify-content-end">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="openEditDialog(recordatorio)"
+              [disabled]="caso.estado !== 'En curso' || recordatorio.vencido"
+              class="me-2"
+            >
+              Editar
+            </button>
+            <button
+              mat-raised-button
+              color="warn"
+              (click)="deleteRecordatorio(recordatorio)"
+              [disabled]="caso.estado !== 'En curso'"
+            >
+              Eliminar
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      }
+    </div>
+  </div>
+</div>

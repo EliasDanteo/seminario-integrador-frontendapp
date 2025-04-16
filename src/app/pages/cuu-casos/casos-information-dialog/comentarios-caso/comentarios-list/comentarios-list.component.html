@@ -1,28 +1,31 @@
-<div
-  class="encabezado mb-3"
-  style="display: flex; justify-content: space-between; align-items: center"
->
-  <h3>Listado de Comentarios</h3>
-  <button
-    class="btn btn-success mb-md-0 shadow"
-    (click)="openCreateDialog('create')"
-    [disabled]="caso.estado !== 'En curso'"
-  >
-    Agregar Comentario
-  </button>
+<div class="container mt-4">
+  <div class="card shadow-sm mt-4">
+    <div class="card-header bg-primary text-white">
+      <div class="d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">Listado de Comentarios</h3>
+        <button
+          class="btn btn-success shadow"
+          (click)="openCreateDialog('create')"
+          [disabled]="caso.estado !== 'En curso'"
+        >
+          Agregar Comentario
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      @for (comentario of comentariosCaso; track comentario.id) {
+      <div class="mb-3">
+        <app-comentarios-unidad
+          [comentario]="comentario"
+          [nivel]="0"
+          (delete)="openDeleteDialog($event)"
+          (reply)="openCreateDialog('reply', $event)"
+          [casoEstado]="caso.estado"
+        ></app-comentarios-unidad>
+      </div>
+      }
+      <p class="text-center mt-3">Ver comentario en archivo</p>
+      <!-- Se debe implementar la sesión del abogado -->
+    </div>
+  </div>
 </div>
-
-@for (comentario of comentariosCaso; track comentario.id) {
-<app-comentarios-unidad
-  [comentario]="comentario"
-  [nivel]="0"
-  (delete)="openDeleteDialog($event)"
-  (reply)="openCreateDialog('reply', $event)"
-  [casoEstado]="caso.estado"
-></app-comentarios-unidad>
-}
-
-<p>Ver comentario en archivo</p>
-<!--
-FALTA SESIÓN ABOGADO Y VER EL RECARGAR AFTERCLOSED
--->
