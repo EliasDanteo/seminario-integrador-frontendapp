@@ -1,0 +1,69 @@
+<mat-card
+  appearance="outlined"
+  class="mb-3"
+  [style.margin-left]="marginLeft"
+  [style.border-left]="nivel > 0 ? '3px solid #673ab7' : ''"
+>
+  <mat-card-header>
+    <div style="display: flex; justify-content: space-between; width: 100%">
+      <p class="text-muted ms-0">
+        {{ comentario.fecha_hora | date : "dd/MM/yyyy HH:mm" }}
+      </p>
+      <p class="text-muted">
+        Autor: {{ comentario.abogado.nombre }} {{ comentario.abogado.apellido }}
+      </p>
+    </div>
+  </mat-card-header>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-content class="mt-2">
+    <p>{{ comentario.comentario }}</p>
+  </mat-card-content>
+
+  <mat-card-actions class="d-flex justify-content-between">
+    <div class="acciones">
+      <button
+        mat-raised-button
+        class="ms-3"
+        color="warn"
+        (click)="onDelete()"
+        [disabled]="casoEstado !== 'En curso'"
+      >
+        Eliminar
+      </button>
+      <button
+        mat-raised-button
+        class="ms-3"
+        color="primary"
+        (click)="replyComment()"
+        [disabled]="casoEstado !== 'En curso'"
+      >
+        Responder
+      </button>
+    </div>
+
+    @if (comentario.respuestas.length) {
+    <div class="hilo">
+      <button mat-raised-button color="secondary" (click)="toggleRespuestas()">
+        {{ comentario.mostrarRespuestas ? "Ocultar" : "Ver" }} Respuestas ({{
+          comentario.respuestas.length
+        }})
+      </button>
+    </div>
+    }
+  </mat-card-actions>
+
+  @if (comentario.mostrarRespuestas && comentario.respuestas.length) {
+  <div class="respuestas-container">
+    @for (respuesta of comentario.respuestas; track respuesta.id) {
+    <app-comentarios-unidad
+      [comentario]="respuesta"
+      [nivel]="nivel + 1"
+      (delete)="delete.emit($event)"
+      [casoEstado]="casoEstado"
+    ></app-comentarios-unidad>
+    }
+  </div>
+  }
+</mat-card>
