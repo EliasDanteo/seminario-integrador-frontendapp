@@ -1,6 +1,6 @@
 <div class="container mt-4">
   <div class="card shadow-sm">
-    <div class="card-header bg-primary text-white text-center">
+    <div class="card-header text-black text-center">
       <h2 class="mb-0">Detalles del Caso</h2>
     </div>
     <div class="card-body" *ngIf="caso">
@@ -61,7 +61,7 @@
   </div>
 </div>
 
-<div class="mt-4">
+<div class="m-4">
   <app-notas-caso
     *ngIf="selectedSection === 'notas' && caso"
     [caso]="caso!"

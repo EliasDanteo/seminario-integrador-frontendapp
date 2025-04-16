@@ -4,6 +4,6 @@ mat-card {
 
 mat-card-header {
   border-radius: 20px 20px 0 0;
-  background: linear-gradient(45deg, #1e8fc4, #6ea9c5);
-  color: white;
+  background: linear-gradient(45deg, #e2e2e2, #ffffff);
+  color: rgb(0, 0, 0);
 }
