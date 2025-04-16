@@ -1,17 +1,17 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { INota } from '../../../../core/interfaces/INota.interface.js';
-import { SnackbarService } from '../../../../services/snackbar.service.js';
+import { INota } from '../../../../../core/interfaces/INota.interface.js';
+import { SnackbarService } from '../../../../../core/services/snackbar.service.js';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../../environments/environment.js';
+import { environment } from '../../../../../../environments/environment.js';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ICaso } from '../../../../core/interfaces/ICaso.interface.js';
+import { ICaso } from '../../../../../core/interfaces/ICaso.interface.js';
 
 @Component({
   selector: 'app-notas-caso-dialog',

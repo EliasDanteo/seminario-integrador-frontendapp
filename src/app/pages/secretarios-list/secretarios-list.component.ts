@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { ISecretario } from '../core/interfaces/ISecretario.interface.js';
+import { ISecretario } from '../../core/interfaces/ISecretario.interface.js';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
-import { environment } from '../../environments/environment.js';
-import { CRUDDialogComponent } from '../shared/crud-dialog/crud-dialog.component.js';
-import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component.js';
+import { environment } from '../../../environments/environment.js';
+import { CRUDDialogComponent } from '../../shared/crud-dialog/crud-dialog.component.js';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component.js';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 

@@ -1,13 +1,13 @@
 import { Component, Inject } from '@angular/core';
-import { SnackbarService } from '../../../../services/snackbar.service.js';
+import { SnackbarService } from '../../../../../core/services/snackbar.service.js';
 import { HttpClient } from '@angular/common/http';
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { IRecordatorio } from '../../../../core/interfaces/IRecordatorio.interface.js';
-import { ICaso } from '../../../../core/interfaces/ICaso.interface.js';
+import { IRecordatorio } from '../../../../../core/interfaces/IRecordatorio.interface.js';
+import { ICaso } from '../../../../../core/interfaces/ICaso.interface.js';
 import {
   FormControl,
   FormGroup,
@@ -15,7 +15,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { environment } from '../../../../../environments/environment.js';
+import { environment } from '../../../../../../environments/environment.js';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';

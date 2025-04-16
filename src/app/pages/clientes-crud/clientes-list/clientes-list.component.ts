@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
-import { ICliente } from '../../core/interfaces/ICliente.interface.js';
+import { ICliente } from '../../../core/interfaces/ICliente.interface.js';
 import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
-import { environment } from '../../../environments/environment.js';
-import { CRUDDialogComponent } from '../../shared/crud-dialog/crud-dialog.component.js';
-import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component.js';
+import { environment } from '../../../../environments/environment.js';
+import { CRUDDialogComponent } from '../../../shared/crud-dialog/crud-dialog.component.js';
+import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
 @Component({
   selector: 'app-clientes-list',
   standalone: true,

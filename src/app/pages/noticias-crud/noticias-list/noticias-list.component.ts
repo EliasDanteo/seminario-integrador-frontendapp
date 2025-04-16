@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { INoticia } from '../../core/interfaces/INoticia.interface.js';
+import { INoticia } from '../../../core/interfaces/INoticia.interface.js';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
-import { environment } from '../../../environments/environment.js';
-import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component.js';
+import { environment } from '../../../../environments/environment.js';
+import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
 import { NoticiaCrudDialogComponent } from '../noticia-crud-dialog/noticia-crud-dialog.component.js';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { BottomSheetService } from '../../services/bottom-sheet.service.js';
-import { SnackbarService } from '../../services/snackbar.service.js';
+import { BottomSheetService } from '../../../core/services/bottom-sheet.service.js';
+import { SnackbarService } from '../../../core/services/snackbar.service.js';
 
 @Component({
   selector: 'app-noticias-list',

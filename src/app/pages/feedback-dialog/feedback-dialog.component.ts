@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { SnackbarService } from '../../services/snackbar.service.js';
+import { SnackbarService } from '../../core/services/snackbar.service.js';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import IAbogado from '../../core/interfaces/IAbogado.interface.js';
 import { environment } from '../../../environments/environment.js';

@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { SnackbarService } from '../services/snackbar.service.js';
-import { ICaso } from '../core/interfaces/ICaso.interface.js';
-import { environment } from '../../environments/environment.js';
+import { SnackbarService } from '../../core/services/snackbar.service.js';
+import { ICaso } from '../../core/interfaces/ICaso.interface.js';
+import { environment } from '../../../environments/environment.js';
 import { ComponentType } from '@angular/cdk/portal';
 import { MatDialog } from '@angular/material/dialog';
-import { FeedbackDialogComponent } from '../shared/feedback-dialog/feedback-dialog.component.js';
+import { FeedbackDialogComponent } from '../feedback-dialog/feedback-dialog.component.js';
 
 @Component({
   selector: 'app-mis-casos-list',

@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { SnackbarService } from '../../../../services/snackbar.service.js';
-import { INota } from '../../../../core/interfaces/INota.interface.js';
-import { ICaso } from '../../../../core/interfaces/ICaso.interface.js';
-import { environment } from '../../../../../environments/environment.js';
+import { SnackbarService } from '../../../../../core/services/snackbar.service.js';
+import { INota } from '../../../../../core/interfaces/INota.interface.js';
+import { ICaso } from '../../../../../core/interfaces/ICaso.interface.js';
+import { environment } from '../../../../../../environments/environment.js';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';

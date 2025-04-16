@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IComentario } from '../../../../core/interfaces/IComentario.interface.js';
+import { IComentario } from '../../../../../core/interfaces/IComentario.interface.js';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';

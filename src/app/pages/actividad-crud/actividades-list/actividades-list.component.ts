@@ -1,11 +1,11 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { IActividad } from '../../core/interfaces/IActividad.interface.js';
-import { environment } from '../../../environments/environment.js';
+import { IActividad } from '../../../core/interfaces/IActividad.interface.js';
+import { environment } from '../../../../environments/environment.js';
 import { ComponentType } from '@angular/cdk/portal';
 import { ActividadDialogComponent } from '../actividad-dialog/actividad-dialog.component.js';
-import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component.js';
+import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
 import { CommonModule } from '@angular/common';
 
 @Component({

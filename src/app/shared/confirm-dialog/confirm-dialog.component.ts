@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SnackbarService } from '../../services/snackbar.service.js';
+import { SnackbarService } from '../../core/services/snackbar.service.js';
 
 @Component({
   selector: 'app-confirm-dialog',

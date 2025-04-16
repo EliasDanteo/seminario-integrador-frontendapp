@@ -8,8 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SnackbarService } from '../../services/snackbar.service.js';
-import { environment } from '../../../environments/environment.js';
+import { SnackbarService } from '../../../core/services/snackbar.service.js';
+import { environment } from '../../../../environments/environment.js';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -40,7 +40,7 @@ export class NoticiaCrudDialogComponent implements OnInit {
   newsForm: FormGroup;
   isEdit: boolean = false;
   entityType: 'noticia';
-  todayDate: Date 
+  todayDate: Date;
 
   constructor(
     @Inject(MAT_DIALOG_DATA)

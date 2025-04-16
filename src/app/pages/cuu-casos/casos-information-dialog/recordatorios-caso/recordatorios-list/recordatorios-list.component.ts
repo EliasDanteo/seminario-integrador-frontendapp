@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ICaso } from '../../../../core/interfaces/ICaso.interface.js';
-import { IRecordatorio } from '../../../../core/interfaces/IRecordatorio.interface.js';
+import { ICaso } from '../../../../../core/interfaces/ICaso.interface.js';
+import { IRecordatorio } from '../../../../../core/interfaces/IRecordatorio.interface.js';
 import { HttpClient } from '@angular/common/http';
-import { SnackbarService } from '../../../../services/snackbar.service.js';
-import { environment } from '../../../../../environments/environment.js';
+import { SnackbarService } from '../../../../../core/services/snackbar.service.js';
+import { environment } from '../../../../../../environments/environment.js';
 import { RecordatoriosDialogComponent } from '../recordatorios-dialog/recordatorios-dialog.component.js';
 import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
-import { IAbogadoCaso } from '../../../../core/interfaces/IAbogadoCaso.interface.js';
+import { IAbogadoCaso } from '../../../../../core/interfaces/IAbogadoCaso.interface.js';
 
 @Component({
   selector: 'app-recordatorios-list',

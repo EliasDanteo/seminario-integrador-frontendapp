@@ -21,7 +21,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { SnackbarService } from '../../services/snackbar.service.js';
+import { SnackbarService } from '../../core/services/snackbar.service.js';
 
 @Component({
   selector: 'app-crud-dialog',

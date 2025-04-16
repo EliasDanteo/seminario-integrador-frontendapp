@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ICaso } from '../../../../core/interfaces/ICaso.interface.js';
+import { ICaso } from '../../../../../core/interfaces/ICaso.interface.js';
 import { HttpClient } from '@angular/common/http';
-import { SnackbarService } from '../../../../services/snackbar.service.js';
-import { environment } from '../../../../../environments/environment.js';
-import { IComentario } from '../../../../core/interfaces/IComentario.interface.js';
+import { SnackbarService } from '../../../../../core/services/snackbar.service.js';
+import { environment } from '../../../../../../environments/environment.js';
+import { IComentario } from '../../../../../core/interfaces/IComentario.interface.js';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';

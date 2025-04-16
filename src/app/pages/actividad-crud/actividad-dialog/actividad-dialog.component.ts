@@ -6,7 +6,7 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
-import { SnackbarService } from '../../services/snackbar.service.js';
+import { SnackbarService } from '../../../core/services/snackbar.service.js';
 import {
   FormControl,
   FormGroup,
@@ -14,7 +14,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { environment } from '../../../environments/environment.js';
+import { environment } from '../../../../environments/environment.js';
 import { catchError, of } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';

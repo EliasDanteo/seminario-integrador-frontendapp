@@ -1,18 +1,18 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
-import { ICaso } from '../../../core/interfaces/ICaso.interface.js';
-import IAbogado from '../../../core/interfaces/IAbogado.interface.js';
+import { ICaso } from '../../../../core/interfaces/ICaso.interface.js';
+import IAbogado from '../../../../core/interfaces/IAbogado.interface.js';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment.js';
+import { environment } from '../../../../../environments/environment.js';
 import { CommonModule } from '@angular/common';
-import { IAbogadoCaso } from '../../../core/interfaces/IAbogadoCaso.interface.js';
+import { IAbogadoCaso } from '../../../../core/interfaces/IAbogadoCaso.interface.js';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { SnackbarService } from '../../../services/snackbar.service.js';
+import { SnackbarService } from '../../../../core/services/snackbar.service.js';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';

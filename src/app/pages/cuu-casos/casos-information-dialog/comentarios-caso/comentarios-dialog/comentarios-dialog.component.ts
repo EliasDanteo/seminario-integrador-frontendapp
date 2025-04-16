@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { IComentario } from '../../../../core/interfaces/IComentario.interface.js';
+import { IComentario } from '../../../../../core/interfaces/IComentario.interface.js';
 import { HttpClient } from '@angular/common/http';
-import { SnackbarService } from '../../../../services/snackbar.service.js';
+import { SnackbarService } from '../../../../../core/services/snackbar.service.js';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../../../../environments/environment.js';
+import { environment } from '../../../../../../environments/environment.js';
 import {
   FormControl,
   FormGroup,
@@ -16,7 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
-import { ICaso } from '../../../../core/interfaces/ICaso.interface.js';
+import { ICaso } from '../../../../../core/interfaces/ICaso.interface.js';
 
 @Component({
   selector: 'app-comentarios-dialog',

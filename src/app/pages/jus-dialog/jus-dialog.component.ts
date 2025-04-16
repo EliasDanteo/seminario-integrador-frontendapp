@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { SnackbarService } from '../../services/snackbar.service.js';
+import { SnackbarService } from '../../core/services/snackbar.service.js';
 import { IJUS } from '../../core/interfaces/IJUS.interface.js';
 import { environment } from '../../../environments/environment.js';
 import {

@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import IAbogado from '../../core/interfaces/IAbogado.interface.js';
+import IAbogado from '../../../core/interfaces/IAbogado.interface.js';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { environment } from '../../../environments/environment.js';
+import { environment } from '../../../../environments/environment.js';
 import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
-import { CRUDDialogComponent } from '../../shared/crud-dialog/crud-dialog.component.js';
-import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component.js';
+import { CRUDDialogComponent } from '../../../shared/crud-dialog/crud-dialog.component.js';
+import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
 
 @Component({
   selector: 'app-abogados-list',
