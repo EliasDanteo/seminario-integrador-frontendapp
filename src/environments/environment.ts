@@ -11,4 +11,5 @@ export const environment = {
   noticiasUrl: apiUrl + '/misc/noticias',
   jusUrl: apiUrl + '/misc/precios-jus',
   feedbackUrl: apiUrl + '/feedbacks',
+  documentosUrl: apiUrl + '/casos/documentos',
 };
