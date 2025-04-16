@@ -60,14 +60,39 @@ export class ComentariosListComponent implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          this.comentariosCaso = response.data.filter((comentario) => {
-            return comentario.padre === null;
-          });
+          this.comentariosCaso = this.buildCommentTree(response.data);
         },
         error: () => {
           this.snackBarService.showError('Error al cargar los comentarios');
         },
       });
+  }
+
+  private buildCommentTree(comments: IComentario[]): IComentario[] {
+    const commentMap = new Map<number, IComentario>();
+    const rootComments: IComentario[] = [];
+
+    comments.forEach((comment) => {
+      commentMap.set(comment.id, {
+        ...comment,
+        respuestas: [],
+        mostrarRespuestas: comment.mostrarRespuestas || false,
+      });
+    });
+
+    comments.forEach((comment) => {
+      const currentComment = commentMap.get(comment.id)!;
+      if (comment.padre) {
+        const parent = commentMap.get(comment.padre.id);
+        if (parent) {
+          parent.respuestas!.push(currentComment);
+        }
+      } else {
+        rootComments.push(currentComment);
+      }
+    });
+
+    return rootComments;
   }
 
   openCreateDialog(action: string, comentarioPadre?: IComentario) {

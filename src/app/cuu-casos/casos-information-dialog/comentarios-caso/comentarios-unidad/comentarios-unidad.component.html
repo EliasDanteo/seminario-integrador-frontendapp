@@ -43,25 +43,24 @@
       </button>
     </div>
 
-    @if (comentario.respuestas?.length) {
+    @if (comentario.respuestas.length) {
     <div class="hilo">
       <button mat-raised-button color="secondary" (click)="toggleRespuestas()">
         {{ comentario.mostrarRespuestas ? "Ocultar" : "Ver" }} Respuestas ({{
-          comentario.respuestas?.length
+          comentario.respuestas.length
         }})
       </button>
     </div>
     }
   </mat-card-actions>
 
-  @if (comentario.mostrarRespuestas && comentario.respuestas) {
+  @if (comentario.mostrarRespuestas && comentario.respuestas.length) {
   <div class="respuestas-container">
     @for (respuesta of comentario.respuestas; track respuesta.id) {
     <app-comentarios-unidad
       [comentario]="respuesta"
       [nivel]="nivel + 1"
       (delete)="delete.emit($event)"
-      (reply)="reply.emit($event)"
       [casoEstado]="casoEstado"
     ></app-comentarios-unidad>
     }
