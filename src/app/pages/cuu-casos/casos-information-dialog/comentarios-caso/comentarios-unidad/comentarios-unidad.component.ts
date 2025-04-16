@@ -27,7 +27,7 @@ export class ComentariosUnidadComponent {
     this.delete.emit(this.comentario);
   }
 
-  replyComment(): void {
+  onReply(): void {
     this.reply.emit(this.comentario);
   }
 
