@@ -36,7 +36,7 @@
         mat-raised-button
         class="ms-3"
         color="primary"
-        (click)="replyComment()"
+        (click)="onReply()"
         [disabled]="casoEstado !== 'En curso'"
       >
         Responder
@@ -61,6 +61,7 @@
       [comentario]="respuesta"
       [nivel]="nivel + 1"
       (delete)="delete.emit($event)"
+      (reply)="reply.emit($event)"
       [casoEstado]="casoEstado"
     ></app-comentarios-unidad>
     }

@@ -69,10 +69,11 @@ export class ComentariosDialogComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.snackBarService.showSuccess(response.message);
-          this.dialogRef.close(true);
+          this.dialogRef.close({ action: 'delete', data: comentario });
         },
         error: (error) => {
           this.snackBarService.showError(error.error.message);
+          this.dialogRef.close('none');
         },
       });
   }
@@ -104,10 +105,11 @@ export class ComentariosDialogComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.snackBarService.showSuccess(response.message);
-          this.dialogRef.close(true);
+          this.dialogRef.close(response.data);
         },
         error: (error) => {
           this.snackBarService.showError(error.error.message);
+          this.dialogRef.close('none');
         },
       });
   }

@@ -27,7 +27,9 @@ import { ComentariosUnidadComponent } from '../comentarios-unidad/comentarios-un
   styleUrl: './comentarios-list.component.css',
 })
 export class ComentariosListComponent implements OnInit {
+  responseComentarios: IComentario[] = [];
   comentariosCaso: IComentario[] = [];
+  private expansionStates = new Map<number, boolean>();
 
   @Input() caso!: ICaso;
 
@@ -42,8 +44,20 @@ export class ComentariosListComponent implements OnInit {
       data: data,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result !== 'none') {
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result === 'none') return;
+
+      if (result?.action) {
+        switch (result.action) {
+          case 'delete':
+            this.removeCommentLocally(result.data);
+            break;
+          default:
+            this.loadComentarios();
+        }
+      } else if (result) {
+        this.addCommentLocally(result);
+      } else {
         this.loadComentarios();
       }
     });
@@ -53,19 +67,36 @@ export class ComentariosListComponent implements OnInit {
     this.loadComentarios();
   }
 
-  loadComentarios() {
-    this.httpClient
-      .get<{ message: string; data: IComentario[] }>(
-        `${environment.casosUrl}/comentarios/${this.caso.id}`
-      )
-      .subscribe({
-        next: (response) => {
-          this.comentariosCaso = this.buildCommentTree(response.data);
-        },
-        error: () => {
-          this.snackBarService.showError('Error al cargar los comentarios');
-        },
-      });
+  addCommentLocally(newComment: IComentario): void {
+    this.preserveExpansionStates();
+
+    this.responseComentarios.push(newComment);
+    this.comentariosCaso = this.buildCommentTree(this.responseComentarios);
+
+    if (newComment.padre?.id) {
+      this.expansionStates.set(newComment.padre.id, true);
+    }
+  }
+
+  private removeCommentLocally(deletedComment: IComentario): void {
+    this.preserveExpansionStates();
+
+    this.responseComentarios = this.responseComentarios.filter(
+      (c) => c.id !== deletedComment.id
+    );
+    this.comentariosCaso = this.buildCommentTree(this.responseComentarios);
+  }
+
+  private preserveExpansionStates(): void {
+    this.expansionStates = new Map();
+    this.comentariosCaso.forEach((comment) => {
+      this.traverseComments(comment);
+    });
+  }
+
+  private traverseComments(comment: IComentario): void {
+    this.expansionStates.set(comment.id, comment.mostrarRespuestas || false);
+    comment.respuestas?.forEach((child) => this.traverseComments(child));
   }
 
   private buildCommentTree(comments: IComentario[]): IComentario[] {
@@ -76,17 +107,15 @@ export class ComentariosListComponent implements OnInit {
       commentMap.set(comment.id, {
         ...comment,
         respuestas: [],
-        mostrarRespuestas: comment.mostrarRespuestas || false,
+        mostrarRespuestas: this.expansionStates.get(comment.id) || false,
       });
     });
 
     comments.forEach((comment) => {
       const currentComment = commentMap.get(comment.id)!;
-      if (comment.padre) {
+      if (comment.padre?.id) {
         const parent = commentMap.get(comment.padre.id);
-        if (parent) {
-          parent.respuestas!.push(currentComment);
-        }
+        parent?.respuestas?.push(currentComment);
       } else {
         rootComments.push(currentComment);
       }
@@ -95,13 +124,34 @@ export class ComentariosListComponent implements OnInit {
     return rootComments;
   }
 
-  openCreateDialog(action: string, comentarioPadre?: IComentario) {
-    const data = {
+  loadComentarios() {
+    this.httpClient
+      .get<{ message: string; data: IComentario[] }>(
+        `${environment.casosUrl}/comentarios/${this.caso.id}`
+      )
+      .subscribe({
+        next: (response) => {
+          this.responseComentarios = response.data;
+          this.comentariosCaso = this.buildCommentTree(
+            this.responseComentarios
+          );
+        },
+        error: () => {
+          this.snackBarService.showError('Error al cargar los comentarios');
+        },
+      });
+  }
+
+  openCreateDialog(action: string, parentComment?: IComentario): void {
+    this.openDialog(ComentariosDialogComponent, {
       action: action,
-      comentario: comentarioPadre,
+      comentario: parentComment,
       caso: this.caso,
-    };
-    this.openDialog(ComentariosDialogComponent, data);
+    });
+
+    if (action === 'reply' && parentComment) {
+      parentComment.mostrarRespuestas = true;
+    }
   }
 
   openDeleteDialog(comentario: IComentario) {
