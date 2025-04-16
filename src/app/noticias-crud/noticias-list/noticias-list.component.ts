@@ -9,6 +9,7 @@ import { NoticiaCrudDialogComponent } from '../noticia-crud-dialog/noticia-crud-
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { BottomSheetService } from '../../services/bottom-sheet.service.js';
+import { SnackbarService } from '../../services/snackbar.service.js';
 
 @Component({
   selector: 'app-noticias-list',
@@ -25,7 +26,8 @@ export class NoticiasListComponent {
   constructor(
     private http: HttpClient,
     private dialog: MatDialog,
-    private bottomSheetService: BottomSheetService
+    private bottomSheetService: BottomSheetService,
+    private snackBarService: SnackbarService
   ) {
     this.loadNoticias();
   }
@@ -129,8 +131,8 @@ export class NoticiasListComponent {
         },
         error: (err) => {
           console.error('Error al dar de baja la noticia', err);
-          alert(
-            'Hubo un error al dar de baja la noticia. Inténtalo nuevamente.'
+          this.snackBarService.showError(
+            'Error al dar de baja la noticia, intente nuevamente'
           );
         },
       });
