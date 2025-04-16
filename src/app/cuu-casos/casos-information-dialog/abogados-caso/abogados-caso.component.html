@@ -1,0 +1,136 @@
+<div
+  class="modal-container"
+  style="min-width: 400px"
+  *ngIf="caso.estado === 'En curso'; else finalizado"
+>
+  <div class="modal-content">
+    <h3>Vincular / Desvincular - Abogado/a</h3>
+    <mat-divider></mat-divider>
+
+    <form [formGroup]="formAbogadoCaso">
+      <mat-form-field appearance="fill" style="width: 100%" class="mt-3">
+        <mat-label>Abogados Disponibles</mat-label>
+        <mat-select
+          formControlName="id_abogado"
+          (selectionChange)="formAbogadoCaso.get('abogadoActivo')?.reset()"
+        >
+          <mat-option disabled hidden value="">
+            Seleccione un abogado/a para vincular...
+          </mat-option>
+
+          @if(posiblesAbogados.length === 0) {
+          <mat-option disabled value="">
+            No hay abogados disponibles para vincular
+          </mat-option>
+          } @for (abogado of posiblesAbogados; track abogado.id) {
+          <mat-option [value]="abogado.id">
+            {{ abogado.nombre }} {{ abogado.apellido }} (Mat.
+            {{ abogado.matricula }})
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" style="width: 100%">
+        <mat-label>Abogados Activos</mat-label>
+        <mat-select
+          formControlName="abogadoActivo"
+          (selectionChange)="formAbogadoCaso.get('id_abogado')?.reset()"
+        >
+          <mat-option disabled hidden value="">
+            Seleccione un abogado/a para desvincular...
+          </mat-option>
+
+          @if(abogadosCasos.length === 0) {
+          <mat-option disabled value="">
+            No hay abogados disponibles para desvincular
+          </mat-option>
+          } @for (abogadoCaso of abogadosCasos; track abogadoCaso.id) {
+          <mat-option [value]="abogadoCaso.id">
+            {{ abogadoCaso.abogado.nombre }}
+            {{ abogadoCaso.abogado.apellido }}
+            (Mat. {{ abogadoCaso.abogado.matricula }})
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" style="width: 100%">
+        <mat-label>Indicaciones / Motivo</mat-label>
+        <textarea
+          matInput
+          formControlName="detalle"
+          cdkTextareaAutosize
+          rows="3"
+        ></textarea>
+      </mat-form-field>
+
+      <div
+        class="botones-accion"
+        style="margin-top: 16px; gap: 8px; display: flex"
+      >
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="vincularAbogado()"
+          [disabled]="
+            !formAbogadoCaso.get('id_abogado')?.value ||
+            caso.estado !== 'En curso'
+          "
+        >
+          Vincular
+        </button>
+        <button
+          mat-raised-button
+          color="warn"
+          (click)="desvincularAbogado()"
+          [disabled]="
+            !formAbogadoCaso.get('abogadoActivo')?.value ||
+            caso.estado !== 'En curso'
+          "
+        >
+          Desvincular
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<ng-template #finalizado>
+  <div class="modal-content" style="min-width: 400px">
+    <h3>Vincular / Desvincular - Abogado/a</h3>
+    <mat-divider></mat-divider>
+
+    <div class="px-3 pt-2">
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <mat-card-title><strong>Caso no disponible!</strong></mat-card-title>
+        </mat-card-header>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+          El caso no se encuentra en estado <strong>En Curso</strong>. No es
+          posible vincular o desvincular abogados.
+        </mat-card-content>
+      </mat-card>
+
+      <h4>Abogados Participantes</h4>
+
+      <div class="abogados-participantes">
+        <mat-list dense>
+          @for (abogadoCaso of abogadosCasos; track abogadoCaso.id) {
+          <mat-list-item class="hover-highlight">
+            <div class="mat-body-2">
+              {{ abogadoCaso.abogado.nombre }}
+              {{ abogadoCaso.abogado.apellido }}
+              <span style="color: #666"
+                >(Mat. {{ abogadoCaso.abogado.matricula }})</span
+              >
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          }
+        </mat-list>
+      </div>
+    </div>
+  </div>
+</ng-template>

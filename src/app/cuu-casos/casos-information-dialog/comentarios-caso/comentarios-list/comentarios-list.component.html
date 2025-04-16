@@ -1,0 +1,32 @@
+<div
+  class="encabezado mb-3"
+  style="display: flex; justify-content: space-between; align-items: center"
+>
+  <h3>Listado de Comentarios</h3>
+  <button
+    class="btn btn-success mb-md-0 shadow"
+    (click)="openCreateDialog('create')"
+    [disabled]="caso.estado !== 'En curso'"
+  >
+    Agregar Comentario
+  </button>
+</div>
+
+@for (comentario of comentariosCaso; track comentario.id) {
+<app-comentarios-unidad
+  [comentario]="comentario"
+  [nivel]="0"
+  (delete)="openDeleteDialog($event)"
+  (reply)="openCreateDialog('reply', $event)"
+  [casoEstado]="caso.estado"
+></app-comentarios-unidad>
+}
+
+<p>Ver comentario en archivo</p>
+<!--
+FALTA SESIÓN ABOGADO Y VER EL RECARGAR AFTERCLOSED
+-->
+
+<!--
+SIN HACER ESTE COMMIT, SE PUEDE VER EL ANIDADO PERO NO SE PUEDE RESPONDER A UN COMENTARIO ANIDADO
+-->

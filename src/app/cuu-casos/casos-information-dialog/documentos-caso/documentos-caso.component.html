@@ -1,0 +1,30 @@
+<div>
+  <h2>Documentos</h2>
+  @if(documentos.length > 0) {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Fecha de Creación</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let documento of documentos">
+          <td>{{ documento.nombre }}</td>
+          <td>{{ documento.fechaCarga }}</td>
+          <td>
+            <button class="btn-info">Ver</button>
+            <button class="btn-danger">Eliminar</button>
+          </td>
+        </tr>
+  
+</tbody>
+</table>
+  }
+  @else {
+    <p>No hay documentos cargados</p>
+  }
+  <input type="file" (change)="uploadDocument($event)" />
+  <button (click)="uploadDocument($event)">Upload</button>
+</div>

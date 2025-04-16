@@ -5,9 +5,11 @@ export const environment = {
   abogadosUrl: apiUrl + '/usuarios/abogados',
   clientesUrl: apiUrl + '/usuarios/clientes',
   secretariosUrl: apiUrl + '/usuarios/secretarios',
+  casosUrl: apiUrl + '/casos',
+  especialidadesUrl: apiUrl + '/especialidades',
   actividadesUrl: apiUrl + '/actividades',
   noticiasUrl: apiUrl + '/misc/noticias',
   jusUrl: apiUrl + '/misc/precios-jus',
   feedbackUrl: apiUrl + '/feedbacks',
-  casosUrl: apiUrl + '/casos',
+  documentosUrl: apiUrl + '/casos/documentos',
 };

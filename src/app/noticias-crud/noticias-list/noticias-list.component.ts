@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { environment } from '../../../environments/environment.js';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component.js';
-import { NoticiaCrudDialogComponent } from '../../shared/noticia-crud-dialog/noticia-crud-dialog.component.js';
+import { NoticiaCrudDialogComponent } from '../noticia-crud-dialog/noticia-crud-dialog.component.js';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { BottomSheetService } from '../../services/bottom-sheet.service.js';
@@ -108,7 +108,7 @@ export class NoticiasListComponent {
     });
   }
 
-  deleteNoticiaDialog(noticia: INoticia): void {
+  deleteNoticia(noticia: INoticia): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         nombreCompleto: noticia.titulo,
@@ -122,7 +122,6 @@ export class NoticiasListComponent {
       }
     });
   }
-
   eliminarNoticia(noticia: INoticia): void {
     this.http
       .patch(`${environment.noticiasUrl}/deactivate/${noticia.id}`, {})
