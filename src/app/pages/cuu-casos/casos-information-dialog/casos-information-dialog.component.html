@@ -71,10 +71,10 @@
     *ngIf="selectedSection === 'abogados' && caso"
     [caso]="caso"
   ></app-abogados-caso>
-  <app-documentos-caso
+  <app-documentos-list
     *ngIf="selectedSection === 'documentos' && caso"
     [caso]="caso"
-  ></app-documentos-caso>
+  ></app-documentos-list>
   <app-recordatorios-list
     class="d-flex justify-content-center"
     *ngIf="selectedSection === 'recordatorios' && caso"

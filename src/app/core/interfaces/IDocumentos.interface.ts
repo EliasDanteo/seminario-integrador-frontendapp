@@ -4,7 +4,7 @@ export default interface IDocumentos {
   id: number;
   nombre: string;
   archivo: Blob;
-  fechaCarga: Date;
-  fechaBaja?: Date;
+  fecha_carga: Date;
+  fecha_baja?: Date;
   Caso: ICaso;
 }

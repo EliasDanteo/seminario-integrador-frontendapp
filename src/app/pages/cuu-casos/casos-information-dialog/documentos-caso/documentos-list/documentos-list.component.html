@@ -1,0 +1,117 @@
+<div
+  class="container mt-4"
+  *ngIf="caso.estado === 'En curso'; else finalizadoDocs"
+>
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white text-center">
+      <h2 class="mb-0">Documentos del Caso</h2>
+    </div>
+    <div class="card-body">
+      <ng-container *ngIf="documentos.length > 0; else sinDocs">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead class="table-light">
+              <tr>
+                <th>Nombre</th>
+                <th>Fecha de Carga</th>
+                <th class="text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let documento of documentos">
+                <td>{{ documento.nombre }}</td>
+                <td>{{ documento.fecha_carga | date : "dd/MM/yyyy" }}</td>
+                <td class="text-center">
+                  <button
+                    class="btn btn-info btn-sm me-2"
+                    (click)="verDocumento(documento)"
+                  >
+                    Ver
+                  </button>
+                  <button
+                    class="btn btn-danger btn-sm"
+                    (click)="deleteDocument(documento)"
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
+
+      <ng-template #sinDocs>
+        <div class="alert alert-secondary text-center" role="alert">
+          No hay documentos cargados para este caso.
+        </div>
+      </ng-template>
+
+      <!-- Dentro del div con la clase "mt-4" donde está el input file -->
+      <div class="mt-4">
+        <label class="fw-bold">Subir nuevo documento</label>
+        <div class="input-group mt-2">
+          <input
+            type="file"
+            class="form-control"
+            (change)="onFileSelected($event)"
+            #fileInput
+            accept=".pdf,.doc,.docx, .jpg, .jpeg, .png"
+          />
+          <button
+            class="btn btn-success"
+            type="button"
+            (click)="uploadDocument()"
+            [disabled]="!selectedFile"
+          >
+            Subir Documento
+          </button>
+        </div>
+        <small *ngIf="selectedFile" class="text-muted mt-1 d-block">
+          Archivo seleccionado: {{ selectedFile.name }}
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #finalizadoDocs>
+  <div class="container mt-4">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white text-center">
+        <h2 class="mb-0">Documentos del Caso</h2>
+      </div>
+      <div class="card-body">
+        <div class="alert alert-info text-center" role="alert">
+          El caso no se encuentra en estado <strong>En Curso</strong>. No es
+          posible subir ni eliminar documentos.
+        </div>
+
+        <h4 class="text-center">Documentos Disponibles</h4>
+        <ul
+          class="list-group list-group-flush mt-3"
+          *ngIf="documentos.length > 0; else sinDocsFinalizados"
+        >
+          <li
+            class="list-group-item d-flex justify-content-between align-items-center"
+            *ngFor="let documento of documentos"
+          >
+            {{ documento.nombre }}
+            <button
+              class="btn btn-outline-primary btn-sm"
+              (click)="verDocumento(documento)"
+            >
+              Ver
+            </button>
+          </li>
+        </ul>
+
+        <ng-template #sinDocsFinalizados>
+          <div class="alert alert-secondary text-center mt-3" role="alert">
+            No hay documentos disponibles.
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</ng-template>

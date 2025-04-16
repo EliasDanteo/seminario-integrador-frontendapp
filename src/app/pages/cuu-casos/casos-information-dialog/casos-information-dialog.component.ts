@@ -2,7 +2,6 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AbogadosCasoComponent } from './abogados-caso/abogados-caso.component.js';
 import { NotasCasoComponent } from './notas-caso/notas-caso-list/notas-caso.component.js';
-import { DocumentosCasoComponent } from './documentos-caso/documentos-caso.component.js';
 import { RecordatoriosListComponent } from './recordatorios-caso/recordatorios-list/recordatorios-list.component.js';
 import { ClienteCasoComponent } from './cliente-caso/cliente-caso.component.js';
 import { CommonModule } from '@angular/common';
@@ -12,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment.js';
 import { RecordatoriosDialogComponent } from './recordatorios-caso/recordatorios-dialog/recordatorios-dialog.component';
+import { DocumentosListComponent } from './documentos-caso/documentos-list/documentos-list.component.js';
 
 @Component({
   selector: 'app-casos-information-dialog',
@@ -20,7 +20,7 @@ import { RecordatoriosDialogComponent } from './recordatorios-caso/recordatorios
     CommonModule,
     AbogadosCasoComponent,
     NotasCasoComponent,
-    DocumentosCasoComponent,
+    DocumentosListComponent,
     RecordatoriosListComponent,
     ClienteCasoComponent,
     ComentariosListComponent,
