@@ -1,51 +1,58 @@
 <div
-  class="encabezado mb-3"
-  style="display: flex; justify-content: space-between; align-items: center"
+  class="encabezado mb-1 d-flex justify-content-center gap-3 align-items-center"
 >
   <h3>Listado de Notas</h3>
+</div>
+<div class="mb-4 justify-content-center align-items-center text-center">
   <button
-    class="btn btn-success mb-md-0 shadow"
+    class="btn btn-success mb-md-0 shadow aling-items-center text-center"
     (click)="openCreateDialog()"
     [disabled]="caso.estado !== 'En curso'"
   >
     Agregar Nota
   </button>
 </div>
-
-@for (nota of notasCaso; track nota.id ) {
-<mat-card appearance="outlined">
-  <mat-card-header class="d-flex justify-content-between">
-    <mat-card-title class="fw-bold">{{ nota.titulo }}</mat-card-title>
-    <p class="text-muted">
-      Autor: {{ nota.abogado.nombre }} {{ nota.abogado.apellido }}
-    </p>
-  </mat-card-header>
-  <mat-divider></mat-divider>
-  <mat-card-content class="mt-2">
-    <p>{{ nota.descripcion }}</p>
-  </mat-card-content>
-  <mat-card-actions class="d-flex justify-content-between">
-    <div class="acciones">
-      <button
-        mat-raised-button
-        class="ms-3"
-        color="primary"
-        (click)="openEditDialog(nota)"
-        [disabled]="caso.estado !== 'En curso'"
-      >
-        Editar
-      </button>
-      <button
-        mat-raised-button
-        class="ms-3"
-        color="warn"
-        (click)="deleteNota(nota)"
-        [disabled]="caso.estado !== 'En curso'"
-      >
-        Eliminar
-      </button>
-    </div>
-    <p class="text-muted">{{ nota.fecha_hora | date : "dd/MM/yyyy HH:mm" }}</p>
-  </mat-card-actions>
-</mat-card>
-}
+<!-- Contenedor grid -->
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+  @for (nota of notasCaso; track nota.id) {
+  <div class="col">
+    <mat-card appearance="outlined" class="h-100">
+      <mat-card-header class="d-flex justify-content-between">
+        <mat-card-title class="fw-bold">{{ nota.titulo }}</mat-card-title>
+        <p class="text-muted">
+          Autor: {{ nota.abogado.nombre }} {{ nota.abogado.apellido }}
+        </p>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content class="mt-2">
+        <p>{{ nota.descripcion }}</p>
+      </mat-card-content>
+      <mat-card-actions class="d-flex justify-content-between">
+        <div class="acciones">
+          <button
+            mat-raised-button
+            class="ms-3 m-1"
+            color="primary"
+            (click)="openEditDialog(nota)"
+            [disabled]="caso.estado !== 'En curso'"
+          >
+            Editar
+          </button>
+          <button
+            mat-raised-button
+            class="ms-3"
+            color="warn"
+            (click)="deleteNota(nota)"
+            [disabled]="caso.estado !== 'En curso'"
+          >
+            Eliminar
+          </button>
+        </div>
+        <p class="text-muted">
+          {{ nota.fecha_hora | date : "dd/MM/yyyy HH:mm" }}
+        </p>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  }
+</div>
