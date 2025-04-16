@@ -1,0 +1,7 @@
+.card {
+  border-radius: 1rem;
+}
+
+.card-body p {
+  line-height: 1.7;
+}

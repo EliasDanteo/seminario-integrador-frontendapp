@@ -1,0 +1,57 @@
+.news-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  transition: transform 0.3s ease;
+  min-height: 300px;     
+}
+
+.news-card:hover {
+  transform: translateY(-5px);
+}
+
+.news-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.news-card .content {
+  padding: 1rem;
+}
+
+.news-card h2 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.news-card .meta {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.75rem;
+}
+
+.news-card .excerpt {
+  color: #555;
+  flex-grow: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 1rem;
+
+  /* Standard syntax (en algunos navegadores modernos, aún en experimentación) */
+  display: box;
+  box-orient: vertical;
+  line-clamp: 3;
+}
+
