@@ -1,5 +1,5 @@
-<div class="container mt-4">
-  <div class="card shadow-sm mt-4">
+<div class="container">
+  <div class="card shadow-sm">
     <div class="card-header bg-primary text-white">
       <div class="d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Listado de Comentarios</h3>
@@ -14,7 +14,7 @@
     </div>
     <div class="card-body">
       @for (comentario of comentariosCaso; track comentario.id) {
-      <div class="mb-3">
+      <div>
         <app-comentarios-unidad
           [comentario]="comentario"
           [nivel]="0"
@@ -24,7 +24,7 @@
         ></app-comentarios-unidad>
       </div>
       }
-      <p class="text-center mt-3">Ver comentario en archivo</p>
+      <p class="text-center">Ver comentario en archivo</p>
       <!-- Se debe implementar la sesión del abogado -->
     </div>
   </div>

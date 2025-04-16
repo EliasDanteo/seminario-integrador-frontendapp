@@ -8,10 +8,11 @@ import { ClienteCasoComponent } from './cliente-caso/cliente-caso.component.js';
 import { CommonModule } from '@angular/common';
 import { ComentariosListComponent } from './comentarios-caso/comentarios-list/comentarios-list.component.js';
 import { ICaso } from '../../../core/interfaces/ICaso.interface.js';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment.js';
 import { RecordatoriosDialogComponent } from './recordatorios-caso/recordatorios-dialog/recordatorios-dialog.component';
+import { DetallesCasoComponent } from './detalles-caso/detalles-caso.component.js';
 
 @Component({
   selector: 'app-casos-information-dialog',
@@ -25,6 +26,7 @@ import { RecordatoriosDialogComponent } from './recordatorios-caso/recordatorios
     ClienteCasoComponent,
     ComentariosListComponent,
     RecordatoriosDialogComponent,
+    DetallesCasoComponent,
   ],
   templateUrl: './casos-information-dialog.component.html',
   styleUrl: './casos-information-dialog.component.css',
@@ -32,7 +34,11 @@ import { RecordatoriosDialogComponent } from './recordatorios-caso/recordatorios
 export class CasosInformationDialogComponent {
   caso: ICaso | null = null;
 
-  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     const casoId = this.route.snapshot.paramMap.get('id');
@@ -45,7 +51,7 @@ export class CasosInformationDialogComponent {
         .subscribe({
           next: (res) => {
             this.caso = res.data;
-            console.log(this.caso);
+            this.showDetalles();
           },
           error: (err) => {
             console.error('Error al cargar el caso', err);
@@ -57,6 +63,7 @@ export class CasosInformationDialogComponent {
     this.http.get<ICaso>(`${environment.casosUrl}/${id}`).subscribe({
       next: (data) => {
         this.caso = data;
+        this.showDetalles();
       },
       error: (err) => {
         console.error('Error al cargar el caso', err);
@@ -65,6 +72,10 @@ export class CasosInformationDialogComponent {
   }
 
   selectedSection: string | null = null;
+
+  showDetalles() {
+    this.selectedSection = 'detalles';
+  }
 
   showNotas() {
     this.selectedSection = 'notas';
@@ -84,5 +95,10 @@ export class CasosInformationDialogComponent {
 
   showComentarios() {
     this.selectedSection = 'comentarios';
+  }
+
+  volver() {
+    this.selectedSection = null;
+    this.router.navigate(['casos-list']);
   }
 }

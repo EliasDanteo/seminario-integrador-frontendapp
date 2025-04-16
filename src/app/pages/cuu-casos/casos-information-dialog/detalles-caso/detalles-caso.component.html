@@ -1,0 +1,31 @@
+<div class="container-fluid">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Información del Caso</h2>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <strong>Cliente:</strong> {{ caso.cliente.apellido }}
+        {{ caso.cliente.nombre }}
+      </li>
+      <li class="list-group-item">
+        <strong>Estado:</strong> {{ caso.estado }}
+      </li>
+      <li class="list-group-item"><strong>ID:</strong> {{ caso.id }}</li>
+      <li class="list-group-item">
+        <strong>Especialidad:</strong> {{ caso.especialidad.nombre }}
+      </li>
+      <li class="list-group-item">
+        <strong>Fecha de Inicio:</strong>
+        {{ caso.fecha_inicio | date : "dd/MM/yyyy" }}
+      </li>
+      <li class="list-group-item">
+        <strong>Descripción:</strong> {{ caso.descripcion }}
+      </li>
+      <li class="list-group-item">
+        <strong>Última Actualización:</strong>
+        {{ caso.fecha_estado | date : "dd/MM/yyyy" }}
+      </li>
+    </ul>
+  </div>
+</div>

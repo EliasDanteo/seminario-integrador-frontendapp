@@ -1,88 +1,109 @@
-<div class="container mt-4">
-  <div class="card shadow-sm">
-    <div class="card-header text-black text-center">
-      <h2 class="mb-0">Detalles del Caso</h2>
-    </div>
-    <div class="card-body" *ngIf="caso">
-      <!-- Lista colapsable -->
-      <div class="collapse-container">
-        <ul
-          class="list-group list-group-flush mb-4"
-          [class.collapsed]="selectedSection"
-          [class.expanded]="!selectedSection"
-        >
-          <li class="list-group-item always-show">
-            <strong>Cliente:</strong> {{ caso.cliente.apellido }}
-            {{ caso.cliente.nombre }}
-          </li>
-          <li class="list-group-item always-show">
-            <strong>Estado:</strong> {{ caso.estado }}
-          </li>
-
-          <!-- Elementos que se colapsan -->
-          <div class="collapse-content" [class.show]="selectedSection">
-            <li class="list-group-item"><strong>ID:</strong> {{ caso.id }}</li>
-            <li class="list-group-item">
-              <strong>Especialidad:</strong> {{ caso.especialidad.nombre }}
-            </li>
-            <li class="list-group-item">
-              <strong>Fecha de Inicio:</strong>
-              {{ caso.fecha_inicio | date : "dd/MM/yyyy" }}
-            </li>
-            <li class="list-group-item">
-              <strong>Descripción:</strong> {{ caso.descripcion }}
-            </li>
-            <li class="list-group-item">
-              <strong>Última Actualización:</strong>
-              {{ caso.fecha_estado | date : "dd/MM/yyyy" }}
-            </li>
-          </div>
-        </ul>
+<div class="container-fluid mt-4" style="max-width: 80%">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-header text-black text-center">
+          <h2 class="mb-0">Acciones</h2>
+        </div>
+        <div class="card-body" *ngIf="caso">
+          <button
+            class="btn btn-outline-primary w-100 mb-2"
+            (click)="showDetalles()"
+          >
+            Ver Detalles
+          </button>
+          <button
+            class="btn btn-outline-primary w-100 mb-2"
+            (click)="showNotas()"
+          >
+            Ver Notas
+          </button>
+          <button
+            class="btn btn-outline-primary w-100 mb-2"
+            (click)="showAbogados()"
+          >
+            Ver Abogados
+          </button>
+          <button
+            class="btn btn-outline-primary w-100 mb-2"
+            (click)="showDocumentos()"
+          >
+            Ver Documentos
+          </button>
+          <button
+            class="btn btn-outline-primary w-100 mb-2"
+            (click)="showRecordatorios()"
+          >
+            Ver Recordatorios
+          </button>
+          <button
+            class="btn btn-outline-primary w-100 mb-2"
+            (click)="showComentarios()"
+          >
+            Ver Comentarios
+          </button>
+          <button class="btn btn-outline-primary w-100" (click)="volver()">
+            Volver
+          </button>
+        </div>
       </div>
+    </div>
 
-      <div class="d-flex flex-wrap gap-2 justify-content-center">
-        <button class="btn btn-outline-primary" (click)="showNotas()">
-          Ver Notas
-        </button>
-        <button class="btn btn-outline-primary" (click)="showAbogados()">
-          Ver Abogados
-        </button>
-        <button class="btn btn-outline-primary" (click)="showDocumentos()">
-          Ver Documentos
-        </button>
-        <button class="btn btn-outline-primary" (click)="showRecordatorios()">
-          Ver Recordatorios
-        </button>
-        <button class="btn btn-outline-primary" (click)="showComentarios()">
-          Ver Comentarios
-        </button>
+    <div class="col-md-9 h-100">
+      <div class="card shadow-sm h-100">
+        <div class="card-body h-100 d-flex flex-column p-0">
+          <ng-container [ngSwitch]="selectedSection">
+            <div *ngIf="selectedSection === 'detalles' && caso" class="h-100">
+              <app-detalles-caso
+                [caso]="caso!"
+                class="h-100 d-flex flex-column my-4"
+              ></app-detalles-caso>
+            </div>
+
+            <div *ngIf="selectedSection === 'notas' && caso" class="h-100">
+              <app-notas-caso
+                [caso]="caso!"
+                class="h-100 d-flex flex-column my-4"
+              ></app-notas-caso>
+            </div>
+
+            <div *ngIf="selectedSection === 'abogados' && caso" class="h-100">
+              <app-abogados-caso
+                [caso]="caso"
+                class="h-100 d-flex flex-column my-4"
+              ></app-abogados-caso>
+            </div>
+
+            <!-- Repetir mismo patrón para los demás componentes -->
+            <div *ngIf="selectedSection === 'documentos' && caso" class="h-100">
+              <app-documentos-caso
+                [caso]="caso"
+                class="h-100 d-flex flex-column my-4"
+              ></app-documentos-caso>
+            </div>
+
+            <div
+              *ngIf="selectedSection === 'recordatorios' && caso"
+              class="h-100"
+            >
+              <app-recordatorios-list
+                [caso]="caso"
+                class="h-100 d-flex flex-column my-4"
+              ></app-recordatorios-list>
+            </div>
+
+            <div
+              *ngIf="selectedSection === 'comentarios' && caso"
+              class="h-100"
+            >
+              <app-comentarios-list
+                [caso]="caso"
+                class="h-100 d-flex flex-column my-4"
+              ></app-comentarios-list>
+            </div>
+          </ng-container>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
-<div class="m-4">
-  <app-notas-caso
-    *ngIf="selectedSection === 'notas' && caso"
-    [caso]="caso!"
-  ></app-notas-caso>
-  <app-abogados-caso
-    class="d-flex justify-content-center"
-    *ngIf="selectedSection === 'abogados' && caso"
-    [caso]="caso"
-  ></app-abogados-caso>
-  <app-documentos-caso
-    *ngIf="selectedSection === 'documentos' && caso"
-    [caso]="caso"
-  ></app-documentos-caso>
-  <app-recordatorios-list
-    class="d-flex justify-content-center"
-    *ngIf="selectedSection === 'recordatorios' && caso"
-    [caso]="caso"
-  ></app-recordatorios-list>
-  <app-comentarios-list
-    class="d-flex justify-content-center"
-    *ngIf="selectedSection === 'comentarios' && caso"
-    [caso]="caso"
-  ></app-comentarios-list>
 </div>
