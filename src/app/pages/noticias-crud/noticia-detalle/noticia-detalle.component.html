@@ -1,15 +1,15 @@
-<div class="container mt-4">
+<div class="container my-4">
     <ng-container *ngIf="noticia; else noNoticia">
-      <div class="card text-dark bg-light shadow-sm">
-        <div class="card-header text-start">
-          <h2>{{ noticia.titulo }}</h2>
+      <div class="card shadow-lg">
+        <div class="card-header bg-light">
+          <h2 class="mb-0">{{ noticia.titulo }}</h2>
         </div>
         <div class="card-body">
-          <p class="card-text">{{ noticia.cuerpo }}</p>
-          <p class="text-muted text-end">{{ noticia.fecha_publicacion }}</p>
-          <div class="text-end mt-3">
-            <a routerLink="/noticias-blog" class="btn btn-secondary">Volver al listado</a>
-          </div>
+          <p class="text-muted mb-2 text-end">{{ noticia.fecha_publicacion }}</p>
+          <p class="fs-5">{{ noticia.cuerpo }}</p>
+        </div>
+        <div class="card-footer text-end">
+          <a routerLink="/noticias-blog" class="btn btn-secondary">Volver al listado</a>
         </div>
       </div>
     </ng-container>
