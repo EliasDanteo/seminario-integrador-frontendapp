@@ -1,4 +1,4 @@
-import IAbogado from './IAbogado.interface.js';
+import { IAbogado } from './IAbogado.interface.js';
 import { ICaso } from './ICaso.interface.js';
 
 export interface INota {

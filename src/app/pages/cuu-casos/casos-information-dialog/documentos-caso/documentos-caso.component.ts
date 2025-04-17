@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import IDocumentos from '../../../../core/interfaces/IDocumentos.interface.js';
+import { IDocumentos } from '../../../../core/interfaces/IDocumentos.interface.js';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ICaso } from '../../../../core/interfaces/ICaso.interface.js';
 import { CommonModule } from '@angular/common';

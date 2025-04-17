@@ -8,6 +8,7 @@ import { ComponentType } from '@angular/cdk/portal';
 import { environment } from '../../../../environments/environment.js';
 import { CRUDDialogComponent } from '../../../shared/crud-dialog/crud-dialog.component.js';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
+import { ClienteService } from '../../../core/services/cliente.service.js';
 @Component({
   selector: 'app-clientes-list',
   standalone: true,
@@ -23,7 +24,11 @@ export class ClientesListComponent {
   showCompanies: boolean = true;
   showPersons: boolean = true;
 
-  constructor(private http: HttpClient, private dialog: MatDialog) {
+  constructor(
+    public clientService: ClienteService,
+    private http: HttpClient,
+    private dialog: MatDialog
+  ) {
     this.loadClientes();
   }
 
@@ -90,25 +95,29 @@ export class ClientesListComponent {
 
   openCreateDialog(): void {
     this.openDialog(CRUDDialogComponent, {
+      title: 'Crear Cliente',
       action: 'post',
       entityType: 'cliente',
-      entity: null,
+      crudService: this.clientService,
     });
   }
   openCreateDialogEmpresa(): void {
     this.openDialog(CRUDDialogComponent, {
+      title: 'Crear Empresa',
       action: 'post',
       entityType: 'empresa',
-      entity: null,
+      crudService: this.clientService,
     });
   }
 
-  openEditDialog(cliente: ICliente): void {
+  openEditDialog(cliente: ICliente, tipo: string): void {
     if (cliente) {
       this.openDialog(CRUDDialogComponent, {
+        title: 'Actualizar ' + tipo,
         action: 'put',
-        entityType: 'cliente',
-        entity: cliente,
+        user: cliente,
+        entityType: tipo,
+        crudService: this.clientService,
       });
     } else {
       console.error('Cliente no disponible');
