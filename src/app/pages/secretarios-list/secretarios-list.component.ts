@@ -8,6 +8,7 @@ import { CRUDDialogComponent } from '../../shared/crud-dialog/crud-dialog.compon
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component.js';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { SecreatarioService } from '../../core/services/secretario.service.js';
 
 @Component({
   selector: 'app-secretarios-list',
@@ -22,7 +23,11 @@ export class SecretariosListComponent {
   fullNameFilter: string = '';
   nroDocFilter: string = '';
 
-  constructor(private http: HttpClient, private dialog: MatDialog) {
+  constructor(
+    public secretarioService: SecreatarioService,
+    private http: HttpClient,
+    private dialog: MatDialog
+  ) {
     this.loadSecretarios();
   }
 
@@ -78,18 +83,21 @@ export class SecretariosListComponent {
 
   openCreateDialog(): void {
     this.openDialog(CRUDDialogComponent, {
+      title: 'Crear Secretario',
       action: 'post',
       entityType: 'secretario',
-      entity: null,
+      crudService: this.secretarioService,
     });
   }
 
   openEditDialog(secretario: ISecretario): void {
     if (secretario) {
       this.openDialog(CRUDDialogComponent, {
+        title: 'Actualizar Secretario',
         action: 'put',
+        user: secretario,
         entityType: 'secretario',
-        entity: secretario,
+        crudService: this.secretarioService,
       });
     }
   }

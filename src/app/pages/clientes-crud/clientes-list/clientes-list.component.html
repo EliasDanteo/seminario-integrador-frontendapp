@@ -99,7 +99,12 @@
             <div class="d-flex justify-content-start gap-2 flex-wrap">
               <button
                 class="btn btn-warning btn-sm shadow-sm mt-1"
-                (click)="openEditDialog(cliente)"
+                (click)="
+                  openEditDialog(
+                    cliente,
+                    cliente.es_empresa ? 'empresa' : 'cliente'
+                  )
+                "
               >
                 Editar
               </button>

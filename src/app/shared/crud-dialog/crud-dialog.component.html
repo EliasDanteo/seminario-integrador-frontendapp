@@ -2,7 +2,7 @@
   <div class="dialog-content">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2 class="h4 mb-0">
-        {{ isEdit ? "Editar " + data.entityType : "Crear " + data.entityType }}
+        {{ title }}
       </h2>
       <button
         type="button"
@@ -12,11 +12,7 @@
       ></button>
     </div>
 
-    <form
-      [formGroup]="entityForm"
-      (ngSubmit)="onSubmit()"
-      class="vertical-form"
-    >
+    <form [formGroup]="form" (ngSubmit)="OnSubmit()" class="vertical-form">
       <!-- Nombre y Apellido en misma fila -->
       <div class="row mb-3">
         <div class="col-md-6">
@@ -29,8 +25,8 @@
             type="text"
           />
         </div>
-        @if((data.entityType === 'cliente' || data.entityType === 'abogado' ||
-        data.entityType === 'secretario')&& (!data.entity?.es_empresa )) {
+        @if((entityType === 'cliente' || entityType === 'abogado' || entityType
+        === 'secretario' || entityType === 'empresa' )) {
         <div class="col-md-6">
           <label for="apellido" class="form-label">Apellido</label>
           <input
@@ -90,9 +86,16 @@
         </div>
       </div>
 
-      @if(data.entityType === 'abogado') {
+      @if(entityType === 'abogado') {
       <!-- Matrícula y Rol en misma fila -->
       <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="id_rol" class="form-label">Rol</label>
+          <select id="id_rol" class="form-select" formControlName="id_rol">
+            <option [value]="1">Admin</option>
+            <option [value]="2">Abogado</option>
+          </select>
+        </div>
         <div class="col-md-6">
           <label for="matricula" class="form-label">Matrícula</label>
           <input
@@ -103,14 +106,28 @@
             type="text"
           />
         </div>
-        <div class="col-md-6">
-          <label for="id_rol" class="form-label">Rol</label>
-          <select id="id_rol" class="form-select" formControlName="id_rol">
-            <option [value]="1">Admin</option>
-            <option [value]="2">Abogado</option>
-          </select>
-        </div>
       </div>
+      <div class="mb-3">
+        <label for="especialidades" class="form-label">Especialidades</label>
+        <select
+          id="especialidades"
+          class="form-select"
+          formControlName="especialidades"
+          multiple
+          size="3"
+          style="height: auto; min-height: 38px"
+        >
+          <option [value]="1">Civil y Comercial</option>
+          <option [value]="2">Familiar</option>
+          <option [value]="3">Laboral</option>
+          <option [value]="4">Penal</option>
+          <option [value]="5">Otro</option>
+        </select>
+        <small class="form-text text-muted"
+          >Mantén presionado Ctrl para seleccionar múltiples opciones</small
+        >
+      </div>
+
       }
 
       <div class="mb-3">
@@ -124,7 +141,20 @@
         />
       </div>
 
-      @if(data.entityType === 'secretario') {
+      <div class="mb-3">
+        <label for="confirmPassword" class="form-label"
+          >Confirmar Contraseña</label
+        >
+        <input
+          id="confirmPassword"
+          class="form-control"
+          formControlName="confirmPassword"
+          placeholder="Repite la contraseña"
+          type="password"
+        />
+      </div>
+
+      @if(entityType === 'secretario') {
       <div class="mb-3">
         <label for="turno_trabajo" class="form-label">Turno de Trabajo</label>
         <select
@@ -138,7 +168,7 @@
           <option value="noche">Noche</option>
         </select>
       </div>
-      } @if(data.entityType === 'abogado') {
+      } @if(entityType === 'abogado') {
       <div class="mb-3">
         <label for="foto" class="form-label">Foto</label>
         <div class="d-flex align-items-center">
@@ -165,15 +195,6 @@
           </button>
         </div>
       </div>
-      } @if(previewUrl) {
-      <div class="mb-3">
-        <img
-          [src]="previewUrl"
-          alt="Vista previa"
-          class="img-thumbnail"
-          style="max-width: 150px"
-        />
-      </div>
       }
 
       <div class="d-flex justify-content-end gap-2 mt-4">
@@ -184,12 +205,8 @@
         >
           Cancelar
         </button>
-        <button
-          type="submit"
-          [disabled]="!entityForm.valid"
-          class="btn btn-primary"
-        >
-          {{ isEdit ? "Actualizar" : "Crear" }}
+        <button type="submit" [disabled]="!form.valid" class="btn btn-primary">
+          {{ action === "post" ? "Crear" : "Actualizar" }}
         </button>
       </div>
     </form>
