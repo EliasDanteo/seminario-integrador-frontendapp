@@ -2,37 +2,71 @@
   <h2 class="text-center mb-4 text-black p-3 rounded">Listado de Clientes</h2>
 
   <div class="d-flex flex-wrap gap-2 mb-3">
-    <button class="btn btn-success shadow" (click)="openCreateDialog()">Agregar Cliente</button>
-    <button class="btn btn-success shadow" (click)="openCreateDialogEmpresa()">Agregar Empresa</button>
+    <button class="btn btn-success shadow" (click)="openCreateDialog()">
+      Agregar Cliente
+    </button>
+    <button class="btn btn-success shadow" (click)="openCreateDialogEmpresa()">
+      Agregar Empresa
+    </button>
   </div>
 
   <div class="row mb-3">
     <div class="col-md-4 mb-2">
-      <input type="text" class="form-control" placeholder="Filtrar por Apellido y Nombre" name="fullNameFilter"
-        id="fullNameFilter" [(ngModel)]="fullNameFilter" (ngModelChange)="applyFilters()">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Filtrar por Apellido y Nombre"
+        name="fullNameFilter"
+        id="fullNameFilter"
+        [(ngModel)]="fullNameFilter"
+        (ngModelChange)="applyFilters()"
+      />
     </div>
 
     <div class="col-md-4 mb-2">
-      <input type="text" class="form-control" placeholder="Filtrar por Número de Documento" name="nroDocFilter"
-        id="nroDocFilter" [(ngModel)]="nroDocFilter" (ngModelChange)="applyFilters()">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Filtrar por Número de Documento"
+        name="nroDocFilter"
+        id="nroDocFilter"
+        [(ngModel)]="nroDocFilter"
+        (ngModelChange)="applyFilters()"
+      />
     </div>
 
     <div class="col-md-4 d-flex flex-wrap align-items-center gap-3 mb-2">
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="showCompanies" [(ngModel)]="showCompanies"
-          (change)="applyFilters()" checked>
-        <label class="form-check-label" for="showCompanies">Mostrar Empresas</label>
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="showCompanies"
+          [(ngModel)]="showCompanies"
+          (change)="applyFilters()"
+          checked
+        />
+        <label class="form-check-label" for="showCompanies"
+          >Mostrar Empresas</label
+        >
       </div>
 
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="showPersons" [(ngModel)]="showPersons"
-          (change)="applyFilters()" checked>
-        <label class="form-check-label" for="showPersons">Mostrar Personas</label>
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="showPersons"
+          [(ngModel)]="showPersons"
+          (change)="applyFilters()"
+          checked
+        />
+        <label class="form-check-label" for="showPersons"
+          >Mostrar Personas</label
+        >
       </div>
     </div>
   </div>
 
-  @if (filteredClientes) {
+  @if (filteredClientes == null || filteredClientes.length > 0) {
   <div class="table-responsive">
     <table class="table table-hover table-bordered shadow-sm">
       <thead class="bg-success text-white">
@@ -50,8 +84,12 @@
       <tbody>
         @for (cliente of filteredClientes; track cliente.id) {
         <tr class="align-middle">
-          <td>{{ cliente.es_empresa ? 'Sí' : 'No' }}</td>
-          <td>{{ cliente.nombre + (cliente.apellido ? ' ' + cliente.apellido : '') }}</td>
+          <td>{{ cliente.es_empresa ? "Sí" : "No" }}</td>
+          <td>
+            {{
+              cliente.nombre + (cliente.apellido ? " " + cliente.apellido : "")
+            }}
+          </td>
           <td>{{ cliente.email }}</td>
           <td>{{ cliente.telefono }}</td>
           <td>{{ cliente.tipo_doc }}</td>
@@ -59,14 +97,28 @@
           <td>{{ cliente.fecha_alta }}</td>
           <td>
             <div class="d-flex justify-content-start gap-2 flex-wrap">
-              <button class="btn btn-warning btn-sm shadow-sm mt-1" (click)="openEditDialog(cliente)">Editar</button>
-              <button class="btn btn-danger btn-sm shadow-sm mt-1" (click)="deleteCliente(cliente)">Eliminar</button>
+              <button
+                class="btn btn-warning btn-sm shadow-sm mt-1"
+                (click)="openEditDialog(cliente)"
+              >
+                Editar
+              </button>
+              <button
+                class="btn btn-danger btn-sm shadow-sm mt-1"
+                (click)="deleteCliente(cliente)"
+              >
+                Eliminar
+              </button>
             </div>
           </td>
         </tr>
         }
       </tbody>
     </table>
+  </div>
+  } @else {
+  <div class="alert alert-info text-center" role="alert">
+    No hay clientes para mostrar.
   </div>
   }
 </div>

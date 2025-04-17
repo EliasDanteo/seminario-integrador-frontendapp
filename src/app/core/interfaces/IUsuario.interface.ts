@@ -1,9 +1,9 @@
-import IAbogado from './IAbogado.interface.js';
+import { IAbogado } from './IAbogado.interface.js';
 import { ICliente } from './ICliente.interface.js';
 import { ISecretario } from './ISecretario.interface.js';
 
 export interface IUsuario {
-  id: number;
+  id: string;
   nombre: string;
   apellido: string;
   email: string;

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import IAbogado from '../../../core/interfaces/IAbogado.interface.js';
+import { IAbogado } from '../../../core/interfaces/IAbogado.interface.js';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';

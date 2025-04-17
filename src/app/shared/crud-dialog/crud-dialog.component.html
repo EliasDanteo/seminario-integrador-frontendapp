@@ -1,100 +1,197 @@
-<div class="container">
-  <div class="dialog-title">
-    <h2 mat-dialog-title>
-      {{ isEdit ? 'Editar ' + data.entityType : 'Crear ' + data.entityType }}
-    </h2>
-    <button type="button" class="btn-close" title="Cerrar ventana" (click)="onClose()"></button>
-  </div>
+<div class="dialog-container">
+  <div class="dialog-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="h4 mb-0">
+        {{ isEdit ? "Editar " + data.entityType : "Crear " + data.entityType }}
+      </h2>
+      <button
+        type="button"
+        class="btn-close"
+        title="Cerrar ventana"
+        (click)="onClose()"
+      ></button>
+    </div>
 
-  <form [formGroup]="entityForm" (ngSubmit)="onSubmit()">
-    <mat-dialog-content class="common-dialog">
-
-      <mat-form-field>
-        <mat-label>Nombre</mat-label>
-        <input matInput formControlName="nombre" placeholder="Ej: Juan" type="text" />
-      </mat-form-field>
-    
-      @if((data.entityType === 'cliente' || data.entityType === 'abogado' || data.entityType === 'secretario')&& (!data.entity?.es_empresa )) {
-      <mat-form-field>
-        <mat-label>Apellido</mat-label>
-        <input matInput formControlName="apellido" placeholder="Ej: Pérez" type="text" />
-      </mat-form-field>
-      }
-
-      <mat-form-field>
-        <mat-label>Email</mat-label>
-        <input matInput formControlName="email" placeholder="Ej: ejemplo@email.com" type="email" />
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Teléfono</mat-label>
-        <input matInput formControlName="telefono" placeholder="Ej: 1234567890" type="tel" />
-      </mat-form-field>
-
-      <ng-container>
-        <mat-form-field>
-          <mat-label>Tipo Documento</mat-label>
-          <input matInput formControlName="tipo_doc" placeholder="Ej: DNI" type="text" />
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Número Documento</mat-label>
-          <input matInput formControlName="nro_doc" placeholder="Ej: 12345678" type="text" />
-        </mat-form-field>
-
-        @if(data.entityType === 'abogado') {
-        <mat-form-field>
-          <mat-label>Matrícula</mat-label>
-          <input matInput formControlName="matricula" placeholder="Ej: ABC123" type="text" />
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Rol</mat-label>
-          <mat-select formControlName="id_rol">
-            <mat-option [value]="1">Admin</mat-option>
-            <mat-option [value]="2">Abogado</mat-option>
-          </mat-select>
-        </mat-form-field>
-
+    <form
+      [formGroup]="entityForm"
+      (ngSubmit)="onSubmit()"
+      class="vertical-form"
+    >
+      <!-- Nombre y Apellido en misma fila -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input
+            id="nombre"
+            class="form-control"
+            formControlName="nombre"
+            placeholder="Ej: Juan"
+            type="text"
+          />
+        </div>
+        @if((data.entityType === 'cliente' || data.entityType === 'abogado' ||
+        data.entityType === 'secretario')&& (!data.entity?.es_empresa )) {
+        <div class="col-md-6">
+          <label for="apellido" class="form-label">Apellido</label>
+          <input
+            id="apellido"
+            class="form-control"
+            formControlName="apellido"
+            placeholder="Ej: Pérez"
+            type="text"
+          />
+        </div>
         }
-        <mat-form-field>
-          <mat-label>Contraseña</mat-label>
-          <input matInput formControlName="contrasena" placeholder="123456" type="password" />
-        </mat-form-field>
+      </div>
 
-        @if(data.entityType === 'secretario') {
-        <mat-form-field>
-          <mat-label>Turno de Trabajo</mat-label>
-          <mat-select formControlName="turno_trabajo" placeholder="Turno de trabajo">
-            <mat-option value="mañana">Mañana</mat-option>
-            <mat-option value="tarde">Tarde</mat-option>
-            <mat-option value="noche">Noche</mat-option>
-          </mat-select>
-        </mat-form-field>
-        }
-      </ng-container>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          id="email"
+          class="form-control"
+          formControlName="email"
+          placeholder="Ej: ejemplo@email.com"
+          type="email"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="telefono" class="form-label">Teléfono</label>
+        <input
+          id="telefono"
+          class="form-control"
+          formControlName="telefono"
+          placeholder="Ej: 1234567890"
+          type="tel"
+        />
+      </div>
+
+      <!-- Tipo y Número de Documento en misma fila -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="tipo_doc" class="form-label">Tipo Documento</label>
+          <input
+            id="tipo_doc"
+            class="form-control"
+            formControlName="tipo_doc"
+            placeholder="Ej: DNI"
+            type="text"
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="nro_doc" class="form-label">Número Documento</label>
+          <input
+            id="nro_doc"
+            class="form-control"
+            formControlName="nro_doc"
+            placeholder="Ej: 12345678"
+            type="text"
+          />
+        </div>
+      </div>
 
       @if(data.entityType === 'abogado') {
-      <mat-form-field>
-        <mat-label>Foto</mat-label>
-        <input matInput placeholder="Selecciona una imagen" [value]="selectedFile?.name" readonly>
-        <input type="file" (change)="onFileSelected($event)" formControlName="foto" hidden #fileInput />
-        <button mat-button type="button" (click)="fileInput.click()">Subir Foto</button>
-      </mat-form-field>
+      <!-- Matrícula y Rol en misma fila -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="matricula" class="form-label">Matrícula</label>
+          <input
+            id="matricula"
+            class="form-control"
+            formControlName="matricula"
+            placeholder="Ej: ABC123"
+            type="text"
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="id_rol" class="form-label">Rol</label>
+          <select id="id_rol" class="form-select" formControlName="id_rol">
+            <option [value]="1">Admin</option>
+            <option [value]="2">Abogado</option>
+          </select>
+        </div>
+      </div>
       }
 
-      @if(previewUrl) {
-      <img [src]="previewUrl" alt="Vista previa" style="max-width: 150px; margin-top: 10px;" />
-      }
-    </mat-dialog-content>
+      <div class="mb-3">
+        <label for="contrasena" class="form-label">Contraseña</label>
+        <input
+          id="contrasena"
+          class="form-control"
+          formControlName="contrasena"
+          placeholder="123456"
+          type="password"
+        />
+      </div>
 
-    <mat-dialog-actions>
-      <button mat-button type="submit" [disabled]="!entityForm.valid" class="btn btn-success">
-        {{ isEdit ? 'Actualizar' : 'Crear' }}
-      </button>
-      <button mat-button type="button" class="btn-secondary" (click)="onClose()">
-        Cancelar
-      </button>
-    </mat-dialog-actions>
-  </form>
+      @if(data.entityType === 'secretario') {
+      <div class="mb-3">
+        <label for="turno_trabajo" class="form-label">Turno de Trabajo</label>
+        <select
+          id="turno_trabajo"
+          class="form-select"
+          formControlName="turno_trabajo"
+        >
+          <option value="">Seleccione un turno</option>
+          <option value="mañana">Mañana</option>
+          <option value="tarde">Tarde</option>
+          <option value="noche">Noche</option>
+        </select>
+      </div>
+      } @if(data.entityType === 'abogado') {
+      <div class="mb-3">
+        <label for="foto" class="form-label">Foto</label>
+        <div class="d-flex align-items-center">
+          <input
+            id="foto"
+            class="form-control"
+            placeholder="Selecciona una imagen"
+            [value]="selectedFile?.name"
+            readonly
+          />
+          <input
+            type="file"
+            (change)="onFileSelected($event)"
+            formControlName="foto"
+            hidden
+            #fileInput
+          />
+          <button
+            class="btn btn-outline-secondary ms-2"
+            type="button"
+            (click)="fileInput.click()"
+          >
+            Subir
+          </button>
+        </div>
+      </div>
+      } @if(previewUrl) {
+      <div class="mb-3">
+        <img
+          [src]="previewUrl"
+          alt="Vista previa"
+          class="img-thumbnail"
+          style="max-width: 150px"
+        />
+      </div>
+      }
+
+      <div class="d-flex justify-content-end gap-2 mt-4">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="onClose()"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          [disabled]="!entityForm.valid"
+          class="btn btn-primary"
+        >
+          {{ isEdit ? "Actualizar" : "Crear" }}
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

@@ -1,9 +1,9 @@
 .transition-all {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.4s ease-in-out;
 }
 
 .col-md-8 {
-  animation: fadeIn 1.2s ease-in-out;
+  animation: fadeIn 1.3s ease-in-out;
 }
 
 @keyframes fadeIn {

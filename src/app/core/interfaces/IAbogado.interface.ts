@@ -1,6 +1,6 @@
 import { IUsuario } from './IUsuario.interface.js';
 
-export default interface IAbogado extends IUsuario {
+export interface IAbogado extends IUsuario {
   foto?: Blob | { type: string; data: number[] };
   matricula: string;
   rol?: { id: number; nombre: string };

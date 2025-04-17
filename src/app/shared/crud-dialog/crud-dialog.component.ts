@@ -28,7 +28,6 @@ import { SnackbarService } from '../../core/services/snackbar.service.js';
   standalone: true,
   imports: [
     MatButtonModule,
-    MatDialogActions,
     FormsModule,
     MatDialogModule,
     MatFormFieldModule,
