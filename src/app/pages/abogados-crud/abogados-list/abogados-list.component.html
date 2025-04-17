@@ -1,21 +1,37 @@
 <div class="container mt-4">
   <h2 class="text-center mb-4 text-black p-3 rounded">Listado de Abogados</h2>
 
-<button class="btn btn-success mb-3 shadow" (click)="openCreateDialog()">Agregar Abogado</button>
+  <button class="btn btn-success mb-3 shadow" (click)="openCreateDialog()">
+    Agregar Abogado
+  </button>
 
-<div class="row mb-3">
-  <div class="col-md-4 mb-2">
-    <input type="text" class="form-control" placeholder="Filtrar por Apellido y Nombre" name="fullNameFilter"
-      id="fullNameFilter" [(ngModel)]="fullNameFilter" (ngModelChange)="applyFilters()">
+  <div class="row mb-3">
+    <div class="col-md-4 mb-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Filtrar por Apellido y Nombre"
+        name="fullNameFilter"
+        id="fullNameFilter"
+        [(ngModel)]="fullNameFilter"
+        (ngModelChange)="applyFilters()"
+      />
+    </div>
+
+    <div class="col-md-4 mb-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Filtrar por Matrícula"
+        name="matriculaFilter"
+        id="matriculaFilter"
+        [(ngModel)]="matriculaFilter"
+        (ngModelChange)="applyFilters()"
+      />
+    </div>
   </div>
 
-  <div class="col-md-4 mb-2">
-    <input type="text" class="form-control" placeholder="Filtrar por Matrícula" name="matriculaFilter"
-      id="matriculaFilter" [(ngModel)]="matriculaFilter" (ngModelChange)="applyFilters()">
-  </div>
-</div>
-
-  @if (filteredAbogados) {
+  @if (filteredAbogados == null || filteredAbogados.length > 0) {
   <div class="table-responsive">
     <table class="table table-hover table-bordered shadow-sm">
       <thead class="bg-success text-white">
@@ -33,7 +49,7 @@
       <tbody>
         @for (abogado of filteredAbogados; track abogado.id) {
         <tr class="align-middle">
-          <td>{{ abogado.apellido + ' ' + abogado.nombre }}</td>
+          <td>{{ abogado.apellido + " " + abogado.nombre }}</td>
           <td>{{ abogado.email }}</td>
           <td>{{ abogado.telefono }}</td>
           <td>{{ abogado.tipo_doc }}</td>
@@ -42,8 +58,18 @@
           <td>{{ abogado.matricula }}</td>
           <td>
             <div class="d-flex justify-content-start gap-2 flex-wrap">
-              <button class="btn btn-warning btn-sm shadow-sm" (click)="openEditDialog(abogado)">Editar</button>
-              <button class="btn btn-danger btn-sm shadow-sm" (click)="deleteAbogado(abogado)">Eliminar</button>
+              <button
+                class="btn btn-warning btn-sm shadow-sm"
+                (click)="openEditDialog(abogado)"
+              >
+                Editar
+              </button>
+              <button
+                class="btn btn-danger btn-sm shadow-sm"
+                (click)="deleteAbogado(abogado)"
+              >
+                Eliminar
+              </button>
             </div>
           </td>
         </tr>
@@ -51,4 +77,9 @@
       </tbody>
     </table>
   </div>
+  } @else {
+  <div class="alert alert-info text-center" role="alert">
+    No hay abogados para mostrar.
+  </div>
   }
+</div>

@@ -1,12 +1,14 @@
 <div class="container mt-4">
-  <h2 class="text-center mb-4 text-black p-3 rounded">Listado de Actividades</h2>
+  <h2 class="text-center mb-4 text-black p-3 rounded">
+    Listado de Actividades
+  </h2>
 
   <div class="d-flex gap-3 mb-3">
     <button class="btn btn-success shadow" (click)="openCreateDialog()">Agregar Actividad</button>
     <button class="btn btn-primary shadow" (click)="openJusDialog()">Actualizar precio JUS</button>
   </div>
 
-  @if (actividades) {
+  @if (actividades == null || actividades.length > 0) {
   <div class="table-responsive">
     <table class="table table-hover table-bordered shadow-sm">
       <thead class="bg-success text-white">
@@ -23,19 +25,28 @@
         @for (act of actividades; track act.id) {
         <tr class="align-middle">
           <td>{{ act.nombre }}</td>
-          <td>{{ act.fecha_hora_desde | date: 'dd/MM/yyyy, h:mm a' }}</td>
+          <td>{{ act.fecha_hora_desde | date : "dd/MM/yyyy, h:mm a" }}</td>
           <td>{{ act.cant_jus }}</td>
           <td>${{ act.precio_pesos }}</td>
           <td>
             <div class="d-flex justify-content-start gap-2 flex-wrap">
-              <button class="btn btn-warning btn-sm shadow-sm mt-1" (click)="openEditDialog(act, 'name')">
+              <button
+                class="btn btn-warning btn-sm shadow-sm mt-1"
+                (click)="openEditDialog(act, 'name')"
+              >
                 Editar
               </button>
-              <button class="btn btn-danger btn-sm shadow-sm mt-1" (click)="deleteActividad(act)">
+              <button
+                class="btn btn-danger btn-sm shadow-sm mt-1"
+                (click)="deleteActividad(act)"
+              >
                 Eliminar
               </button>
-              <button class="btn btn-sm shadow-sm mt-1" style="background-color: cornflowerblue;"
-                (click)="openEditDialog(act, 'price')">
+              <button
+                class="btn btn-sm shadow-sm mt-1"
+                style="background-color: cornflowerblue"
+                (click)="openEditDialog(act, 'price')"
+              >
                 Actualizar precio
               </button>
             </div>
@@ -44,6 +55,10 @@
         }
       </tbody>
     </table>
+  </div>
+  } @else {
+  <div class="alert alert-info text-center" role="alert">
+    No hay actividades para mostrar.
   </div>
   }
 </div>

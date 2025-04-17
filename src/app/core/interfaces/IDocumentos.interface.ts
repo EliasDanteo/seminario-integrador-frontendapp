@@ -1,6 +1,6 @@
 import { ICaso } from './ICaso.interface.js';
 
-export default interface IDocumentos {
+export interface IDocumentos {
   id: number;
   nombre: string;
   archivo: Blob;
