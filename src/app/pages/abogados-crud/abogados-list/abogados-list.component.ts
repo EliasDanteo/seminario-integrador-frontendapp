@@ -123,7 +123,7 @@ export class AbogadosListComponent {
     });
   }
   eliminarAbogado(abogado: IAbogado): void {
-    this.abogadoService.delete(abogado.id).subscribe({
+    this.abogadoService.deactivate(abogado.id).subscribe({
       next: () => {
         this.loadAbogados();
       },

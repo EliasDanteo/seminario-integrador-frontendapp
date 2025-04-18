@@ -1,34 +1,74 @@
+<!-- NAVBAR HTML -->
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Sistema Jurídico</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+          <a class="nav-link animated-link" href="#">Inicio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/abogados-list">Abogados</a>
+          <a class="nav-link animated-link" href="/abogados-list">Abogados</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/clientes-list">Clientes</a>
+          <a class="nav-link animated-link" href="/clientes-list">Clientes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/secretarios-list">Secretarios</a>
+          <a class="nav-link animated-link" href="/secretarios-list"
+            >Secretarios</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/especialidades-list">Especialidades</a>
+          <a class="nav-link animated-link" href="/casos-list">Casos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/casos-list">Casos</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/actividades-list">Actividades</a>
+          <a class="nav-link animated-link" href="/actividades-list"
+            >Actividades</a
+          >
         </li>
       </ul>
     </div>
   </div>
 </nav>
+
+<style>
+  .animated-link {
+    position: relative;
+    color: #000;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .animated-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background-color: #007bff;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .animated-link:hover::after,
+  .animated-link.active::after {
+    transform: scaleX(1);
+  }
+
+  .animated-link:hover {
+    color: #007bff;
+  }
+</style>

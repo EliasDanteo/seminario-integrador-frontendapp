@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { ApiResponse } from '../interfaces/api-response.interface.js';
 import { IAbogado } from '../interfaces/IAbogado.interface.js';
 import { ICrudService } from './crud-service.interface.js';
+import { IEspecialidad } from '../interfaces/IEspecialidad.interface.js';
 
 export interface IAbogadoCreate {
   //TODO: verificar los datos del cliente
@@ -45,7 +46,15 @@ export class AbogadoService implements ICrudService<IAbogado, IAbogadoCreate> {
     return this.http.put<ApiResponse<IAbogado>>(`${this.url}/${id}`, abogado);
   }
 
-  delete(id: string): Observable<ApiResponse<IAbogado>> {
-    return this.http.delete<ApiResponse<IAbogado>>(`${this.url}/${id}`);
+  deactivate(id: string): Observable<ApiResponse<IAbogado>> {
+    return this.http.patch<ApiResponse<IAbogado>>(
+      `${this.url}/deactivate/${id}`,
+      {}
+    );
+  }
+  findEspecialidad(id: string): Observable<ApiResponse<IEspecialidad>> {
+    return this.http.get<ApiResponse<IEspecialidad>>(
+      `${environment.abogadosUrl}/${id}/especialidades`
+    );
   }
 }

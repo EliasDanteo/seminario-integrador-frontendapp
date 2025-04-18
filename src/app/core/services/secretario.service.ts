@@ -48,7 +48,10 @@ export class SecreatarioService
     );
   }
 
-  delete(id: string): Observable<ApiResponse<ISecretario>> {
-    return this.http.delete<ApiResponse<ISecretario>>(`${this.url}/${id}`);
+  deactivate(id: string): Observable<ApiResponse<ISecretario>> {
+    return this.http.patch<ApiResponse<ISecretario>>(
+      `${this.url}/deactivate/${id}`,
+      {}
+    );
   }
 }
