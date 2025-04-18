@@ -14,6 +14,8 @@ import { passwordMatchValidator } from '../../core/functions/password-match.vali
 import { ISecretario } from '../../core/interfaces/ISecretario.interface.js';
 import { IAbogado } from '../../core/interfaces/IAbogado.interface.js';
 import { ICliente } from '../../core/interfaces/ICliente.interface.js';
+import { AbogadoService } from '../../core/services/abogados.service.js';
+import { IEspecialidad } from '../../core/interfaces/IEspecialidad.interface.js';
 
 interface DialogData {
   title: string;
@@ -73,7 +75,6 @@ export class CRUDDialogComponent {
     this.entityType = dialogData.entityType;
 
     //ABOGADO
-    console.log('entityType:', this.entityType);
     if (this.entityType === 'abogado') {
       this.form.addControl(
         'matricula',
@@ -99,6 +100,7 @@ export class CRUDDialogComponent {
         'es_empresa',
         new FormControl('', Validators.required)
       );
+      this.form.get('es_empresa')?.setValue(false);
     }
     // SECRETARIO
     else if (this.entityType === 'secretario') {
@@ -139,12 +141,19 @@ export class CRUDDialogComponent {
         'rol' in dialogData.user
       ) {
         form['matricula'].setValue(dialogData.user.matricula);
-        console.log(dialogData.user.rol, dialogData.user.especialidades);
         form['id_rol'].setValue(dialogData.user.rol.id);
-        if ('especialidades' in dialogData.user) {
-          //TODO: el findall no me trae las especialidedes
-          form['especialidades'].setValue(dialogData.user.especialidades);
-        }
+        const abogadoService = this.crudService as AbogadoService;
+        abogadoService.findEspecialidad(dialogData.user.id).subscribe({
+          next: (especialidades) => {
+            const nombres = especialidades.data.map(
+              (e: IEspecialidad) => e.nombre
+            );
+            form['especialidades'].setValue(nombres);
+          },
+          error: (err) => {
+            console.error('Error al obtener especialidades', err);
+          },
+        });
       }
       //CLIENTE
       else if (
@@ -172,90 +181,164 @@ export class CRUDDialogComponent {
 
   sendFullUpdate() {
     if (this.form.valid) {
-      const formData = { ...this.form.value };
+      try {
+        const formData = { ...this.form.value };
 
-      if (!formData.contrasena) {
-        delete formData.contrasena;
-      }
-      if (!formData.confirmPassword) {
-        delete formData.confirmPassword;
-      }
-      if (this.dialogData.entityType === 'abogado') {
-        if (!Array.isArray(formData.especialidades)) {
-          formData.especialidades = [formData.especialidades];
+        if (!formData.contrasena) {
+          delete formData.contrasena;
         }
-        if (this.action === 'post') {
-          console.log('form data:', formData);
-          this.crudService.create(formData as IAbogado).subscribe({
-            next: (response) => {
-              console.log(formData);
-              this.snackbarService.showSuccess('¡Creado Exitosamente!', 5000);
-              this.dialogRef.close(response);
-            },
-          });
+        if (!formData.confirmPassword) {
+          delete formData.confirmPassword;
         }
-        if (this.action === 'put') {
-          this.crudService.update(this.userId!, formData).subscribe({
-            next: (response) => {
-              this.snackbarService.showSuccess('¡Actualización Exitosa!', 5000);
-              this.dialogRef.close(response);
-            },
-          });
+        if (this.dialogData.entityType === 'abogado') {
+          if (!Array.isArray(formData.especialidades)) {
+            formData.especialidades = [formData.especialidades];
+          }
+          if (this.action === 'post') {
+            this.crudService.create(formData as IAbogado).subscribe({
+              next: (response) => {
+                this.snackbarService.showSuccess('¡Creado Exitosamente!', 5000);
+                this.dialogRef.close(response);
+              },
+              error: (error) => {
+                console.error('Error al crear el abogado:', error);
+                this.snackbarService.showError(
+                  'Error al crear el abogado',
+                  5000
+                );
+              },
+            });
+          }
+          if (this.action === 'put') {
+            this.crudService.update(this.userId!, formData).subscribe({
+              next: (response) => {
+                this.snackbarService.showSuccess(
+                  '¡Actualización Exitosa!',
+                  5000
+                );
+                this.dialogRef.close(response);
+              },
+              error: (error) => {
+                console.error('Error al actualizar el abogado:', error);
+                this.snackbarService.showError(
+                  'Error al actualizar el abogado',
+                  5000
+                );
+              },
+            });
+          }
         }
-      }
-      if (this.dialogData.entityType === 'cliente') {
-        if (this.action === 'post') {
-          this.crudService.create(formData as ICliente).subscribe({
-            next: (response) => {
-              this.snackbarService.showSuccess('¡Creado Exitosamente!', 5000);
-              this.dialogRef.close(response);
-            },
-          });
+        if (this.dialogData.entityType === 'cliente') {
+          if (this.action === 'post') {
+            this.crudService.create(formData as ICliente).subscribe({
+              next: (response) => {
+                this.snackbarService.showSuccess('¡Creado Exitosamente!', 5000);
+                this.dialogRef.close(response);
+              },
+              error: (error) => {
+                console.error('Error al crear el cliente:', error);
+                this.snackbarService.showError(
+                  'Error al crear el cliente',
+                  5000
+                );
+              },
+            });
+          }
+          if (this.action === 'put') {
+            this.crudService.update(this.userId!, formData).subscribe({
+              next: (response) => {
+                this.snackbarService.showSuccess(
+                  '¡Actualización Exitosa!',
+                  5000
+                );
+                this.dialogRef.close(response);
+              },
+              error: (error) => {
+                console.error('Error al actualizar el cliente:', error);
+                this.snackbarService.showError(
+                  'Error al actualizar el cliente',
+                  5000
+                );
+              },
+            });
+          }
         }
-        if (this.action === 'put') {
-          this.crudService.update(this.userId!, formData).subscribe({
-            next: (response) => {
-              this.snackbarService.showSuccess('¡Actualización Exitosa!', 5000);
-              this.dialogRef.close(response);
-            },
-          });
+        if (this.dialogData.entityType === 'secretario') {
+          if (this.action === 'post') {
+            this.crudService.create(formData as ISecretario).subscribe({
+              next: (response) => {
+                this.snackbarService.showSuccess('¡Creado Exitosamente!', 5000);
+                this.dialogRef.close(response);
+              },
+              error: (error) => {
+                console.error('Error al crear el secretario:', error);
+                this.snackbarService.showError(
+                  'Error al crear el secretario',
+                  5000
+                );
+              },
+            });
+          }
+          if (this.action === 'put') {
+            this.crudService.update(this.userId!, formData).subscribe({
+              next: (response) => {
+                this.snackbarService.showSuccess(
+                  '¡Actualización Exitosa!',
+                  5000
+                );
+                this.dialogRef.close(response);
+              },
+              error: (error) => {
+                console.error('Error al actualizar el secretario:', error);
+                this.snackbarService.showError(
+                  'Error al actualizar el secretario',
+                  5000
+                );
+              },
+            });
+          }
         }
-      }
-      if (this.dialogData.entityType === 'secretario') {
-        if (this.action === 'post') {
-          this.crudService.create(formData as ISecretario).subscribe({
-            next: (response) => {
-              this.snackbarService.showSuccess('¡Creado Exitosamente!', 5000);
-              this.dialogRef.close(response);
-            },
-          });
+        if (this.dialogData.entityType === 'empresa') {
+          if (this.action === 'post') {
+            this.crudService.create(formData as ICliente).subscribe({
+              next: (response) => {
+                this.snackbarService.showSuccess('¡Creado Exitosamente!', 5000);
+                this.dialogRef.close(response);
+              },
+              error: (error) => {
+                console.error('Error al crear la empresa:', error);
+                this.snackbarService.showError(
+                  'Error al crear la empresa',
+                  5000
+                );
+              },
+            });
+          }
+          if (this.action === 'put') {
+            this.crudService.update(this.userId!, formData).subscribe({
+              next: (response) => {
+                this.snackbarService.showSuccess(
+                  '¡Actualización Exitosa!',
+                  5000
+                );
+                this.dialogRef.close(response);
+              },
+              error: (error) => {
+                console.error('Error al actualizar la empresa:', error);
+                this.snackbarService.showError(
+                  'Error al actualizar la empresa',
+                  5000
+                );
+              },
+            });
+          }
         }
-        if (this.action === 'put') {
-          this.crudService.update(this.userId!, formData).subscribe({
-            next: (response) => {
-              this.snackbarService.showSuccess('¡Actualización Exitosa!', 5000);
-              this.dialogRef.close(response);
-            },
-          });
-        }
-      }
-      if (this.dialogData.entityType === 'empresa') {
-        if (this.action === 'post') {
-          this.crudService.create(formData as ICliente).subscribe({
-            next: (response) => {
-              this.snackbarService.showSuccess('¡Creado Exitosamente!', 5000);
-              this.dialogRef.close(response);
-            },
-          });
-        }
-        if (this.action === 'put') {
-          this.crudService.update(this.userId!, formData).subscribe({
-            next: (response) => {
-              this.snackbarService.showSuccess('¡Actualización Exitosa!', 5000);
-              this.dialogRef.close(response);
-            },
-          });
-        }
+      } catch (error) {
+        console.error('Error al enviar la actualización:', error);
+        this.snackbarService.showError(
+          'Error al enviar la actualización',
+          5000
+        );
       }
     }
   }

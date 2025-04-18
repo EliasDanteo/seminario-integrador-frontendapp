@@ -43,7 +43,10 @@ export class ClienteService implements ICrudService<ICliente, IClienteCreate> {
     return this.http.put<ApiResponse<ICliente>>(`${this.url}/${id}`, abogado);
   }
 
-  delete(id: string): Observable<ApiResponse<ICliente>> {
-    return this.http.delete<ApiResponse<ICliente>>(`${this.url}/${id}`);
+  deactivate(id: string): Observable<ApiResponse<ICliente>> {
+    return this.http.delete<ApiResponse<ICliente>>(
+      `${this.url}/deactivate/${id}`,
+      {}
+    );
   }
 }
