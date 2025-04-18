@@ -1,0 +1,54 @@
+<div class="login-container">
+  <div class="login-box" [ngClass]="{ 'fade-in': true }">
+    <h2>Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          class="form-control"
+          placeholder="Ingresa tu email"
+        />
+        <div
+          *ngIf="
+            loginForm.controls['email'].invalid &&
+            loginForm.controls['email'].touched
+          "
+          class="error"
+        >
+          El email es obligatorio y debe ser válido.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          class="form-control"
+          placeholder="Ingresa tu contraseña"
+        />
+        <div
+          *ngIf="
+            loginForm.controls['password'].invalid &&
+            loginForm.controls['password'].touched
+          "
+          class="error"
+        >
+          La contraseña es obligatoria.
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="loginForm.invalid"
+      >
+        Log In
+      </button>
+    </form>
+  </div>
+</div>
