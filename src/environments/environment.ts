@@ -12,4 +12,5 @@ export const environment = {
   jusUrl: apiUrl + '/misc/precios-jus',
   feedbackUrl: apiUrl + '/feedbacks',
   documentosUrl: apiUrl + '/casos/documentos',
+  turnosUrl: apiUrl + '/turnos',
 };
