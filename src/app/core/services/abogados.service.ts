@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.js';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ApiResponse } from '../interfaces/api-response.interface.js';
+import { ApiResponse } from '../interfaces/IApiResponse.interface.js';
 import { IAbogado } from '../interfaces/IAbogado.interface.js';
-import { ICrudService } from './crud-service.interface.js';
+import { ICrudService } from '../interfaces/ICrudService.interface.js';
 import { IEspecialidad } from '../interfaces/IEspecialidad.interface.js';
 
 export interface IAbogadoCreate {

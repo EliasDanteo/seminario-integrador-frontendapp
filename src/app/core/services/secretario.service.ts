@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.js';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ApiResponse } from '../interfaces/api-response.interface.js';
+import { ApiResponse } from '../interfaces/IApiResponse.interface.js';
 import { ISecretario } from '../interfaces/ISecretario.interface.js';
-import { ICrudService } from './crud-service.interface.js';
+import { ICrudService } from '../interfaces/ICrudService.interface.js';
 
 export interface ISecretarioCreate {
   //TODO: verificar los datos del secretario

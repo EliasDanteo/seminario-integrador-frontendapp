@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.js';
 import { Observable } from 'rxjs';
-import { ApiResponse } from '../interfaces/api-response.interface.js';
+import { ApiResponse } from '../interfaces/IApiResponse.interface.js';
 import { IHorarioTurno } from '../interfaces/IHorarioTurno.interface.js';
 import { ITurnoOtorgado } from '../interfaces/ITurnoOtorgado.interface.js';
 
