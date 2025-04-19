@@ -1,5 +1,5 @@
 import { Component, Inject, NgModule } from '@angular/core';
-import { ICrudService } from '../../core/services/crud-service.interface.js';
+import { ICrudService } from '../../core/interfaces/ICrudService.interface.js';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SnackbarService } from '../../core/services/snackbar.service.js';
 import {

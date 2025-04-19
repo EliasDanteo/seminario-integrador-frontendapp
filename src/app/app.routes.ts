@@ -9,8 +9,13 @@ import { NoticiasBlogComponent } from './pages/noticias-crud/noticias-blog/notic
 import { NoticiaDetalleComponent } from './pages/noticias-crud/noticia-detalle/noticia-detalle.component.js';
 import { CasosInformationDialogComponent } from './pages/cuu-casos/casos-information-dialog/casos-information-dialog.component.js';
 import { LoginComponent } from './pages/login/login.component.js';
+import { AppointmentBookingComponent } from './pages/appointment-booking/appointment-booking.component.js';
 
 export const routes: Routes = [
+  {
+    path: 'obtener-turnos',
+    component: AppointmentBookingComponent,
+  },
   {
     path: 'login',
     component: LoginComponent,

@@ -1,4 +1,4 @@
-import { ApiResponse } from '../interfaces/api-response.interface.js';
+import { ApiResponse } from './IApiResponse.interface.js';
 import { Observable } from 'rxjs';
 
 export interface ICrudService<T, T2> {

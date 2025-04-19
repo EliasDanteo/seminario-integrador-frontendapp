@@ -1,0 +1,114 @@
+<div class="dialog-container">
+  <div class="card m-5">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h2 class="h4 mb-0">Reservar Turno</h2>
+    </div>
+    <div class="card-body p-4">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="vertical-form">
+        <!-- Fecha del Turno -->
+        <div class="mb-3">
+          <label for="fechaTurno" class="form-label">Fecha del Turno</label>
+          <input
+            id="fechaTurno"
+            class="form-control"
+            formControlName="fechaTurno"
+            type="date"
+            [min]="today"
+            (change)="onDateSelected($event)"
+            required
+          />
+          @if (form.controls.fechaTurno.invalid &&
+          form.controls.fechaTurno.touched) {
+          <div class="invalid-feedback d-block">
+            Por favor seleccione una fecha válida
+          </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label for="abogado" class="form-label">Abogado</label>
+          <select
+            id="abogado"
+            class="form-select"
+            formControlName="abogado"
+            [disabled]="!form.value.fechaTurno"
+            (change)="onAbogadoSelected($event)"
+          >
+            <option [ngValue]="null" disabled selected>
+              Seleccione un abogado
+            </option>
+            @for (abogado of abogadosDisponibles; track abogado.id) {
+            <option [ngValue]="abogado">
+              {{ abogado.nombre }} {{ abogado.apellido }}
+            </option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="horarioTurno" class="form-label">Horario del Turno</label>
+          <select
+            id="horarioTurno"
+            class="form-select"
+            formControlName="horarioTurno"
+            [disabled]="!form.value.fechaTurno && !form.value.abogado"
+            [compareWith]="compareHorarios"
+          >
+            <option [ngValue]="null">Seleccione un horario</option>
+            @for (horario of horariosDisponibles; track horario.id) {
+            <option [ngValue]="horario">
+              {{ formatHorario(horario) }}
+            </option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input
+            id="nombre"
+            class="form-control"
+            formControlName="nombre"
+            placeholder="Ej: Juan"
+            type="text"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="telefono" class="form-label">Teléfono</label>
+          <input
+            id="telefono"
+            class="form-control"
+            formControlName="telefono"
+            placeholder="Ej: 1234567890"
+            type="tel"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            id="email"
+            class="form-control"
+            formControlName="email"
+            placeholder="Ej: ejemplo@email.com"
+            type="email"
+          />
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-4">
+          <button type="button" class="btn btn-outline-secondary" href="/">
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            [disabled]="!form.valid"
+            class="btn btn-primary"
+          >
+            Reservar Turno
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

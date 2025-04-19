@@ -1,0 +1,8 @@
+option[disabled] {
+  color: #6c757d; /* Color gris para texto deshabilitado */
+  background-color: #f8f9fa; /* Fondo ligeramente diferente */
+}
+
+select:invalid {
+  color: #6c757d; /* Color para texto cuando no hay selección */
+}
