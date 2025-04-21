@@ -58,21 +58,44 @@ export class DocumentosListComponent {
 
   verDocumento(documento: IDocumentos): void {
     this.httpClient
-      .get(`${environment.documentosUrl}/${documento.id}`, {
-        responseType: 'blob', // 👈 Muy importante
-      })
+      .get<any>(`${environment.documentosUrl}/${documento.id}`)
       .subscribe({
-        next: (response) => {
-          this.convertirBlob(response);
+        next: (res) => {
+          const rawData = res.data.archivo.data as number[];
+          const bytes = new Uint8Array(rawData);
+
+          const ext = documento.nombre.split('.').pop()?.toLowerCase();
+          let mime = (res.data.mimeType as string) || '';
+          if (!mime) {
+            if (ext === 'pdf') mime = 'application/pdf';
+            else if (ext === 'png') mime = 'image/png';
+            else if (ext === 'jpg' || ext === 'jpeg') mime = 'image/jpeg';
+            else mime = 'application/octet-stream';
+          }
+
+          const blob = new Blob([bytes], { type: mime });
+          const url = URL.createObjectURL(blob);
+
+          const forceDownload =
+            mime !== 'application/pdf' && !mime.startsWith('image/');
+
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = documento.nombre.includes('.')
+            ? documento.nombre
+            : `${documento.nombre}.${ext || 'bin'}`;
+
+          if (forceDownload) {
+            a.click();
+            URL.revokeObjectURL(url);
+          } else {
+            window.open(url, '_blank');
+            setTimeout(() => URL.revokeObjectURL(url), 10000);
+          }
         },
         error: () =>
           this.snackBarService.showError('Error al cargar el documento'),
       });
-  }
-
-  private convertirBlob(blob: Blob): void {
-    const url = URL.createObjectURL(blob);
-    window.open(url);
   }
 
   deleteDocument(documento: IDocumentos) {
