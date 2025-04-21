@@ -47,28 +47,21 @@
         </div>
       </ng-template>
 
+      <div class="alert alert-info text-center mt-3" role="alert">
+        Recuerda que puedes subir documentos en formato PDF, JPG o PNG.
+      </div>
       <div class="mt-4">
         <label class="fw-bold">Subir nuevo documento</label>
         <div class="input-group mt-2">
-          <input
-            type="file"
-            class="form-control"
-            (change)="onFileSelected($event)"
-            #fileInput
-            accept=".pdf,.jpg, .jpeg, .png"
-          />
           <button
+            mat-raised-button
             class="btn btn-success"
             type="button"
-            (click)="uploadDocument()"
-            [disabled]="!selectedFile"
+            (click)="openCreateDialog()"
           >
             Subir Documento
           </button>
         </div>
-        <small *ngIf="selectedFile" class="text-muted mt-1 d-block">
-          Archivo seleccionado: {{ selectedFile.name }}
-        </small>
       </div>
     </div>
   </div>

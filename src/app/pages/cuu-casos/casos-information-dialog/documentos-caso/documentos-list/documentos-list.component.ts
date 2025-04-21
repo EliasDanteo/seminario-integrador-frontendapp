@@ -6,22 +6,26 @@ import { ICaso } from '../../../../../core/interfaces/ICaso.interface.js';
 import IDocumentos from '../../../../../core/interfaces/IDocumentos.interface.js';
 import { SnackbarService } from '../../../../../core/services/snackbar.service.js';
 import { ComponentType } from '@angular/cdk/portal';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DocumentosDialogComponent } from '../documentos-dialog/documentos-dialog.component.js';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-documentos-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    MatDialogModule,
+    MatButtonModule,
+    DocumentosDialogComponent,
+  ],
   templateUrl: './documentos-list.component.html',
   styleUrl: './documentos-list.component.css',
 })
 export class DocumentosListComponent {
   @Input() caso!: ICaso;
-  @ViewChild('fileInput') fileInput!: ElementRef;
   documentos: IDocumentos[] = [];
   documentoParaVer: IDocumentos | null = null;
-  selectedFile: File | null = null;
 
   constructor(
     private httpClient: HttpClient,
@@ -29,8 +33,16 @@ export class DocumentosListComponent {
     private dialog: MatDialog
   ) {}
 
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
+  openDialog(dialog: ComponentType<unknown>, data: object): void {
+    const dialogRef = this.dialog.open(dialog, {
+      data: data,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== 'none') {
+        this.loadDocuments();
+      }
+    });
   }
 
   ngOnInit() {
@@ -47,13 +59,22 @@ export class DocumentosListComponent {
         )
         .subscribe({
           next: (res) => {
-            this.documentos = res.data;
+            this.documentos = res.data.map((documento) => ({
+              ...documento,
+              nombre: this.removeFileExtension(documento.nombre),
+            }));
           },
           error: (err) => {
             this.snackBarService.showError('Error al cargar los documentos');
           },
         });
     }
+  }
+
+  private removeFileExtension(filename: string): string {
+    const lastDotIndex = filename.lastIndexOf('.');
+
+    return lastDotIndex === -1 ? filename : filename.substring(0, lastDotIndex);
   }
 
   verDocumento(documento: IDocumentos): void {
@@ -63,8 +84,7 @@ export class DocumentosListComponent {
         next: (res) => {
           const rawData = res.data.archivo.data as number[];
           const bytes = new Uint8Array(rawData);
-
-          const ext = documento.nombre.split('.').pop()?.toLowerCase();
+          const ext = res.data.nombre.split('.').pop()?.toLowerCase();
           let mime = (res.data.mimeType as string) || '';
           if (!mime) {
             if (ext === 'pdf') mime = 'application/pdf';
@@ -94,7 +114,9 @@ export class DocumentosListComponent {
           }
         },
         error: () =>
-          this.snackBarService.showError('Error al cargar el documento'),
+          this.snackBarService.showError(
+            'Error al cargar el documento aaaaaaa'
+          ),
       });
   }
 
@@ -116,25 +138,9 @@ export class DocumentosListComponent {
       });
   }
 
-  uploadDocument() {
-    if (!this.selectedFile) return;
-
-    const formData = new FormData();
-    formData.append('archivo', this.selectedFile);
-    formData.append('id_caso', this.caso!.id.toString());
-    formData.append('nombre', this.selectedFile.name);
-
-    this.httpClient.post(`${environment.documentosUrl}`, formData).subscribe({
-      next: () => {
-        this.loadDocuments();
-        this.selectedFile = null;
-        this.fileInput.nativeElement.value = '';
-      },
-      error: (err) => {
-        console.error('Error:', err);
-        this.selectedFile = null;
-        this.fileInput.nativeElement.value = '';
-      },
+  openCreateDialog(): void {
+    this.openDialog(DocumentosDialogComponent, {
+      caso: this.caso,
     });
   }
 }
