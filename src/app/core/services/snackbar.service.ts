@@ -14,6 +14,13 @@ export class SnackbarService {
     });
   }
 
+  showInfo(message: string, duration: number = 3000) {
+    this.snackBar.open(message, 'Cerrar', {
+      duration: duration,
+      panelClass: ['info-snackbar'],
+    });
+  }
+
   showError(message: string, duration: number = 3000) {
     this.snackBar.open(message, 'Cerrar', {
       duration: duration,

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { ICaso } from '../../../../core/interfaces/ICaso.interface.js';
-import IAbogado from '../../../../core/interfaces/IAbogado.interface.js';
+import { IAbogado } from '../../../../core/interfaces/IAbogado.interface.js';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment.js';
 import { CommonModule } from '@angular/common';

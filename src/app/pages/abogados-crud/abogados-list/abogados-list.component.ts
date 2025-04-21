@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import IAbogado from '../../../core/interfaces/IAbogado.interface.js';
+import { IAbogado } from '../../../core/interfaces/IAbogado.interface.js';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
@@ -86,9 +86,10 @@ export class AbogadosListComponent {
 
   openCreateDialog(): void {
     this.openDialog(CRUDDialogComponent, {
+      title: 'Crear Abogado',
       action: 'post',
       entityType: 'abogado',
-      entity: null,
+      crudService: this.abogadoService,
     });
   }
 
@@ -96,9 +97,11 @@ export class AbogadosListComponent {
     if (abogado) {
       console.log('Abogado a editar:', abogado);
       this.openDialog(CRUDDialogComponent, {
+        title: 'Actualizar Abogado',
         action: 'put',
+        user: abogado,
         entityType: 'abogado',
-        entity: abogado,
+        crudService: this.abogadoService,
       });
     } else {
       console.error('Abogado no disponible');
@@ -120,7 +123,7 @@ export class AbogadosListComponent {
     });
   }
   eliminarAbogado(abogado: IAbogado): void {
-    this.abogadoService.delete(abogado.id).subscribe({
+    this.abogadoService.deactivate(abogado.id).subscribe({
       next: () => {
         this.loadAbogados();
       },
