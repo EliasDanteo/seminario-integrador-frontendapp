@@ -1,0 +1,114 @@
+<div class="container">
+  <div class="row mt-4">
+    <div class="col-12">
+      <h3 class="text-center mb-4">Subir Nuevo Documento</h3>
+      <hr class="mb-4" />
+    </div>
+  </div>
+
+  <form [formGroup]="documentoForm" (ngSubmit)="uploadDocument()">
+    <div class="row g-3">
+      <div class="col-12">
+        <label for="nombreDocumento" class="form-label fw-bold">
+          Nombre del documento
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          id="nombreDocumento"
+          formControlName="nombre"
+          placeholder="Ej: Informe técnico - Enero 2024"
+          [class.is-invalid]="
+            documentoForm.get('nombre')?.invalid &&
+            documentoForm.get('nombre')?.touched
+          "
+        />
+        <div
+          *ngIf="documentoForm.get('nombre')?.errors?.['required'] && documentoForm.get('nombre')?.touched"
+          class="invalid-feedback"
+        >
+          El nombre del documento es requerido
+        </div>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label fw-bold">
+          Archivo
+          <span class="text-danger">*</span>
+        </label>
+        <div class="input-group">
+          <input
+            type="file"
+            class="form-control"
+            (change)="onFileSelected($event)"
+            #fileInput
+            accept=".pdf,.jpg,.jpeg,.png"
+            [class.is-invalid]="
+              !selectedFile && documentoForm.get('archivo')?.touched
+            "
+          />
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            (click)="fileInput.click()"
+          >
+            <i class="bi bi-folder2-open"></i> Explorar
+          </button>
+        </div>
+        <div
+          *ngIf="!selectedFile && documentoForm.get('archivo')?.touched"
+          class="invalid-feedback d-block"
+        >
+          Debes seleccionar un archivo
+        </div>
+
+        <div *ngIf="selectedFile" class="mt-2">
+          <div class="alert alert-info d-flex align-items-center gap-2">
+            <i class="bi bi-file-earmark-check fs-5"></i>
+            <div>
+              <strong>Archivo seleccionado:</strong> {{ selectedFile.name
+              }}<br />
+              <small>Tamaño: {{ selectedFile.size }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 mt-4 mb-4">
+        <div class="d-flex justify-content-end gap-2">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="dialogRef.close('none')"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="documentoForm.invalid || uploading"
+          >
+            <span *ngIf="!uploading; else loading">
+              <i class="bi bi-cloud-upload me-2"></i>Subir Documento
+            </span>
+            <ng-template #loading>
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+              ></span>
+              Subiendo...
+            </ng-template>
+          </button>
+
+          <div
+            *ngIf="documentoForm.get('archivo')?.errors?.['required'] && documentoForm.get('archivo')?.touched"
+            class="invalid-feedback d-block"
+          >
+            Debes seleccionar un archivo
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
