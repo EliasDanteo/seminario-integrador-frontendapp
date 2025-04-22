@@ -8,25 +8,16 @@
       
   
     <div *ngIf="noticias && noticias.length > 0; else noNoticias">
-        <div class="row">
+      <div class="row">
           <div *ngFor="let noticia of noticias" class="col-12 col-md-4 mb-3">
-            <div class="card text-dark bg-light">
-              <div class="card-header">
-                <strong>{{ noticia.titulo }}</strong>
+            <article class="news-card w-100 h-100">
+              <div class="content d-flex flex-column h-100">
+                <h2>{{ noticia.titulo }}</h2>
+                <p class="meta">{{ noticia.fecha_publicacion }}</p>
+                <p class="excerpt">{{ noticia.cuerpo }}</p>
+                <a [routerLink]="['/noticias-detalle', noticia.id]" class="btn btn-primary w-100 mt-auto">Leer noticia</a>
               </div>
-              <div class="card-body">
-                <p class="card-text">
-                  {{ noticia.cuerpo.length > 300 ? (noticia.cuerpo | slice:0:300) + '...' : noticia.cuerpo }}
-                </p>
-                <p class="card-text text-end">
-                  <small class="text-muted">{{ noticia.fecha_publicacion }}</small>
-                </p>
-                <hr>
-                <div class="text-center">
-                  <a [routerLink]="['/noticias-detalle', noticia.id]" class="btn btn-primary w-100">Ver noticia</a>
-                </div>
-              </div>
-            </div>
+            </article>
           </div>
         </div>
       </div>
