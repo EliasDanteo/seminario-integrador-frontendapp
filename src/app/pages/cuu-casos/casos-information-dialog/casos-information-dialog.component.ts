@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment.js';
 import { RecordatoriosDialogComponent } from './recordatorios-caso/recordatorios-dialog/recordatorios-dialog.component';
 import { DocumentosListComponent } from './documentos-caso/documentos-list/documentos-list.component.js';
+import { CuotasListComponent } from './cuotas-caso/cuotas-list/cuotas-list.component.js';
 
 @Component({
   selector: 'app-casos-information-dialog',
@@ -25,6 +26,7 @@ import { DocumentosListComponent } from './documentos-caso/documentos-list/docum
     ClienteCasoComponent,
     ComentariosListComponent,
     RecordatoriosDialogComponent,
+    CuotasListComponent,
   ],
   templateUrl: './casos-information-dialog.component.html',
   styleUrl: './casos-information-dialog.component.css',
@@ -45,7 +47,6 @@ export class CasosInformationDialogComponent {
         .subscribe({
           next: (res) => {
             this.caso = res.data;
-            console.log(this.caso);
           },
           error: (err) => {
             console.error('Error al cargar el caso', err);
@@ -84,5 +85,9 @@ export class CasosInformationDialogComponent {
 
   showComentarios() {
     this.selectedSection = 'comentarios';
+  }
+
+  showCuotas() {
+    this.selectedSection = 'cuotas';
   }
 }
