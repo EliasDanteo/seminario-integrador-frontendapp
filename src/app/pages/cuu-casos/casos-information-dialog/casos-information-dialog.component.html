@@ -63,6 +63,13 @@
             <button class="btn btn-outline-primary" (click)="showComentarios()">
               Ver Comentarios
             </button>
+            <button
+              class="btn btn-outline-primary"
+              *ngIf="caso?.estado === 'Finalizado'"
+              (click)="showCuotas()"
+            >
+              Ver Cuotas
+            </button>
           </div>
         </div>
       </div>
@@ -90,6 +97,10 @@
           *ngIf="selectedSection === 'comentarios' && caso"
           [caso]="caso"
         ></app-comentarios-list>
+        <app-cuotas-list
+          *ngIf="selectedSection === 'cuotas' && caso"
+          [caso]="caso"
+        ></app-cuotas-list>
       </div>
     </div>
   </div>
