@@ -6,4 +6,5 @@ export interface IAbogado extends IUsuario {
   rol: { id: number; nombre: string };
   especialidades: number[]; //TODO: hasta crear la interfaz de especialidades
   horarioTurnos?: string[]; //TODO: hasta crear la interfaz de horarios
+  id_abogado: string; // NO LO SAQUES PORQUE ASI DEVUELVE LA BD
 }

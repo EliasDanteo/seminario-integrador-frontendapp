@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { SnackbarService } from '../../core/services/snackbar.service.js';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import IAbogado from '../../core/interfaces/IAbogado.interface.js';
+import { IAbogado } from '../../core/interfaces/IAbogado.interface.js';
 import { environment } from '../../../environments/environment.js';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IFeedback } from '../../core/interfaces/IFeedback.interface.js';
@@ -42,8 +42,7 @@ export class FeedbackDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<FeedbackDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { id_caso: number },
     private httpClient: HttpClient,
-    private snackBarService: SnackbarService,
-    private sanitizer: DomSanitizer
+    private snackBarService: SnackbarService
   ) {
     this.feedbackForm = new FormGroup({
       puntuacion: new FormControl('', [
@@ -87,7 +86,7 @@ export class FeedbackDialogComponent implements OnInit {
             ...abogado,
             id: abogado.id_abogado,
           }));
-          console.log(this.abogados_a_calificar);
+          console.log('Abogados a calificar:', this.abogados_a_calificar);
         },
         error: (error) => {
           this.snackBarService.showError(error.error.message);
@@ -98,9 +97,8 @@ export class FeedbackDialogComponent implements OnInit {
   private setupMatricula(): void {
     this.feedbackForm.get('id_abogado')?.valueChanges.subscribe((idAbogado) => {
       this.selectedAbogado =
-        this.abogados_a_calificar.find(
-          (abogado) => abogado.id_abogado === idAbogado
-        ) || null;
+        this.abogados_a_calificar.find((abogado) => abogado.id === idAbogado) ||
+        null;
 
       if (this.selectedAbogado) {
         this.selectedMatricula = this.selectedAbogado.matricula;
@@ -113,7 +111,10 @@ export class FeedbackDialogComponent implements OnInit {
   }
 
   private loadFoto(
-    fotoData: Blob | { type: string; data: number[] } | undefined
+    fotoData:
+      | Blob
+      | { type: string; data: number[]; mimeType?: string }
+      | undefined
   ): void {
     if (!fotoData) {
       console.warn('No se recibió fotoData.');
@@ -126,28 +127,26 @@ export class FeedbackDialogComponent implements OnInit {
     if (fotoData instanceof Blob) {
       blob = fotoData;
     } else {
-      if (!fotoData.data || fotoData.data.length === 0) {
+      if (fotoData.type === 'Buffer' && Array.isArray(fotoData.data)) {
+        const uint8Array = new Uint8Array(fotoData.data);
+
+        const mimeType = fotoData.mimeType || 'image/jpeg';
+
+        blob = new Blob([uint8Array], { type: mimeType });
+      } else {
+        console.error('Formato de datos inválido:', fotoData);
         this.selectedFoto = null;
         return;
       }
-      const uint8Array = new Uint8Array(fotoData.data);
-      blob = new Blob([uint8Array], {
-        type:
-          fotoData.type ||
-          'image/jpeg' ||
-          'image/png' ||
-          'image/jpg' ||
-          'image/webp',
-      });
     }
 
     if (blob.size <= 0) {
+      console.error('El Blob está vacío');
       this.selectedFoto = null;
       return;
     }
 
-    const objectURL = URL.createObjectURL(blob);
-    this.selectedFoto = objectURL;
+    this.selectedFoto = URL.createObjectURL(blob);
   }
 
   onSubmit(): void {
