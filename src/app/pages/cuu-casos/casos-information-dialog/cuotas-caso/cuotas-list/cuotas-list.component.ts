@@ -70,14 +70,24 @@ export class CuotasListComponent implements OnInit {
   cobrarCuota() {
     this.openDialog(CuotasDialogComponent, {
       caso: this.caso,
-      action: 'cobrar',
     });
   }
 
   eliminarCobroCuota() {
-    this.openDialog(CuotasDialogComponent, {
-      caso: this.caso,
-      action: 'eliminar',
+    this.cuotasCasoService.deleteFee(this.caso.id).subscribe({
+      next: (res) => {
+        this.snackBarService.showSuccess(res.message);
+        this.loadCuotas();
+      },
+      error: (res) => {
+        if (res.status === 400) {
+          this.snackBarService.showError(
+            'No existen cuotas del caso o ninguna fue cobrada.'
+          );
+        } else {
+          this.snackBarService.showError('Error al eliminar la cuota');
+        }
+      },
     });
   }
 }

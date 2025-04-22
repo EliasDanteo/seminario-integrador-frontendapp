@@ -1,1 +1,66 @@
-<p>cuotas-dialog works!</p>
+<h2 mat-dialog-title>Registrar Cobro</h2>
+<hr />
+<mat-dialog-content>
+  <form
+    [formGroup]="cuotaForm"
+    class="registro-cobro-form"
+    (ngSubmit)="cobrarCuota()"
+  >
+    <div class="fila mt-3">
+      <mat-form-field appearance="outline">
+        <mat-label>Id caso</mat-label>
+        <input matInput [value]="data.caso.id" disabled />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Cliente</mat-label>
+        <input matInput [value]="data.caso.cliente.nombre" disabled />
+      </mat-form-field>
+    </div>
+
+    <div class="fila">
+      <mat-form-field appearance="outline">
+        <mat-label>Número Cuota</mat-label>
+        <input matInput type="number" [value]="ultimaCuota?.numero" disabled />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha Vencimiento</mat-label>
+        <input matInput [value]="ultimaCuota?.fecha_vencimiento" disabled />
+      </mat-form-field>
+    </div>
+
+    <div class="fila">
+      <mat-form-field appearance="outline">
+        <mat-label>Cantidad JUS</mat-label>
+        <input
+          matInput
+          type="number"
+          [value]="ultimaCuota?.cant_jus"
+          disabled
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Importe $</mat-label>
+        <input matInput [value]="calcularImporteCuota()" disabled />
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Forma de cobro</mat-label>
+      <mat-select formControlName="forma_cobro">
+        <mat-option *ngFor="let f of formas" [value]="f">{{ f }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-dialog-actions align="end">
+      <button mat-stroked-button (click)="onCancel()">Cancelar</button>
+      <button
+        mat-flat-button
+        color="primary"
+        [disabled]="cuotaForm.invalid"
+        type="submit"
+      >
+        Confirmar
+      </button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>
