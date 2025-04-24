@@ -1,7 +1,9 @@
 <div class="container mt-4">
   <h2 class="text-center mb-4 text-black p-3 rounded">Listado de Casos</h2>
 
-  <button class="btn btn-success mb-3 shadow">Agregar Caso</button>
+  <button class="btn btn-success mb-3 shadow" (click)="openCreateDialog()">
+    Agregar Caso
+  </button>
 
   <div class="row mb-3">
     <div class="col-md-3 mb-2">
@@ -87,8 +89,18 @@
                 Editar
               </button>
               <button
+                class="btn btn-secondary btn-sm shadow-sm mt-1"
+                (click)="$event.stopPropagation(); openEndDialog(caso)"
+                [disabled]="
+                  caso.estado === 'Finalizado' || caso.estado === 'Cancelado'
+                "
+              >
+                Finalizar
+              </button>
+              <button
                 class="btn btn-danger btn-sm shadow-sm mt-1"
-                (click)="$event.stopPropagation(); deleteCaso(caso)"
+                (click)="$event.stopPropagation(); openDeleteDialog(caso)"
+                [disabled]="caso.estado !== 'En curso'"
               >
                 Eliminar
               </button>

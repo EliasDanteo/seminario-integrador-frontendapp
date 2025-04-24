@@ -1,0 +1,140 @@
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=close"
+/>
+
+<ng-container
+  *ngIf="data.action !== 'end' && data.action !== 'delete'; else noCreate"
+>
+  <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+    {{ !isLinear ? "Activar Modo Lineal" : "Desactivar Modo Lineal" }}
+  </button>
+  <mat-stepper [linear]="isLinear" #stepper style="height: auto; width: 700px">
+    <mat-step [stepControl]="clienteForm">
+      <form [formGroup]="clienteForm">
+        <ng-template matStepLabel>Cliente</ng-template>
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Buscar Cliente</mat-label>
+          <mat-select formControlName="id_cliente" required>
+            <mat-option *ngFor="let cliente of clientes" [value]="cliente.id">
+              {{ cliente.apellido + " " + cliente.nombre }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <a class="text-primary" (click)="openClienteDialog()"
+          >No encuentra su cliente? Cargar Nuevo</a
+        >
+        <div>
+          <button mat-button matStepperNext [disabled]="!clienteForm.valid">
+            Siguiente
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="abogadoForm">
+      <form [formGroup]="abogadoForm">
+        <ng-template matStepLabel>Abogado</ng-template>
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Buscar Abogado</mat-label>
+          <mat-select formControlName="id_abogado_principal" required>
+            <mat-option *ngFor="let abogado of abogados" [value]="abogado.id">
+              {{ abogado.apellido + " " + abogado.nombre }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <a class="text-primary" (click)="openAbogadoDialog()"
+          >No encuentra su abogado? Cargar Nuevo</a
+        >
+        <div>
+          <button mat-button matStepperPrevious>Volver</button>
+          <button mat-button matStepperNext [disabled]="!abogadoForm.valid">
+            Siguiente
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="casosForm">
+      <form [formGroup]="casosForm">
+        <ng-template matStepLabel>Datos Caso</ng-template>
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Descripción</mat-label>
+          <textarea matInput formControlName="descripcion"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Especialidad</mat-label>
+          <mat-select formControlName="id_especialidad" required>
+            <mat-option *ngFor="let esp of especialidades" [value]="esp.id">
+              {{ esp.nombre }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Volver</button>
+          <button
+            mat-button
+            matStepperNext
+            (click)="submit()"
+            [disabled]="!abogadoForm.valid"
+          >
+            Enviar
+          </button>
+        </div>
+      </form>
+    </mat-step>
+  </mat-stepper>
+</ng-container>
+
+<ng-template #noCreate>
+  <ng-container *ngIf="data.action === 'end'; else delete">
+    <mat-card>
+      <mat-card-header
+        class="d-flex justify-content-between align-items-center"
+      >
+        <mat-card-title> Finalizar Caso </mat-card-title>
+
+        <button mat-icon-button aria-label="Cerrar" (click)="onClose()">
+          <span class="material-symbols-outlined"> close </span>
+        </button>
+      </mat-card-header>
+      <hr />
+      <mat-card-content>
+        <p>
+          Al dar en "Aceptar" marcará el caso como finalizado y pasará a generar
+          el plan de cobro en cuotas.
+        </p>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <button mat-raised-button color="primary" (click)="realizarPlanPago()">
+          Aceptar
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </ng-container>
+
+  <ng-template #delete>
+    <mat-card>
+      <mat-card-header
+        class="d-flex justify-content-between align-items-center"
+      >
+        <mat-card-title> Eliminar Caso </mat-card-title>
+
+        <button mat-icon-button aria-label="Cerrar" (click)="onClose()">
+          <span class="material-symbols-outlined"> close </span>
+        </button>
+      </mat-card-header>
+      <hr />
+      <mat-card-content>
+        <p>¿Está seguro que desea eliminar el caso?</p>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <button mat-raised-button color="primary" (click)="onDelete()">
+          Eliminar
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </ng-template>
+</ng-template>
