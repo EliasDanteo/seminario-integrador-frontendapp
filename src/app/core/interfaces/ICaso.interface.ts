@@ -13,3 +13,10 @@ export interface ICaso {
   estado: string;
   fecha_estado: string;
 }
+
+export interface IFinalizarCaso {
+  cant_jus: number;
+  fecha_primer_cobro: Date;
+  frecuencia_cobro: string;
+  num_cuotas: number;
+}

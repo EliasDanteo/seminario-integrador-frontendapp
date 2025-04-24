@@ -1,0 +1,127 @@
+<h1 mat-dialog-title class="mb-4">Plan de cobro</h1>
+<div mat-dialog-content>
+  <form [formGroup]="planPagoForm" class="container-fluid">
+    <div class="row mb-3">
+      <div class="col-12">
+        <mat-form-field appearance="outline" class="w-100 mt-4">
+          <mat-label>Total de JUS dictaminados</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="cant_jus"
+            required
+            min="0"
+            max="999"
+            class="text-end"
+          />
+          <span matTextPrefix>JUS$&nbsp;</span>
+          <mat-error *ngIf="planPagoForm.get('cant_jus')?.hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+          <mat-error *ngIf="planPagoForm.get('cant_jus')?.hasError('min')">
+            El valor mínimo es 0
+          </mat-error>
+          <mat-error *ngIf="planPagoForm.get('cant_jus')?.hasError('max')">
+            El máximo permitido es 999
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row mb-3 g-3">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Cantidad de cuotas</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="num_cuotas"
+            required
+            min="1"
+            max="12"
+          />
+          <mat-error
+            *ngIf="planPagoForm.get('num_cuotas')?.hasError('required')"
+          >
+            Este campo es obligatorio
+          </mat-error>
+          <mat-error *ngIf="planPagoForm.get('num_cuotas')?.hasError('min')">
+            El valor mínimo es 1
+          </mat-error>
+          <mat-error *ngIf="planPagoForm.get('num_cuotas')?.hasError('max')">
+            El máximo permitido es 12
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Frecuencia de pago</mat-label>
+          <mat-select formControlName="frecuencia_cobro" required>
+            <mat-option *ngFor="let freq of frecuenciasPago" [value]="freq">
+              {{ freq }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-12">
+        <p class="h5 text-center mb-3">
+          JUS por cuota:
+          <span class="fw-bold">
+            {{
+              planPagoForm.value.cant_jus / planPagoForm.value.num_cuotas
+                | number : "1.2-2"
+            }}
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Fecha primer cobro</mat-label>
+          <input
+            matInput
+            [min]="currentDate | date : 'yyyy-MM-dd'"
+            formControlName="fecha_primer_cobro"
+            type="date"
+            required
+            (dateChange)="
+              planPagoForm.get('fecha_primer_cobro')?.markAsTouched()
+            "
+          />
+          <mat-error
+            *ngIf="planPagoForm.get('fecha_primer_cobro')?.hasError('required')"
+          >
+            Este campo es obligatorio
+          </mat-error>
+          <mat-error
+            *ngIf="planPagoForm.get('fecha_primer_cobro')?.hasError('minDate')"
+          >
+            La fecha no puede ser anterior al
+            {{ currentDate | date : "dd/MM/yyyy" }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-12 text-end">
+        <button mat-button mat-dialog-close>Cancelar</button>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="!planPagoForm.valid"
+          class="me-2"
+          (click)="onSubmit()"
+        >
+          Generar
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

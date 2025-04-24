@@ -1,5 +1,5 @@
 export interface IEspecialidad {
   map(arg0: (e: IEspecialidad) => string): unknown;
-  id: string;
+  id: number;
   nombre: string;
 }
