@@ -1,0 +1,81 @@
+<mat-dialog-content>
+  <h1 mat-dialog-title class="text-center mb-4">
+    @if (data.action === 'create') { Nueva Actividad } @else if (data.action ===
+    'update') { Editar Actividad } @else { Eliminar Actividad }
+  </h1>
+  <hr />
+  @if (data.action !== 'delete') {
+  <form [formGroup]="actividadRealizadaForm!" (ngSubmit)="onSubmit()">
+    <div class="container-fluid">
+      <div class="row g-3">
+        <div class="col-12">
+          <mat-form-field appearance="outline" class="w-100 mb-3">
+            <mat-label>Actividad</mat-label>
+            <mat-select
+              formControlName="id_actividad"
+              (selectionChange)="actualizarCosto()"
+              required
+            >
+              @for (actividad of actividades; track actividad.id) {
+              <mat-option [value]="actividad.id">{{
+                actividad.nombre
+              }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field appearance="outline" class="w-100 mb-3">
+            <mat-label>Costo Actividad</mat-label>
+            <input
+              matInput
+              type="number"
+              [readonly]="true"
+              [value]="costoActividad"
+              disabled
+            />
+            <span matPrefix class="ms-3">$</span>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field appearance="outline" class="w-100 mb-4">
+            <mat-label>Cliente</mat-label>
+            <mat-select formControlName="id_cliente" required>
+              @for (cliente of clientes; track cliente.id) {
+              <mat-option [value]="cliente.id">
+                {{ cliente.nombre }} {{ cliente.apellido }}
+              </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <mat-dialog-actions
+      align="end"
+      class="d-flex justify-content-end gap-2 pt-3"
+    >
+      <button mat-button type="button" class="order-1" (click)="onClose()">
+        Cancelar
+      </button>
+      <button mat-raised-button color="primary" type="submit" class="order-2">
+        {{ isEdit ? "Actualizar" : "Crear" }}
+      </button>
+    </mat-dialog-actions>
+  </form>
+  } @else {
+  <div class="text-center">
+    <p class="lead mb-4">¿Estás seguro que deseas eliminar esta actividad?</p>
+
+    <mat-dialog-actions align="end" class="d-flex justify-content-center gap-2">
+      <button mat-button (click)="onClose()">Cancelar</button>
+      <button mat-raised-button color="warn" (click)="onSubmit()">
+        Eliminar
+      </button>
+    </mat-dialog-actions>
+  </div>
+  }
+</mat-dialog-content>

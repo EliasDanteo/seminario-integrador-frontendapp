@@ -4,6 +4,9 @@ import { SnackbarService } from '../../../core/services/snackbar.service.js';
 import { IActividadRealizada } from '../../../core/interfaces/IActividad-realizada.interface.js';
 import { CommonModule } from '@angular/common';
 import { MatIconButton } from '@angular/material/button';
+import { ComponentType } from '@angular/cdk/portal';
+import { MatDialog } from '@angular/material/dialog';
+import { MisActividadesDialogComponent } from '../mis-actividades-dialog/mis-actividades-dialog.component.js';
 
 @Component({
   selector: 'app-mis-actividades',
@@ -14,18 +17,34 @@ import { MatIconButton } from '@angular/material/button';
 })
 export class MisActividadesComponent implements OnInit {
   actividadesRealizadas: IActividadRealizada[] = [];
+  idAbogado: number = 2; // Cambiar el ID
 
   constructor(
     private actividadesAbogadoService: ActividadesAbogadoService,
-    private snackBarService: SnackbarService
+    private snackBarService: SnackbarService,
+    private dialog: MatDialog
   ) {}
 
-  ngOnInit(): void {
-    this.loadActividadesAbogado();
+  openDialog(dialog: ComponentType<unknown>, data: object): void {
+    const dialogRef = this.dialog.open(dialog, {
+      data: data,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== 'none') {
+        this.loadActividadesAbogado(this.idAbogado);
+      }
+    });
   }
 
-  loadActividadesAbogado() {
-    this.actividadesAbogadoService.getActividadesAbogado().subscribe({
+  ngOnInit(): void {
+    //FALTA EL ID DEL ABOGADO
+    // Cambiar el ID
+    this.loadActividadesAbogado(this.idAbogado);
+  }
+
+  loadActividadesAbogado(id_abogado: number) {
+    this.actividadesAbogadoService.getActividadesAbogado(id_abogado).subscribe({
       next: (response) => {
         this.actividadesRealizadas = response.data;
       },
@@ -38,14 +57,23 @@ export class MisActividadesComponent implements OnInit {
   }
 
   onUpdate(actividad: IActividadRealizada) {
-    console.log('Actualizar actividad:', actividad);
+    this.openDialog(MisActividadesDialogComponent, {
+      action: 'update',
+      actividad: actividad,
+    });
   }
 
-  onDelete(actividad_id: number) {
-    console.log('Eliminar actividad:', actividad_id);
+  onDelete(actividad: IActividadRealizada) {
+    this.openDialog(MisActividadesDialogComponent, {
+      action: 'delete',
+      actividad: actividad,
+    });
   }
 
   onCreate() {
-    console.log('Crear nueva actividad');
+    this.openDialog(MisActividadesDialogComponent, {
+      action: 'create',
+      actividad: null,
+    });
   }
 }

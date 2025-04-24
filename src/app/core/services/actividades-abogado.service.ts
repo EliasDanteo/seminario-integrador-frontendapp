@@ -11,9 +11,36 @@ import { IActividadRealizada } from '../interfaces/IActividad-realizada.interfac
 export class ActividadesAbogadoService {
   constructor(private httpClient: HttpClient) {}
 
-  getActividadesAbogado(): Observable<ApiResponse<IActividadRealizada[]>> {
+  getActividadesAbogado(
+    id_abogado: number
+  ): Observable<ApiResponse<IActividadRealizada[]>> {
     return this.httpClient.get<ApiResponse<IActividadRealizada[]>>(
-      `${environment.actividadesUrl}/realizadas/2` // Cambiar el ID
+      `${environment.actividadesUrl}/realizadas/${id_abogado}` // Cambiar el ID
+    );
+  }
+
+  createActividad(
+    actividad: IActividadRealizada
+  ): Observable<ApiResponse<IActividadRealizada>> {
+    return this.httpClient.post<ApiResponse<IActividadRealizada>>(
+      `${environment.actividadesUrl}/realizadas`,
+      actividad
+    );
+  }
+
+  updateActividad(
+    actividad: IActividadRealizada,
+    id_actividad: number
+  ): Observable<ApiResponse<IActividadRealizada>> {
+    return this.httpClient.put<ApiResponse<IActividadRealizada>>(
+      `${environment.actividadesUrl}/realizadas/${id_actividad}`,
+      actividad
+    );
+  }
+
+  deleteActividad(id: number): Observable<ApiResponse<void>> {
+    return this.httpClient.delete<ApiResponse<void>>(
+      `${environment.actividadesUrl}/realizadas/${id}`
     );
   }
 }
