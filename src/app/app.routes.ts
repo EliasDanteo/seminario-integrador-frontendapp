@@ -10,6 +10,7 @@ import { NoticiaDetalleComponent } from './pages/noticias-crud/noticia-detalle/n
 import { CasosInformationDialogComponent } from './pages/cuu-casos/casos-information-dialog/casos-information-dialog.component.js';
 import { LoginComponent } from './pages/login/login.component.js';
 import { AppointmentBookingComponent } from './pages/appointment-booking/appointment-booking.component.js';
+import { MisActividadesComponent } from './pages/actividades-realizadas-crud/mis-actividades/mis-actividades.component.js';
 
 export const routes: Routes = [
   {
@@ -32,7 +33,6 @@ export const routes: Routes = [
     path: 'secretarios-list',
     component: SecretariosListComponent,
   },
-
   {
     path: 'actividades-list',
     component: ActividadesListComponent,
@@ -53,5 +53,9 @@ export const routes: Routes = [
   {
     path: 'noticias-detalle/:id',
     component: NoticiaDetalleComponent,
+  },
+  {
+    path: 'mis-actividades',
+    component: MisActividadesComponent,
   },
 ];
