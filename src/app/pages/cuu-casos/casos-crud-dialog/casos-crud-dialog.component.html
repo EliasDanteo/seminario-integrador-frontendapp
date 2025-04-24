@@ -6,14 +6,11 @@
 <ng-container
   *ngIf="data.action !== 'end' && data.action !== 'delete'; else noCreate"
 >
-  <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
-    {{ !isLinear ? "Activar Modo Lineal" : "Desactivar Modo Lineal" }}
-  </button>
-  <mat-stepper [linear]="isLinear" #stepper style="height: auto; width: 700px">
+  <mat-stepper #stepper style="height: auto; width: 700px">
     <mat-step [stepControl]="clienteForm">
       <form [formGroup]="clienteForm">
         <ng-template matStepLabel>Cliente</ng-template>
-        <mat-form-field appearance="fill" class="w-100">
+        <mat-form-field appearance="fill" class="w-100 mt-3">
           <mat-label>Buscar Cliente</mat-label>
           <mat-select formControlName="id_cliente" required>
             <mat-option *ngFor="let cliente of clientes" [value]="cliente.id">
@@ -24,31 +21,16 @@
         <a class="text-primary" (click)="openClienteDialog()"
           >No encuentra su cliente? Cargar Nuevo</a
         >
-        <div>
-          <button mat-button matStepperNext [disabled]="!clienteForm.valid">
-            Siguiente
+        <div class="d-flex justify-content-end mt-3">
+          <button mat-raised-button (click)="onClose()" class="me-2">
+            Cancelar
           </button>
-        </div>
-      </form>
-    </mat-step>
-
-    <mat-step [stepControl]="abogadoForm">
-      <form [formGroup]="abogadoForm">
-        <ng-template matStepLabel>Abogado</ng-template>
-        <mat-form-field appearance="fill" class="w-100">
-          <mat-label>Buscar Abogado</mat-label>
-          <mat-select formControlName="id_abogado_principal" required>
-            <mat-option *ngFor="let abogado of abogados" [value]="abogado.id">
-              {{ abogado.apellido + " " + abogado.nombre }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <a class="text-primary" (click)="openAbogadoDialog()"
-          >No encuentra su abogado? Cargar Nuevo</a
-        >
-        <div>
-          <button mat-button matStepperPrevious>Volver</button>
-          <button mat-button matStepperNext [disabled]="!abogadoForm.valid">
+          <button
+            mat-raised-button
+            color="primary"
+            matStepperNext
+            [disabled]="!clienteForm.valid"
+          >
             Siguiente
           </button>
         </div>
@@ -58,7 +40,7 @@
     <mat-step [stepControl]="casosForm">
       <form [formGroup]="casosForm">
         <ng-template matStepLabel>Datos Caso</ng-template>
-        <mat-form-field appearance="fill" class="w-100">
+        <mat-form-field appearance="fill" class="w-100 mt-3">
           <mat-label>Descripción</mat-label>
           <textarea matInput formControlName="descripcion"></textarea>
         </mat-form-field>
@@ -70,11 +52,47 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <div>
-          <button mat-button matStepperPrevious>Volver</button>
+        <div class="d-flex justify-content-end mt-3">
+          <button mat-raised-button matStepperPrevious class="me-2">
+            Volver
+          </button>
           <button
-            mat-button
+            mat-raised-button
             matStepperNext
+            color="primary"
+            [disabled]="!casosForm.valid"
+          >
+            Siguiente
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="abogadoForm">
+      <form [formGroup]="abogadoForm">
+        <ng-template matStepLabel>Abogado</ng-template>
+        <mat-form-field appearance="fill" class="w-100 mt-3">
+          <mat-label>Seleccione el abogado principal</mat-label>
+          <mat-select formControlName="id_abogado_principal" required>
+            <mat-option
+              *ngFor="let abogado of filteredAbogadosEspecialidad"
+              [value]="abogado.id"
+            >
+              {{ abogado.apellido + " " + abogado.nombre }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <a class="text-primary" (click)="openAbogadoDialog()"
+          >No encuentra su abogado? Cargar Nuevo</a
+        >
+        <div class="d-flex justify-content-end mt-3">
+          <button mat-raised-button matStepperPrevious class="me-2">
+            Volver
+          </button>
+          <button
+            mat-raised-button
+            matStepperNext
+            color="primary"
             (click)="submit()"
             [disabled]="!abogadoForm.valid"
           >

@@ -59,11 +59,13 @@ import { PlanPagoDialogComponent } from './plan-pago-dialog/plan-pago-dialog.com
   styleUrl: './casos-crud-dialog.component.css',
 })
 export class CasosCrudDialogComponent implements OnInit {
-  isLinear = false;
   clientes: ICliente[] = [];
   especialidades: IEspecialidad[] = [];
   abogados: IAbogado[] = [];
+  filteredAbogadosEspecialidad: IAbogado[] = [];
   actions = ['delete', 'put', 'post', 'end'];
+
+  especialidadControl = new FormControl(null);
 
   clienteForm: FormGroup;
   abogadoForm: FormGroup;
@@ -93,32 +95,54 @@ export class CasosCrudDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.actions.includes(this.data.action)) {
-      if (this.data.action === 'put') {
-        this.loadClientes();
-        // AGREGAR QUE SOLO SI EL ROL ES ADMIN, CARGUE TODOS LOS ABOGADOS
-        this.loadAbogados();
-        this.loadEspecialidades();
-        this.loadAbogadosEnCaso(this.data.caso!.id);
-        this.casosForm.patchValue({
-          descripcion: this.data.caso?.descripcion,
-          id_especialidad: this.data.caso?.especialidad.id,
-        });
-        this.clienteForm.patchValue({
-          id_cliente: this.data.caso?.cliente.id,
-        });
-      } else if (this.data.action === 'post') {
-        this.loadClientes();
-        // AGREGAR QUE SOLO SI EL ROL ES ADMIN, CARGUE TODOS LOS ABOGADOS
-        this.loadAbogados();
-        this.loadEspecialidades();
-      }
-    } else {
+    if (!this.actions.includes(this.data.action)) {
       this.snackBarService.showError('Acción no válida');
+      return;
+    }
+
+    this.cargarObjetos();
+
+    this.casosForm
+      .get('id_especialidad')!
+      .valueChanges.subscribe((idEsp: number) => {
+        this.filterAbogadosByEspecialidad(idEsp);
+      });
+
+    if (this.data.action === 'put') {
+      this.loadAbogadosEnCaso(this.data.caso!.id);
+
+      this.casosForm.patchValue({
+        descripcion: this.data.caso!.descripcion,
+        id_especialidad: this.data.caso!.especialidad.id,
+      });
+      this.clienteForm.patchValue({
+        id_cliente: this.data.caso!.cliente.id,
+      });
+      this.loadAbogadosEnCaso(this.data.caso!.id);
+
+      const idEspInicial = this.casosForm.get('id_especialidad')!.value;
+      if (idEspInicial) {
+        this.filterAbogadosByEspecialidad(idEspInicial);
+      }
     }
   }
 
+  private filterAbogadosByEspecialidad(idEsp: number) {
+    this.filteredAbogadosEspecialidad = this.abogados.filter((ab) =>
+      ab.especialidades.some((e) => e.id === idEsp)
+    );
+
+    this.abogadoForm.get('id_abogado_principal')!.reset();
+  }
+
+  cargarObjetos(): void {
+    this.loadClientes();
+    this.loadAbogados();
+    this.loadEspecialidades();
+  }
+
   loadClientes(): void {
+    //TIENE QUE SER EL findAvailable, no el getAll, por los 5 casos
     this.clienteService.getAll().subscribe({
       next: (response) => {
         this.clientes = response.data;
@@ -133,6 +157,7 @@ export class CasosCrudDialogComponent implements OnInit {
     this.abogadoService.getAll().subscribe({
       next: (response) => {
         this.abogados = response.data;
+        console.log(this.abogados);
       },
       error: () => {
         this.snackBarService.showError('Error al cargar los abogados');
