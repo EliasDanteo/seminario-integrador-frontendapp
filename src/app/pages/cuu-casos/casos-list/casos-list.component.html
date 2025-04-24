@@ -74,7 +74,13 @@
         @for (caso of filteredCasos; track caso.id) {
         <tr class="align-middle clickable-row" (click)="showDetails(caso)">
           <td>{{ caso.id }}</td>
-          <td>{{ caso.cliente.apellido + " " + caso.cliente.nombre }}</td>
+          <td>
+            {{
+              caso.cliente.es_empresa
+                ? caso.cliente.nombre
+                : caso.cliente.apellido + " " + caso.cliente.nombre
+            }}
+          </td>
           <td>{{ caso.especialidad.nombre }}</td>
           <td>{{ caso.fecha_inicio }}</td>
           <td>{{ caso.descripcion }}</td>

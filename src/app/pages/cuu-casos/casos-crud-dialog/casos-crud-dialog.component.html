@@ -14,7 +14,11 @@
           <mat-label>Buscar Cliente</mat-label>
           <mat-select formControlName="id_cliente" required>
             <mat-option *ngFor="let cliente of clientes" [value]="cliente.id">
-              {{ cliente.apellido + " " + cliente.nombre }}
+              {{
+                cliente.es_empresa
+                  ? cliente.nombre
+                  : cliente.apellido + " " + cliente.nombre
+              }}
             </mat-option>
           </mat-select>
         </mat-form-field>
