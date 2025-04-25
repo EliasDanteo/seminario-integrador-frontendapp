@@ -5,11 +5,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { environment } from '../../../../environments/environment.js';
 import { FormsModule } from '@angular/forms';
-import { CasosInformationDialogComponent } from '../casos-information-dialog/casos-information-dialog.component.js';
-import { CRUDDialogComponent } from '../../../shared/crud-dialog/crud-dialog.component.js';
-import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
 import { Router } from '@angular/router';
 import { CasosCrudDialogComponent } from '../casos-crud-dialog/casos-crud-dialog.component.js';
+import { InformesDialogComponent } from '../../../shared/informes-dialog/informes-dialog.component.js';
 @Component({
   selector: 'app-casos-list',
   standalone: true,
@@ -131,5 +129,12 @@ export class CasosListComponent {
         caso: caso,
       });
     }
+  }
+
+  openInformeIngresosDialog(): void {
+    this.openDialog(InformesDialogComponent, {
+      informeType: 'ingresos',
+      caso: null,
+    });
   }
 }
