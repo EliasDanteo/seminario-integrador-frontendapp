@@ -82,8 +82,13 @@
               *ngFor="let abogado of filteredAbogadosEspecialidad"
               [value]="abogado.id"
             >
-              {{ abogado.apellido + " " + abogado.nombre }}
+              {{ abogado.apellido + " " + abogado.nombre }} | Mat.({{
+                abogado.matricula
+              }})
             </mat-option>
+            @if(filteredAbogadosEspecialidad.length === 0) {
+            <mat-option disabled>Sin Abogados Disponibles</mat-option>
+            }
           </mat-select>
         </mat-form-field>
         <a class="text-primary" (click)="openAbogadoDialog()"

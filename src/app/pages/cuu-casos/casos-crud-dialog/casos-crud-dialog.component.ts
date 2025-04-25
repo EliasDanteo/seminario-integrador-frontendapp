@@ -64,6 +64,7 @@ export class CasosCrudDialogComponent implements OnInit {
   abogados: IAbogado[] = [];
   filteredAbogadosEspecialidad: IAbogado[] = [];
   actions = ['delete', 'put', 'post', 'end'];
+  abogadoPrincipal: IAbogado | null = null;
 
   especialidadControl = new FormControl(null);
 
@@ -74,7 +75,7 @@ export class CasosCrudDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public data: { action: string; caso: ICaso | null },
-    private casosSerivce: CasosService,
+    private casosService: CasosService,
     private snackBarService: SnackbarService,
     private clienteService: ClienteService,
     private abogadoService: AbogadoService,
@@ -100,31 +101,33 @@ export class CasosCrudDialogComponent implements OnInit {
       return;
     }
 
-    this.cargarObjetos();
+    this.loadClientes();
+    this.loadEspecialidades();
+
+    this.abogadoService.getAvailable().subscribe({
+      next: ({ data }) => {
+        this.abogados = data;
+
+        if (this.data.action === 'put' && this.data.caso) {
+          const { descripcion, cliente, especialidad, id } = this.data.caso;
+          this.casosForm.patchValue({
+            descripcion,
+            id_especialidad: especialidad.id,
+          });
+          this.clienteForm.patchValue({ id_cliente: cliente.id });
+
+          this.loadAbogadosEnCaso(id, especialidad.id);
+        }
+      },
+      error: () =>
+        this.snackBarService.showError('Error al cargar los abogados'),
+    });
 
     this.casosForm
       .get('id_especialidad')!
       .valueChanges.subscribe((idEsp: number) => {
         this.filterAbogadosByEspecialidad(idEsp);
       });
-
-    if (this.data.action === 'put') {
-      this.loadAbogadosEnCaso(this.data.caso!.id);
-
-      this.casosForm.patchValue({
-        descripcion: this.data.caso!.descripcion,
-        id_especialidad: this.data.caso!.especialidad.id,
-      });
-      this.clienteForm.patchValue({
-        id_cliente: this.data.caso!.cliente.id,
-      });
-      this.loadAbogadosEnCaso(this.data.caso!.id);
-
-      const idEspInicial = this.casosForm.get('id_especialidad')!.value;
-      if (idEspInicial) {
-        this.filterAbogadosByEspecialidad(idEspInicial);
-      }
-    }
   }
 
   private filterAbogadosByEspecialidad(idEsp: number) {
@@ -132,7 +135,14 @@ export class CasosCrudDialogComponent implements OnInit {
       ab.especialidades.some((e) => e.id === idEsp)
     );
 
-    this.abogadoForm.get('id_abogado_principal')!.reset();
+    if (
+      this.abogadoPrincipal &&
+      !this.filteredAbogadosEspecialidad.some(
+        (ab) => ab.id === this.abogadoPrincipal!.id
+      )
+    ) {
+      this.filteredAbogadosEspecialidad.unshift(this.abogadoPrincipal);
+    }
   }
 
   cargarObjetos(): void {
@@ -142,7 +152,6 @@ export class CasosCrudDialogComponent implements OnInit {
   }
 
   loadClientes(): void {
-    //TIENE QUE SER EL findAvailable, no el getAll, por los 5 casos
     this.clienteService.getAll().subscribe({
       next: (response) => {
         this.clientes = response.data;
@@ -154,7 +163,7 @@ export class CasosCrudDialogComponent implements OnInit {
   }
 
   loadAbogados(): void {
-    this.abogadoService.getAll().subscribe({
+    this.abogadoService.getAvailable().subscribe({
       next: (response) => {
         this.abogados = response.data;
         console.log(this.abogados);
@@ -176,34 +185,34 @@ export class CasosCrudDialogComponent implements OnInit {
     });
   }
 
-  loadAbogadosEnCaso(id: number): void {
-    this.casosSerivce.getAbogadosEnCaso(id).subscribe({
-      next: (response) => {
-        if (response.data) {
-          let flag = false;
-          this.abogados = response.data.map((abogadoCaso) => {
-            if (abogadoCaso.es_principal) {
-              this.abogadoForm.patchValue({
-                id_abogado_principal: abogadoCaso.abogado.id,
-              });
-              flag = true;
-            }
-            return abogadoCaso.abogado;
-          });
-          if (!flag) {
-            this.abogadoForm.patchValue({
-              id_abogado_principal: response.data[0].abogado.id,
-            });
-          }
-        } else {
-          console.error(
-            'No se encontraron abogados para el caso proporcionado.'
-          );
+  private loadAbogadosEnCaso(casoId: number, idEsp: number) {
+    this.casosService.getAbogadosEnCaso(casoId).subscribe({
+      next: (resp) => {
+        console.log(resp.data);
+        const casoAbogados = resp.data || [];
+        const principalItem = casoAbogados.find((item) => item.es_principal);
+
+        if (principalItem) {
+          this.abogadoPrincipal = principalItem.abogado;
         }
+
+        this.filterAbogadosByEspecialidad(idEsp);
+
+        if (
+          this.abogadoPrincipal &&
+          !this.filteredAbogadosEspecialidad.some(
+            (a) => a.id === this.abogadoPrincipal!.id
+          )
+        ) {
+          this.filteredAbogadosEspecialidad.unshift(this.abogadoPrincipal);
+        }
+
+        this.abogadoForm.patchValue({
+          id_abogado_principal: this.abogadoPrincipal?.id,
+        });
       },
-      error: () => {
-        this.snackBarService.showError('Error al cargar los abogados del caso');
-      },
+      error: () =>
+        this.snackBarService.showError('Error al cargar los abogados del caso'),
     });
   }
 
@@ -221,7 +230,7 @@ export class CasosCrudDialogComponent implements OnInit {
         descripcion: this.casosForm.get('descripcion')?.value,
       };
       if (this.data.action === 'post') {
-        this.casosSerivce.create(formData).subscribe({
+        this.casosService.create(formData).subscribe({
           next: () => {
             this.snackBarService.showSuccess('Caso creado con éxito');
             this.onClose();
@@ -232,7 +241,7 @@ export class CasosCrudDialogComponent implements OnInit {
           },
         });
       } else if (this.data.action === 'put' && this.data.caso) {
-        this.casosSerivce.update(formData, this.data.caso?.id).subscribe({
+        this.casosService.update(formData, this.data.caso?.id).subscribe({
           next: () => {
             this.snackBarService.showSuccess('Caso actualizado con éxito');
             this.onClose();
@@ -247,7 +256,7 @@ export class CasosCrudDialogComponent implements OnInit {
   }
 
   onDelete(): void {
-    this.casosSerivce.delete(this.data.caso!.id).subscribe({
+    this.casosService.delete(this.data.caso!.id).subscribe({
       next: () => {
         this.snackBarService.showSuccess('Caso eliminado con éxito');
         this.onClose();
