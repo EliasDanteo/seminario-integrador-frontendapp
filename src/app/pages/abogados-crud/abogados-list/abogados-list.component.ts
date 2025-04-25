@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { CRUDDialogComponent } from '../../../shared/crud-dialog/crud-dialog.component.js';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
 import { AbogadoService } from '../../../core/services/abogados.service.js';
+import { InformesDialogComponent } from '../../../shared/informes-dialog/informes-dialog.component.js';
 
 @Component({
   selector: 'app-abogados-list',
@@ -131,6 +132,13 @@ export class AbogadosListComponent {
         console.error('Error al eliminar el abogado', err);
         alert('Hubo un error al eliminar el abogado. Inténtalo nuevamente.');
       },
+    });
+  }
+
+  openInformeDesempenioDialog(): void {
+    this.openDialog(InformesDialogComponent, {
+      informeType: 'desempenio',
+      caso: null,
     });
   }
 }
