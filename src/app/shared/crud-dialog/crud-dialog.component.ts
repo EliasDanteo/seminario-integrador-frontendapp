@@ -142,9 +142,8 @@ export class CRUDDialogComponent implements OnInit {
         this.dialogRef.close(response);
       },
       error: (err) => {
-        console.error(`Error al ${titulo.toLowerCase()} ${entidad}:`, err);
         this.snackbarService.showError(
-          `Error al ${titulo.toLowerCase()} ${entidad}`,
+          `Error: ${err.error.message || 'Error desconocido'}`,
           5000
         );
       },
