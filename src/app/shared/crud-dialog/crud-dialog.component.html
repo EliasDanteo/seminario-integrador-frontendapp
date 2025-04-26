@@ -1,213 +1,253 @@
-<div class="dialog-container">
-  <div class="dialog-content">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="h4 mb-0">
-        {{ dialogData.title }}
-      </h2>
-      <button
-        type="button"
-        class="btn-close"
-        title="Cerrar ventana"
-        (click)="onClose()"
-      ></button>
-    </div>
-
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="vertical-form">
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <label for="nombre" class="form-label">Nombre</label>
-          <input
-            id="nombre"
-            class="form-control"
-            formControlName="nombre"
-            placeholder="Ej: Juan"
-            type="text"
-          />
-        </div>
-        @if((dialogData.entityType === 'cliente' || dialogData.entityType ===
-        'abogado' || dialogData.entityType === 'secretario' ||
-        dialogData.entityType === 'empresa' )) {
-        <div class="col-md-6">
-          <label for="apellido" class="form-label">Apellido</label>
-          <input
-            id="apellido"
-            class="form-control"
-            formControlName="apellido"
-            placeholder="Ej: Pérez"
-            type="text"
-          />
-        </div>
-        }
+<mat-dialog-content>
+  <div class="dialog-container">
+    <div class="dialog-content">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <h2 mat-dialog-title>{{ dialogData.title }}</h2>
+        <button mat-icon-button (click)="onClose()">X</button>
       </div>
+      <mat-divider class="mb-3"></mat-divider>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Nombre</mat-label>
+              <input matInput formControlName="nombre" placeholder="Ej: Juan" />
+              <mat-error *ngIf="form.get('nombre')?.hasError('required')">
+                Campo requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
 
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input
-          id="email"
-          class="form-control"
-          formControlName="email"
-          placeholder="Ej: ejemplo@email.com"
-          type="email"
-        />
-      </div>
-
-      <div class="mb-3">
-        <label for="telefono" class="form-label">Teléfono</label>
-        <input
-          id="telefono"
-          class="form-control"
-          formControlName="telefono"
-          placeholder="Ej: 1234567890"
-          type="tel"
-        />
-      </div>
-
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <label for="tipo_doc" class="form-label">Tipo Documento</label>
-          <input
-            id="tipo_doc"
-            class="form-control"
-            formControlName="tipo_doc"
-            placeholder="Ej: DNI"
-            type="text"
-          />
-        </div>
-        <div class="col-md-6">
-          <label for="nro_doc" class="form-label">Número Documento</label>
-          <input
-            id="nro_doc"
-            class="form-control"
-            formControlName="nro_doc"
-            placeholder="Ej: 12345678"
-            type="text"
-          />
-        </div>
-      </div>
-
-      @if(dialogData.entityType === 'abogado') {
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <label for="id_rol" class="form-label">Rol</label>
-          <select id="id_rol" class="form-select" formControlName="id_rol">
-            <option [value]="1">Admin</option>
-            <option [value]="2">Abogado</option>
-          </select>
-        </div>
-        <div class="col-md-6">
-          <label for="matricula" class="form-label">Matrícula</label>
-          <input
-            id="matricula"
-            class="form-control"
-            formControlName="matricula"
-            placeholder="Ej: ABC123"
-            type="text"
-          />
-        </div>
-      </div>
-      <div class="mb-3">
-        <label for="especialidades" class="form-label">Especialidades</label>
-        <select
-          id="especialidades"
-          class="form-select"
-          formControlName="especialidades"
-          multiple
-          size="3"
-          style="height: auto; min-height: 38px"
-        >
-          <option [value]="1">Civil y Comercial</option>
-          <option [value]="2">Familiar</option>
-          <option [value]="3">Laboral</option>
-          <option [value]="4">Penal</option>
-          <option [value]="5">Otro</option>
-        </select>
-        <small class="form-text text-muted"
-          >Mantén presionado Ctrl para seleccionar múltiples opciones</small
-        >
-      </div>
-
-      }
-
-      <div class="mb-3">
-        <label for="contrasena" class="form-label">Contraseña</label>
-        <input
-          id="contrasena"
-          class="form-control"
-          formControlName="contrasena"
-          placeholder="123456"
-          type="password"
-        />
-      </div>
-
-      <div class="mb-3">
-        <label for="confirmPassword" class="form-label"
-          >Confirmar Contraseña</label
-        >
-        <input
-          id="confirmPassword"
-          class="form-control"
-          formControlName="confirmPassword"
-          placeholder="Repite la contraseña"
-          type="password"
-        />
-      </div>
-
-      @if(dialogData.entityType === 'secretario') {
-      <div class="mb-3">
-        <label for="turno_trabajo" class="form-label">Turno de Trabajo</label>
-        <select
-          id="turno_trabajo"
-          class="form-select"
-          formControlName="turno_trabajo"
-        >
-          <option value="">Seleccione un turno</option>
-          <option value="mañana">Mañana</option>
-          <option value="tarde">Tarde</option>
-          <option value="noche">Noche</option>
-        </select>
-      </div>
-      } @if(dialogData.entityType === 'abogado') {
-      <div class="mb-3">
-        <label for="fotoName" class="form-label">Foto</label>
-        <div class="d-flex align-items-center">
-          <input
-            id="fotoName"
-            class="form-control"
-            [value]="selectedFile?.name || ''"
-            placeholder="Ningún archivo seleccionado"
-            readonly
-          />
-          <input
-            #fileInput
-            type="file"
-            hidden
-            (change)="onFileSelected($event)"
-            accept="image/*"
-          />
-          <button
-            class="btn btn-outline-secondary ms-2"
-            type="button"
-            (click)="fileInput.click()"
+          <ng-container
+            *ngIf="
+              dialogData.entityType === 'cliente' ||
+              dialogData.entityType === 'abogado' ||
+              dialogData.entityType === 'secretario' ||
+              dialogData.entityType === 'empresa'
+            "
           >
-            Seleccionar
+            <div class="col-md-6">
+              <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Apellido</mat-label>
+                <input
+                  matInput
+                  formControlName="apellido"
+                  placeholder="Ej: Pérez"
+                  [disabled]="dialogData.entityType === 'empresa'"
+                />
+                <mat-error *ngIf="form.get('apellido')?.hasError('required')">
+                  Campo requerido
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </ng-container>
+        </div>
+
+        <mat-form-field appearance="fill" class="w-100 mb-3">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            formControlName="email"
+            placeholder="Ej: ejemplo@email.com"
+            type="email"
+          />
+          <mat-error *ngIf="form.get('email')?.hasError('required')">
+            Campo requerido
+          </mat-error>
+          <mat-error *ngIf="form.get('email')?.hasError('email')">
+            Formato de email inválido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-100 mb-3">
+          <mat-label>Teléfono</mat-label>
+          <input
+            matInput
+            formControlName="telefono"
+            placeholder="Ej: 1234567890"
+            type="tel"
+          />
+          <mat-error *ngIf="form.get('telefono')?.hasError('required')">
+            Campo requerido
+          </mat-error>
+        </mat-form-field>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Tipo Documento</mat-label>
+              <mat-select formControlName="tipo_doc">
+                <mat-option value="DNI">DNI</mat-option>
+                <mat-option value="CUIT">CUIT</mat-option>
+                <mat-option value="CUIL">CUIL</mat-option>
+                <mat-option value="LE">LE</mat-option>
+                <mat-option value="LC">LC</mat-option>
+                <mat-option value="PASAPORTE">PASAPORTE</mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.get('tipo_doc')?.hasError('required')">
+                Seleccione un tipo de documento
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Número Documento</mat-label>
+              <input
+                matInput
+                formControlName="nro_doc"
+                placeholder="Ej: 12345678"
+              />
+              <mat-error *ngIf="form.get('nro_doc')?.hasError('required')">
+                Campo requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <ng-container *ngIf="dialogData.entityType === 'abogado'">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Rol</mat-label>
+                <mat-select formControlName="id_rol">
+                  <mat-option [value]="1">Admin</mat-option>
+                  <mat-option [value]="2">Abogado</mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.get('id_rol')?.hasError('required')">
+                  Seleccione un rol
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Matrícula</mat-label>
+                <input
+                  matInput
+                  formControlName="matricula"
+                  placeholder="Ej: ABC123"
+                />
+                <mat-error *ngIf="form.get('matricula')?.hasError('required')">
+                  Campo requerido
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <mat-form-field appearance="fill" class="w-100 mb-3">
+            <mat-label>Especialidades</mat-label>
+
+            <mat-select formControlName="especialidades" multiple>
+              @for(esp of especialidades; track esp.id){
+              <mat-option [value]="esp.id">{{ esp.nombre }}</mat-option>
+              }
+            </mat-select>
+            <mat-error *ngIf="form.get('especialidades')?.hasError('required')">
+              Seleccione al menos una especialidad
+            </mat-error>
+          </mat-form-field>
+        </ng-container>
+
+        <mat-form-field appearance="fill" class="w-100 mb-3">
+          <mat-label>Contraseña</mat-label>
+          <input
+            matInput
+            formControlName="contrasena"
+            type="password"
+            placeholder="123456"
+          />
+          <mat-error *ngIf="form.get('contrasena')?.hasError('required')">
+            Campo requerido
+          </mat-error>
+          <mat-error *ngIf="form.get('contrasena')?.hasError('minlength')">
+            Mínimo 4 caracteres
+          </mat-error>
+          <mat-error *ngIf="form.get('contrasena')?.hasError('maxlength')">
+            Máximo 20 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-100 mb-3">
+          <mat-label>Confirmar Contraseña</mat-label>
+          <input
+            matInput
+            formControlName="confirmPassword"
+            type="password"
+            placeholder="Repite la contraseña"
+          />
+          <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')">
+            Campo requerido
+          </mat-error>
+          <mat-error *ngIf="form.get('contrasena')?.hasError('minlength')">
+            Mínimo 4 caracteres
+          </mat-error>
+          <mat-error *ngIf="form.get('contrasena')?.hasError('maxlength')">
+            Máximo 20 caracteres
+          </mat-error>
+          <mat-error
+            *ngIf="
+              form.hasError('passwordsDoNotMatch') &&
+              form.get('confirmPassword')?.touched
+            "
+          >
+            Las contraseñas no coinciden
+          </mat-error>
+        </mat-form-field>
+
+        <ng-container *ngIf="dialogData.entityType === 'secretario'">
+          <mat-form-field appearance="fill" class="w-100 mb-3">
+            <mat-label>Turno de Trabajo</mat-label>
+            <mat-select formControlName="turno_trabajo">
+              <mat-option value="">Seleccione un turno</mat-option>
+              <mat-option value="mañana">Mañana</mat-option>
+              <mat-option value="tarde">Tarde</mat-option>
+              <mat-option value="noche">Noche</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('turno_trabajo')?.hasError('required')">
+              Seleccione un turno
+            </mat-error>
+          </mat-form-field>
+        </ng-container>
+
+        <ng-container *ngIf="dialogData.entityType === 'abogado'">
+          <div class="mb-3">
+            <input
+              #fileInput
+              type="file"
+              hidden
+              (change)="onFileSelected($event)"
+              accept="image/*"
+            />
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="fileInput.click()"
+            >
+              Seleccionar Foto
+            </button>
+            <span class="ms-2">{{
+              selectedFile?.name || "Ningún archivo seleccionado"
+            }}</span>
+            <mat-error *ngIf="form.get('foto')?.hasError('required')">
+              La foto es requerida
+            </mat-error>
+          </div>
+        </ng-container>
+        <mat-divider></mat-divider>
+        <div class="d-flex justify-content-end gap-2 mt-4">
+          <button mat-raised-button type="button" (click)="onClose()">
+            Cancelar
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="!form.valid"
+          >
+            {{ dialogData.action === "post" ? "Crear" : "Actualizar" }}
           </button>
         </div>
-      </div>
-
-      }
-
-      <div class="d-flex justify-content-end gap-2 mt-4">
-        <button
-          type="button"
-          class="btn btn-outline-secondary"
-          (click)="onClose()"
-        >
-          Cancelar
-        </button>
-        <button type="submit" [disabled]="!form.valid" class="btn btn-primary">
-          {{ dialogData.action === "post" ? "Crear" : "Actualizar" }}
-        </button>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
-</div>
+</mat-dialog-content>

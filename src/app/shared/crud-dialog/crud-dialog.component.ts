@@ -1,6 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ICrudService } from '../../core/interfaces/ICrudService.interface.js';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { SnackbarService } from '../../core/services/snackbar.service.js';
 import {
   FormControl,
@@ -18,6 +22,13 @@ import { SecreatarioService } from '../../core/services/secretario.service.js';
 import { IEspecialidad } from '../../core/interfaces/IEspecialidad.interface.js';
 import { ClienteService } from '../../core/services/cliente.service.js';
 import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { EspecialidadesService } from '../../core/services/especialidades.service.js';
 
 interface DialogData {
   title: string;
@@ -29,12 +40,23 @@ interface DialogData {
 @Component({
   selector: 'app-crud-dialog',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatDividerModule,
+  ],
   templateUrl: './crud-dialog.component.html',
   styleUrl: './crud-dialog.component.css',
 })
 export class CRUDDialogComponent implements OnInit {
   crudService!: ICrudService<IAbogado | ICliente | ISecretario, unknown>;
+  especialidades: IEspecialidad[] = [];
   selectedFile: File | null = null;
   form: FormGroup;
 
@@ -44,7 +66,8 @@ export class CRUDDialogComponent implements OnInit {
     private snackbarService: SnackbarService,
     private abogadoService: AbogadoService,
     private secretarioService: SecreatarioService,
-    private clienteService: ClienteService
+    private clienteService: ClienteService,
+    private especialidadService: EspecialidadesService
   ) {
     this.form = new FormGroup(
       {
@@ -73,6 +96,7 @@ export class CRUDDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarServicio();
+    this.cargarEspecialidades();
     this.establecerCamposNuevos();
     if (this.dialogData.action === 'put') {
       this.rellenarFormulario();
@@ -134,7 +158,6 @@ export class CRUDDialogComponent implements OnInit {
   }
 
   onClose(): void {
-    this.snackbarService.showError('Cancelando', 5000);
     this.dialogRef.close('none');
   }
 
@@ -166,6 +189,18 @@ export class CRUDDialogComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  private cargarEspecialidades(): void {
+    this.especialidadService.getAll().subscribe({
+      next: (res) => {
+        this.especialidades = res.data;
+      },
+      error: (err) => {
+        console.error('Error cargando especialidades', err);
+        this.snackbarService.showError('Error cargando especialidades');
+      },
+    });
   }
 
   private establecerCamposNuevos(): void {
