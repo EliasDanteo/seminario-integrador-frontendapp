@@ -32,6 +32,10 @@ export class AbogadoService implements ICrudService<IAbogado, IAbogadoCreate> {
     return this.http.get<ApiResponse<IAbogado[]>>(this.url);
   }
 
+  getAvailable(): Observable<ApiResponse<IAbogado[]>> {
+    return this.http.get<ApiResponse<IAbogado[]>>(`${this.url}/disponibles`);
+  }
+
   getById(id: string): Observable<ApiResponse<IAbogado>> {
     return this.http.get<ApiResponse<IAbogado>>(`${this.url}/${id}`);
   }

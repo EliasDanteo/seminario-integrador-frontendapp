@@ -1,0 +1,121 @@
+<ng-container *ngIf="data.informeType === 'ingresos'; else noIngresos">
+  <h2 mat-dialog-title>Solicitar Informe de Ingresos</h2>
+  <mat-divider></mat-divider>
+
+  <form [formGroup]="informeForm">
+    <mat-dialog-content>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Mes y Año</mat-label>
+        <input
+          matInput
+          type="month"
+          formControlName="mes"
+          [max]="currentMonth"
+        />
+        <mat-error *ngIf="informeForm.get('mes')?.hasError('required')">
+          Debes seleccionar un mes.
+        </mat-error>
+        <mat-error *ngIf="informeForm.get('mes')?.hasError('maxMonth')">
+          El mes no puede ser mayor al actual.
+        </mat-error>
+      </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-divider></mat-divider>
+
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Cancelar</button>
+      <button
+        mat-flat-button
+        color="primary"
+        [disabled]="informeForm.invalid"
+        (click)="onSubmit()"
+      >
+        Generar Informe
+      </button>
+    </mat-dialog-actions>
+  </form>
+</ng-container>
+
+<ng-template #noIngresos>
+  <ng-container *ngIf="data.informeType === 'desempenio'; else noDesempenio">
+    <h2 mat-dialog-title>Solicitar Informe de Desempeño</h2>
+    <mat-divider></mat-divider>
+
+    <form [formGroup]="informeForm">
+      <mat-dialog-content>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Mes y Año</mat-label>
+          <input
+            matInput
+            type="month"
+            formControlName="mes"
+            [max]="currentMonth"
+          />
+          <mat-error *ngIf="informeForm.get('mes')?.hasError('required')">
+            Debes seleccionar un mes.
+          </mat-error>
+          <mat-error *ngIf="informeForm.get('mes')?.hasError('maxMonth')">
+            El mes no puede ser mayor al actual.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Abogado</mat-label>
+          <mat-select formControlName="id_abogado" required>
+            <mat-option *ngFor="let abogado of abogados" [value]="abogado.id">
+              {{ abogado.apellido }} {{ abogado.nombre }}
+            </mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="informeForm.get('id_abogado')?.hasError('required')"
+          >
+            Debes seleccionar un abogado.
+          </mat-error>
+        </mat-form-field>
+      </mat-dialog-content>
+
+      <mat-divider></mat-divider>
+
+      <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancelar</button>
+        <button
+          mat-flat-button
+          color="primary"
+          [disabled]="informeForm.invalid"
+          (click)="onSubmit()"
+        >
+          Generar Informe
+        </button>
+      </mat-dialog-actions>
+    </form>
+  </ng-container>
+
+  <ng-template #noDesempenio>
+    <h2 mat-dialog-title>Informe del Caso</h2>
+    <mat-divider></mat-divider>
+
+    <mat-dialog-content
+      class="mat-typography"
+      style="text-align: center; padding: 1.5rem 0"
+    >
+      <p class="mat-body-1 mx-3" style="margin-top: 1rem">
+        Se enviará el informe al correo electrónico registrado en el sistema.
+      </p>
+    </mat-dialog-content>
+
+    <mat-divider></mat-divider>
+
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Cancelar</button>
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="onSubmit()"
+        mat-dialog-close
+      >
+        Solicitar Informe
+      </button>
+    </mat-dialog-actions>
+  </ng-template>
+</ng-template>

@@ -5,10 +5,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { environment } from '../../../../environments/environment.js';
 import { FormsModule } from '@angular/forms';
-import { CasosInformationDialogComponent } from '../casos-information-dialog/casos-information-dialog.component.js';
-import { CRUDDialogComponent } from '../../../shared/crud-dialog/crud-dialog.component.js';
-import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
 import { Router } from '@angular/router';
+import { CasosCrudDialogComponent } from '../casos-crud-dialog/casos-crud-dialog.component.js';
+import { InformesDialogComponent } from '../../../shared/informes-dialog/informes-dialog.component.js';
 @Component({
   selector: 'app-casos-list',
   standalone: true,
@@ -99,48 +98,43 @@ export class CasosListComponent {
   }
 
   openCreateDialog(): void {
-    this.openDialog(CRUDDialogComponent, {
+    this.openDialog(CasosCrudDialogComponent, {
       action: 'post',
-      entityType: 'caso',
-      entity: null,
+      caso: null,
     });
   }
 
   openEditDialog(caso: ICaso): void {
     if (caso) {
-      this.openDialog(CRUDDialogComponent, {
+      this.openDialog(CasosCrudDialogComponent, {
         action: 'put',
-        entityType: 'caso',
-        entity: caso,
+        caso: caso,
       });
     }
   }
 
-  deleteCaso(caso: ICaso): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '400px',
-      data: {
-        nombreCompleto: `${caso.cliente.nombre} ${caso.cliente.apellido}`,
-        entidad: 'caso',
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.eliminarCaso(caso);
-      }
-    });
+  openEndDialog(caso: ICaso): void {
+    if (caso) {
+      this.openDialog(CasosCrudDialogComponent, {
+        action: 'end',
+        caso: caso,
+      });
+    }
   }
 
-  eliminarCaso(caso: ICaso): void {
-    this.http
-      .patch(`${environment.casosUrl}/deactivate/${caso.id}`, {})
-      .subscribe({
-        next: () => this.loadCasos(),
-        error: (err) => {
-          console.error('Error al dar de baja el caso', err);
-          alert('Hubo un error al dar de baja el caso. Inténtalo nuevamente.');
-        },
+  openDeleteDialog(caso: ICaso): void {
+    if (caso) {
+      this.openDialog(CasosCrudDialogComponent, {
+        action: 'delete',
+        caso: caso,
       });
+    }
+  }
+
+  openInformeIngresosDialog(): void {
+    this.openDialog(InformesDialogComponent, {
+      informeType: 'ingresos',
+      caso: null,
+    });
   }
 }

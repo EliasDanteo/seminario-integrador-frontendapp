@@ -13,4 +13,5 @@ export const environment = {
   feedbackUrl: apiUrl + '/feedbacks',
   documentosUrl: apiUrl + '/casos/documentos',
   turnosUrl: apiUrl + '/turnos',
+  informesUrl: apiUrl + '/informes',
 };

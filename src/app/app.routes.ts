@@ -11,6 +11,7 @@ import { CasosInformationDialogComponent } from './pages/cuu-casos/casos-informa
 import { LoginComponent } from './pages/login/login.component.js';
 import { AppointmentBookingComponent } from './pages/appointment-booking/appointment-booking.component.js';
 import { HorariosTurnosListComponent } from './pages/horarios-turnos-crud/horarios-turnos-list/horarios-turnos-list.component.js';
+import { MisActividadesComponent } from './pages/actividades-realizadas-crud/mis-actividades/mis-actividades.component.js';
 
 export const routes: Routes = [
   {
@@ -33,7 +34,6 @@ export const routes: Routes = [
     path: 'secretarios-list',
     component: SecretariosListComponent,
   },
-
   {
     path: 'actividades-list',
     component: ActividadesListComponent,
@@ -59,5 +59,9 @@ export const routes: Routes = [
   {
     path: 'horarios-turnos',
     component: HorariosTurnosListComponent,
+  },
+  {
+    path: 'mis-actividades',
+    component: MisActividadesComponent,
   },
 ];
