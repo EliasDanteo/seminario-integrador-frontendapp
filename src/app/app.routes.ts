@@ -12,8 +12,19 @@ import { LoginComponent } from './pages/login/login.component.js';
 import { AppointmentBookingComponent } from './pages/appointment-booking/appointment-booking.component.js';
 import { HorariosTurnosListComponent } from './pages/horarios-turnos-crud/horarios-turnos-list/horarios-turnos-list.component.js';
 import { MisActividadesComponent } from './pages/actividades-realizadas-crud/mis-actividades/mis-actividades.component.js';
+import { MisCasosListComponent } from './pages/mis-casos-list/mis-casos-list.component.js';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component.js';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component.js';
 
 export const routes: Routes = [
+  {
+    path: 'restablecer-contrasena',
+    component: ResetPasswordComponent,
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
+  },
   {
     path: 'obtener-turnos',
     component: AppointmentBookingComponent,
@@ -63,5 +74,9 @@ export const routes: Routes = [
   {
     path: 'mis-actividades',
     component: MisActividadesComponent,
+  },
+  {
+    path: 'mis-casos',
+    component: MisCasosListComponent,
   },
 ];

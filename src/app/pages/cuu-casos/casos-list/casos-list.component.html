@@ -97,6 +97,9 @@
               <button
                 class="btn btn-warning btn-sm shadow-sm mt-1"
                 (click)="$event.stopPropagation(); openEditDialog(caso)"
+                [disabled]="
+                  caso.estado === 'Finalizado' || caso.estado === 'Cancelado'
+                "
               >
                 Editar
               </button>

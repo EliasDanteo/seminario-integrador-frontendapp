@@ -3,7 +3,7 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
 export function passwordMatchValidator(
   form: AbstractControl
 ): ValidationErrors | null {
-  const password = form.get('password');
+  const password = form.get('contrasena');
   const confirmPassword = form.get('confirmPassword');
 
   if (!password || !confirmPassword) return null;
