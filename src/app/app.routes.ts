@@ -11,6 +11,7 @@ import { CasosInformationDialogComponent } from './pages/cuu-casos/casos-informa
 import { LoginComponent } from './pages/login/login.component.js';
 import { AppointmentBookingComponent } from './pages/appointment-booking/appointment-booking.component.js';
 import { MisActividadesComponent } from './pages/actividades-realizadas-crud/mis-actividades/mis-actividades.component.js';
+import { MisCasosListComponent } from './pages/mis-casos-list/mis-casos-list.component.js';
 
 export const routes: Routes = [
   {
@@ -57,5 +58,9 @@ export const routes: Routes = [
   {
     path: 'mis-actividades',
     component: MisActividadesComponent,
+  },
+  {
+    path: 'mis-casos',
+    component: MisCasosListComponent,
   },
 ];

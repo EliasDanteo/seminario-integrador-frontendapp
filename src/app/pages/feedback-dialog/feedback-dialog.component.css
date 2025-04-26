@@ -14,3 +14,21 @@ mat-form-field {
   font-size: 18px;
   cursor: pointer;
 }
+
+.foto-container {
+  height: 170px;
+  width: 170px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.foto-container img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}

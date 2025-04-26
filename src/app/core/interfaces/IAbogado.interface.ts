@@ -2,7 +2,7 @@ import { IEspecialidad } from './IEspecialidad.interface.js';
 import { IUsuario } from './IUsuario.interface.js';
 
 export interface IAbogado extends IUsuario {
-  foto?: Blob | { type: string; data: number[] };
+  foto: Blob;
   matricula: string;
   rol: { id: number; nombre: string };
   especialidades: IEspecialidad[];

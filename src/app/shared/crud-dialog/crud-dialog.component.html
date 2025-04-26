@@ -2,7 +2,7 @@
   <div class="dialog-content">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2 class="h4 mb-0">
-        {{ title }}
+        {{ dialogData.title }}
       </h2>
       <button
         type="button"
@@ -12,8 +12,7 @@
       ></button>
     </div>
 
-    <form [formGroup]="form" (ngSubmit)="OnSubmit()" class="vertical-form">
-      <!-- Nombre y Apellido en misma fila -->
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="vertical-form">
       <div class="row mb-3">
         <div class="col-md-6">
           <label for="nombre" class="form-label">Nombre</label>
@@ -25,8 +24,9 @@
             type="text"
           />
         </div>
-        @if((entityType === 'cliente' || entityType === 'abogado' || entityType
-        === 'secretario' || entityType === 'empresa' )) {
+        @if((dialogData.entityType === 'cliente' || dialogData.entityType ===
+        'abogado' || dialogData.entityType === 'secretario' ||
+        dialogData.entityType === 'empresa' )) {
         <div class="col-md-6">
           <label for="apellido" class="form-label">Apellido</label>
           <input
@@ -62,7 +62,6 @@
         />
       </div>
 
-      <!-- Tipo y Número de Documento en misma fila -->
       <div class="row mb-3">
         <div class="col-md-6">
           <label for="tipo_doc" class="form-label">Tipo Documento</label>
@@ -86,8 +85,7 @@
         </div>
       </div>
 
-      @if(entityType === 'abogado') {
-      <!-- Matrícula y Rol en misma fila -->
+      @if(dialogData.entityType === 'abogado') {
       <div class="row mb-3">
         <div class="col-md-6">
           <label for="id_rol" class="form-label">Rol</label>
@@ -154,7 +152,7 @@
         />
       </div>
 
-      @if(entityType === 'secretario') {
+      @if(dialogData.entityType === 'secretario') {
       <div class="mb-3">
         <label for="turno_trabajo" class="form-label">Turno de Trabajo</label>
         <select
@@ -168,33 +166,34 @@
           <option value="noche">Noche</option>
         </select>
       </div>
-      } @if(entityType === 'abogado') {
+      } @if(dialogData.entityType === 'abogado') {
       <div class="mb-3">
-        <label for="foto" class="form-label">Foto</label>
+        <label for="fotoName" class="form-label">Foto</label>
         <div class="d-flex align-items-center">
           <input
-            id="foto"
+            id="fotoName"
             class="form-control"
-            placeholder="Selecciona una imagen"
-            [value]="selectedFile?.name"
+            [value]="selectedFile?.name || ''"
+            placeholder="Ningún archivo seleccionado"
             readonly
           />
           <input
-            type="file"
-            (change)="onFileSelected($event)"
-            formControlName="foto"
-            hidden
             #fileInput
+            type="file"
+            hidden
+            (change)="onFileSelected($event)"
+            accept="image/*"
           />
           <button
             class="btn btn-outline-secondary ms-2"
             type="button"
             (click)="fileInput.click()"
           >
-            Subir
+            Seleccionar
           </button>
         </div>
       </div>
+
       }
 
       <div class="d-flex justify-content-end gap-2 mt-4">
@@ -206,7 +205,7 @@
           Cancelar
         </button>
         <button type="submit" [disabled]="!form.valid" class="btn btn-primary">
-          {{ action === "post" ? "Crear" : "Actualizar" }}
+          {{ dialogData.action === "post" ? "Crear" : "Actualizar" }}
         </button>
       </div>
     </form>
