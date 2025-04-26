@@ -79,6 +79,10 @@
   background-color: #fff;
 }
 
+.mat-error {
+  display: flex !important;
+}
+
 @media (max-width: 768px) {
   .dialog-container {
     padding: 10px;

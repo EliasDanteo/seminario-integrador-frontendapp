@@ -1,11 +1,14 @@
-import { Component, Inject, NgModule } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ICrudService } from '../../core/interfaces/ICrudService.interface.js';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { SnackbarService } from '../../core/services/snackbar.service.js';
 import {
   FormControl,
   FormGroup,
-  NgModel,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -15,353 +18,353 @@ import { ISecretario } from '../../core/interfaces/ISecretario.interface.js';
 import { IAbogado } from '../../core/interfaces/IAbogado.interface.js';
 import { ICliente } from '../../core/interfaces/ICliente.interface.js';
 import { AbogadoService } from '../../core/services/abogados.service.js';
+import { SecreatarioService } from '../../core/services/secretario.service.js';
 import { IEspecialidad } from '../../core/interfaces/IEspecialidad.interface.js';
+import { ClienteService } from '../../core/services/cliente.service.js';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { EspecialidadesService } from '../../core/services/especialidades.service.js';
 
 interface DialogData {
   title: string;
   action: string;
   user: ISecretario | IAbogado | ICliente;
   entityType: 'secretario' | 'abogado' | 'cliente' | 'empresa';
-  crudService: ICrudService<IAbogado | ICliente | ISecretario, unknown>;
 }
 
 @Component({
   selector: 'app-crud-dialog',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatDividerModule,
+  ],
   templateUrl: './crud-dialog.component.html',
   styleUrl: './crud-dialog.component.css',
 })
-export class CRUDDialogComponent {
-  title: string;
-  action: string;
-  userId: string | undefined;
-  crudService: ICrudService<IAbogado | ICliente | ISecretario, unknown>;
-  entityType: 'secretario' | 'abogado' | 'cliente' | 'empresa';
+export class CRUDDialogComponent implements OnInit {
+  crudService!: ICrudService<IAbogado | ICliente | ISecretario, unknown>;
+  especialidades: IEspecialidad[] = [];
   selectedFile: File | null = null;
+  form: FormGroup;
 
-  form = new FormGroup<any>(
-    {
-      nombre: new FormControl('', [Validators.required, trimValidator()]),
-      apellido: new FormControl('', [Validators.required, trimValidator()]),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      telefono: new FormControl('', [Validators.required]),
-      tipo_doc: new FormControl('', [Validators.required]),
-      nro_doc: new FormControl('', [Validators.required]),
-      contrasena: new FormControl('', [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(20),
-        trimValidator(),
-      ]),
-      confirmPassword: new FormControl('', [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(20),
-        trimValidator(),
-      ]),
-    },
-    { validators: passwordMatchValidator }
-  );
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: DialogData,
     public dialogRef: MatDialogRef<CRUDDialogComponent>,
-    private snackbarService: SnackbarService
+    private snackbarService: SnackbarService,
+    private abogadoService: AbogadoService,
+    private secretarioService: SecreatarioService,
+    private clienteService: ClienteService,
+    private especialidadService: EspecialidadesService
   ) {
-    console.log(dialogData);
-    this.title = dialogData.title;
-    this.action = dialogData.action;
-    this.crudService = dialogData.crudService;
-    this.entityType = dialogData.entityType;
+    this.form = new FormGroup(
+      {
+        nombre: new FormControl('', [Validators.required, trimValidator()]),
+        apellido: new FormControl('', [Validators.required, trimValidator()]),
+        email: new FormControl('', [Validators.required, Validators.email]),
+        telefono: new FormControl('', [Validators.required]),
+        tipo_doc: new FormControl('', [Validators.required]),
+        nro_doc: new FormControl('', [Validators.required]),
+        contrasena: new FormControl('', [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(20),
+          trimValidator(),
+        ]),
+        confirmPassword: new FormControl('', [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(20),
+          trimValidator(),
+        ]),
+      },
+      { validators: passwordMatchValidator }
+    );
+  }
 
-    //ABOGADO
-    if (this.entityType === 'abogado') {
-      this.form.addControl(
-        'matricula',
-        new FormControl('', Validators.required)
-      );
-      this.form.addControl(
-        'id_rol',
-        new FormControl(null, [Validators.required, Validators.min(1)])
-      );
-      this.form.addControl(
-        'especialidades',
-        new FormControl([], [Validators.required])
-      );
-      this.form.addControl(
-        'foto',
-        new FormControl(null, [Validators.required])
-      );
-    }
-
-    //CLIENTE
-    else if (this.entityType === 'cliente') {
-      this.form.addControl(
-        'es_empresa',
-        new FormControl('', Validators.required)
-      );
-      this.form.get('es_empresa')?.setValue(false);
-    }
-    // SECRETARIO
-    else if (this.entityType === 'secretario') {
-      this.form.addControl(
-        'turno_trabajo',
-        new FormControl('', Validators.required)
-      );
-    }
-    //EMPRESA
-    else if (this.entityType === 'empresa') {
-      this.form.addControl('es_empresa', new FormControl(true));
-      this.form.get('es_empresa')?.setValue(true);
-      this.form.get('apellido')?.disable();
-      this.form.get('apellido')?.setValue(null);
-      this.form.get('apellido')?.clearValidators();
-    }
-
-    // FOR UPDATES
-    if (dialogData.user !== undefined) {
-      const form = this.form.controls;
-
-      this.userId = dialogData.user.id;
-      form['nombre'].setValue(dialogData.user.nombre);
-      form['apellido'].setValue(dialogData.user.apellido);
-      form['email'].setValue(dialogData.user.email);
-      form['telefono'].setValue(dialogData.user.telefono);
-      form['tipo_doc'].setValue(dialogData.user.tipo_doc);
-      form['nro_doc'].setValue(dialogData.user.nro_doc);
-      form['contrasena'].setValue('');
-      form['contrasena'].clearValidators();
-      form['confirmPassword'].setValue('');
-      form['confirmPassword'].clearValidators();
-
-      //ABOGADO
-      if (
-        this.entityType === 'abogado' &&
-        'matricula' in dialogData.user &&
-        'rol' in dialogData.user
-      ) {
-        form['matricula'].setValue(dialogData.user.matricula);
-        form['id_rol'].setValue(dialogData.user.rol.id);
-        const abogadoService = this.crudService as AbogadoService;
-        abogadoService.findEspecialidad(dialogData.user.id).subscribe({
-          next: (especialidades) => {
-            const nombres = especialidades.data.map(
-              (e: IEspecialidad) => e.nombre
-            );
-            form['especialidades'].setValue(nombres);
-          },
-          error: (err) => {
-            console.error('Error al obtener especialidades', err);
-          },
-        });
-      }
-      //CLIENTE
-      else if (
-        this.entityType === 'cliente' &&
-        'es_empresa' in dialogData.user
-      ) {
-        form['es_empresa'].setValue(dialogData.user.es_empresa);
-      }
-      //SECRETARIO
-      else if (
-        this.entityType === 'secretario' &&
-        'turno_trabajo' in dialogData.user
-      ) {
-        form['turno_trabajo'].setValue(dialogData.user.turno_trabajo);
-      }
-      //EMPRESA
-      else if (
-        this.entityType === 'empresa' &&
-        'es_empresa' in dialogData.user
-      ) {
-        form['es_empresa'].setValue(dialogData.user.es_empresa);
-      }
+  ngOnInit(): void {
+    this.cargarServicio();
+    this.cargarEspecialidades();
+    this.establecerCamposNuevos();
+    if (this.dialogData.action === 'put') {
+      this.rellenarFormulario();
     }
   }
 
-  sendFullUpdate() {
-    if (this.form.valid) {
-      try {
-        const formData = { ...this.form.value };
+  private sendFullUpdate(): void {
+    if (!this.form.valid) {
+      return;
+    }
 
-        if (!formData.contrasena) {
-          delete formData.contrasena;
-        }
-        if (!formData.confirmPassword) {
-          delete formData.confirmPassword;
-        }
-        if (this.dialogData.entityType === 'abogado') {
-          if (!Array.isArray(formData.especialidades)) {
-            formData.especialidades = [formData.especialidades];
-          }
-          if (this.action === 'post') {
-            this.crudService.create(formData as IAbogado).subscribe({
-              next: (response) => {
-                this.snackbarService.showSuccess('¡Creado Exitosamente!', 5000);
-                this.dialogRef.close(response);
-              },
-              error: (error) => {
-                console.error('Error al crear el abogado:', error);
-                this.snackbarService.showError(
-                  'Error al crear el abogado',
-                  5000
-                );
-              },
-            });
-          }
-          if (this.action === 'put') {
-            this.crudService.update(this.userId!, formData).subscribe({
-              next: (response) => {
-                this.snackbarService.showSuccess(
-                  '¡Actualización Exitosa!',
-                  5000
-                );
-                this.dialogRef.close(response);
-              },
-              error: (error) => {
-                console.error('Error al actualizar el abogado:', error);
-                this.snackbarService.showError(
-                  'Error al actualizar el abogado',
-                  5000
-                );
-              },
-            });
-          }
-        }
-        if (this.dialogData.entityType === 'cliente') {
-          if (this.action === 'post') {
-            this.crudService.create(formData as ICliente).subscribe({
-              next: (response) => {
-                this.snackbarService.showSuccess('¡Creado Exitosamente!', 5000);
-                this.dialogRef.close(response);
-              },
-              error: (error) => {
-                console.error('Error al crear el cliente:', error);
-                this.snackbarService.showError(
-                  'Error al crear el cliente',
-                  5000
-                );
-              },
-            });
-          }
-          if (this.action === 'put') {
-            this.crudService.update(this.userId!, formData).subscribe({
-              next: (response) => {
-                this.snackbarService.showSuccess(
-                  '¡Actualización Exitosa!',
-                  5000
-                );
-                this.dialogRef.close(response);
-              },
-              error: (error) => {
-                console.error('Error al actualizar el cliente:', error);
-                this.snackbarService.showError(
-                  'Error al actualizar el cliente',
-                  5000
-                );
-              },
-            });
-          }
-        }
-        if (this.dialogData.entityType === 'secretario') {
-          if (this.action === 'post') {
-            this.crudService.create(formData as ISecretario).subscribe({
-              next: (response) => {
-                this.snackbarService.showSuccess('¡Creado Exitosamente!', 5000);
-                this.dialogRef.close(response);
-              },
-              error: (error) => {
-                console.error('Error al crear el secretario:', error);
-                this.snackbarService.showError(
-                  'Error al crear el secretario',
-                  5000
-                );
-              },
-            });
-          }
-          if (this.action === 'put') {
-            this.crudService.update(this.userId!, formData).subscribe({
-              next: (response) => {
-                this.snackbarService.showSuccess(
-                  '¡Actualización Exitosa!',
-                  5000
-                );
-                this.dialogRef.close(response);
-              },
-              error: (error) => {
-                console.error('Error al actualizar el secretario:', error);
-                this.snackbarService.showError(
-                  'Error al actualizar el secretario',
-                  5000
-                );
-              },
-            });
-          }
-        }
-        if (this.dialogData.entityType === 'empresa') {
-          if (this.action === 'post') {
-            this.crudService.create(formData as ICliente).subscribe({
-              next: (response) => {
-                this.snackbarService.showSuccess('¡Creado Exitosamente!', 5000);
-                this.dialogRef.close(response);
-              },
-              error: (error) => {
-                console.error('Error al crear la empresa:', error);
-                this.snackbarService.showError(
-                  'Error al crear la empresa',
-                  5000
-                );
-              },
-            });
-          }
-          if (this.action === 'put') {
-            this.crudService.update(this.userId!, formData).subscribe({
-              next: (response) => {
-                this.snackbarService.showSuccess(
-                  '¡Actualización Exitosa!',
-                  5000
-                );
-                this.dialogRef.close(response);
-              },
-              error: (error) => {
-                console.error('Error al actualizar la empresa:', error);
-                this.snackbarService.showError(
-                  'Error al actualizar la empresa',
-                  5000
-                );
-              },
-            });
-          }
-        }
-      } catch (error) {
-        console.error('Error al enviar la actualización:', error);
-        this.snackbarService.showError(
-          'Error al enviar la actualización',
+    const raw = { ...this.form.value };
+
+    ['contrasena', 'confirmPassword'].forEach((key) => {
+      if (!raw[key]) {
+        delete raw[key];
+      }
+    });
+
+    let formData: FormData | any;
+
+    if (this.dialogData.entityType === 'abogado') {
+      formData = this.buildAbogadoFormData(raw);
+    } else {
+      formData = raw;
+    }
+
+    const isCreate = this.dialogData.action === 'post';
+    const id = this.dialogData.user?.id!;
+    const servicio = isCreate
+      ? this.crudService.create(formData)
+      : this.crudService.update(id, formData);
+
+    const entidad = this.dialogData.entityType;
+    const titulo = isCreate ? 'Crear' : 'Actualizar';
+
+    servicio.subscribe({
+      next: (response) => {
+        this.snackbarService.showSuccess(
+          `¡${titulo} ${entidad} exitosamente!`,
           5000
         );
-      }
-    }
+        this.dialogRef.close(response);
+      },
+      error: (err) => {
+        console.error(`Error al ${titulo.toLowerCase()} ${entidad}:`, err);
+        this.snackbarService.showError(
+          `Error al ${titulo.toLowerCase()} ${entidad}`,
+          5000
+        );
+      },
+    });
   }
 
-  OnSubmit() {
-    if (this.action === 'post' || this.action === 'put') {
+  onSubmit(): void {
+    if (['post', 'put'].includes(this.dialogData.action)) {
       this.sendFullUpdate();
     }
   }
 
   onClose(): void {
-    this.snackbarService.showError('Cancelando', 5000);
     this.dialogRef.close('none');
   }
 
-  onFileSelected(event: Event): void {
+  onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      this.selectedFile = input.files[0];
-      this.form.patchValue({ foto: this.selectedFile });
-      this.form.get('foto')?.updateValueAndValidity();
-      const reader = new FileReader();
-      reader.readAsDataURL(this.selectedFile);
+    if (!input.files?.length) {
+      return;
     }
+
+    const file = input.files[0];
+    this.selectedFile = file;
+
+    this.form.get('foto')!.setValue(file);
+  }
+
+  // AUXILIARES -----------------------------------------------------------------
+
+  private cargarServicio() {
+    switch (this.dialogData.entityType) {
+      case 'abogado':
+        this.crudService = this.abogadoService;
+        break;
+      case 'cliente':
+        this.crudService = this.clienteService;
+        break;
+      case 'secretario':
+        this.crudService = this.secretarioService;
+        break;
+      default:
+        break;
+    }
+  }
+
+  private cargarEspecialidades(): void {
+    this.especialidadService.getAll().subscribe({
+      next: (res) => {
+        this.especialidades = res.data;
+      },
+      error: (err) => {
+        console.error('Error cargando especialidades', err);
+        this.snackbarService.showError('Error cargando especialidades');
+      },
+    });
+  }
+
+  private establecerCamposNuevos(): void {
+    switch (this.dialogData.entityType) {
+      case 'abogado':
+        this.form.addControl(
+          'matricula',
+          new FormControl<string>('', Validators.required)
+        );
+        this.form.addControl(
+          'id_rol',
+          new FormControl<number | null>(null, [
+            Validators.required,
+            Validators.min(1),
+          ])
+        );
+        this.form.addControl(
+          'especialidades',
+          new FormControl<string[]>([], Validators.required)
+        );
+        this.form.addControl(
+          'foto',
+          new FormControl<File | null>(null, Validators.required)
+        );
+        break;
+
+      case 'cliente':
+        this.form.addControl(
+          'es_empresa',
+          new FormControl<boolean>(false, Validators.required)
+        );
+        break;
+
+      case 'secretario':
+        this.form.addControl(
+          'turno_trabajo',
+          new FormControl<string>('', Validators.required)
+        );
+        break;
+
+      case 'empresa':
+        this.form.addControl(
+          'es_empresa',
+          new FormControl<boolean>(true, Validators.required)
+        );
+        this.form.get('apellido')!.disable();
+        this.form.get('apellido')!.clearValidators();
+        this.form.get('apellido')!.updateValueAndValidity();
+        break;
+
+      default:
+        throw new Error(
+          `Tipo de entidad desconocido: ${this.dialogData.entityType}`
+        );
+    }
+  }
+
+  private rellenarFormulario(): void {
+    const user = this.dialogData.user;
+    if (!user) {
+      return;
+    }
+
+    this.form.patchValue({
+      nombre: user.nombre,
+      apellido: user.apellido,
+      email: user.email,
+      telefono: user.telefono,
+      tipo_doc: user.tipo_doc,
+      nro_doc: user.nro_doc,
+    });
+
+    ['contrasena', 'confirmPassword'].forEach((field) => {
+      const ctrl = this.form.get(field)!;
+      ctrl.clearValidators();
+      ctrl.updateValueAndValidity();
+      ctrl.setValue('');
+    });
+
+    switch (this.dialogData.entityType) {
+      case 'abogado':
+        this.form.patchValue({
+          matricula: (user as IAbogado).matricula,
+          id_rol: (user as IAbogado).rol.id,
+        });
+
+        (this.crudService as AbogadoService)
+          .findEspecialidad(user.id!)
+          .subscribe({
+            next: (res) => {
+              const nombres = res.data.map((e: IEspecialidad) => e.nombre);
+              this.form.get('especialidades')!.setValue(nombres);
+            },
+            error: (err) => console.error('Error cargando especialidades', err),
+          });
+        break;
+
+      case 'cliente':
+        this.form.patchValue({
+          es_empresa: (user as ICliente).es_empresa,
+        });
+        break;
+
+      case 'secretario':
+        this.form.patchValue({
+          turno_trabajo: (user as ISecretario).turno_trabajo,
+        });
+        break;
+
+      case 'empresa':
+        this.form.patchValue({
+          es_empresa: (user as ICliente).es_empresa,
+        });
+        break;
+
+      default:
+        throw new Error(
+          `Tipo de entidad desconocido: ${this.dialogData.entityType}`
+        );
+    }
+  }
+
+  private buildAbogadoFormData(raw: any): FormData {
+    const fd = new FormData();
+
+    [
+      'nombre',
+      'apellido',
+      'email',
+      'telefono',
+      'tipo_doc',
+      'nro_doc',
+      'matricula',
+    ].forEach((key) => {
+      if (raw[key] != null) {
+        fd.append(key, String(raw[key]));
+      }
+    });
+
+    if (raw.id_rol != null) {
+      fd.append('id_rol', String(Number(raw.id_rol)));
+    }
+
+    if (raw.especialidades != null) {
+      const especialidades = Array.isArray(raw.especialidades)
+        ? raw.especialidades
+        : [raw.especialidades];
+
+      const ids = especialidades
+        .map((v: any) => Number(v))
+        .filter((n: number) => Number.isInteger(n) && n > 0);
+
+      fd.append('especialidades', JSON.stringify(ids));
+    }
+
+    const foto = raw.foto;
+    if (foto instanceof File) {
+      fd.append('foto', foto, foto.name);
+    }
+
+    if (raw.contrasena) {
+      fd.append('contrasena', raw.contrasena);
+    }
+
+    return fd;
   }
 }
