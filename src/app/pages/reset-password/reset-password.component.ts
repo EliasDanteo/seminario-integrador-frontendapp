@@ -26,7 +26,7 @@ export class ResetPasswordComponent {
     private authService: ForgotPasswordService,
     private snackBarService: SnackbarService
   ) {
-    this.code = this.route.snapshot.queryParamMap.get('code');
+    this.code = this.route.snapshot.queryParamMap.get('codigo');
 
     if (!this.code) {
       this.snackBarService.showError('Enlace inválido o faltante');
