@@ -1,0 +1,92 @@
+<div class="container" style="min-width: 500px;">
+  <div class="dialog-title">
+    <div class="d-flex justify-content-between align-items-center">
+      <h2 mat-dialog-title>
+        {{ isEdit ? 'Editar' + ' ' + data.entityType : 'Registrar' + ' ' + data.entityType }}
+      </h2>
+      <button type="button" class="btn-close" title="Cerrar ventana" (click)="onClose()"></button>
+    </div>
+  </div>
+  <hr>
+
+  <form [formGroup]="entityForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content *ngIf="isEdit">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Abogado</mat-label>
+        <mat-select formControlName="abogado" required>
+          <mat-option *ngFor="let abogado of abogados" [value]="abogado.id">
+            {{ abogado.nombre }} {{ abogado.apellido }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Dia de la semana</mat-label>
+        <mat-select formControlName="dia_semana" required>
+          <mat-option [value]="1">Lunes</mat-option>
+          <mat-option [value]="2">Martes</mat-option>
+          <mat-option [value]="3">Miércoles</mat-option>
+          <mat-option [value]="4">Jueves</mat-option>
+          <mat-option [value]="5">Viernes</mat-option>
+          <mat-option [value]="6">Sábado</mat-option>
+          <mat-option [value]="7">Domingo</mat-option>
+        </mat-select>
+      </mat-form-field>
+    
+      <mat-form-field appearance="outline">
+        <mat-label>Hora de Inicio</mat-label>
+        <input matInput formControlName="hora_inicio" type="time" required>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Hora de Fin</mat-label>
+        <input matInput formControlName="hora_fin" type="time" required>
+      </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-content *ngIf="!isEdit" class="common-dialog">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Abogado</mat-label>
+        <mat-select formControlName="abogado" required>
+          <mat-option *ngFor="let abogado of abogados" [value]="abogado.id">
+            {{ abogado.nombre }} {{ abogado.apellido }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Dia de la semana</mat-label>
+        <mat-select formControlName="dia_semana" required>
+          <mat-option [value]="1">Lunes</mat-option>
+          <mat-option [value]="2">Martes</mat-option>
+          <mat-option [value]="3">Miércoles</mat-option>
+          <mat-option [value]="4">Jueves</mat-option>
+          <mat-option [value]="5">Viernes</mat-option>
+          <mat-option [value]="6">Sábado</mat-option>
+          <mat-option [value]="7">Domingo</mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Hora de Inicio</mat-label>
+        <input matInput formControlName="hora_inicio" type="time" required>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Hora de Fin</mat-label>
+        <input matInput formControlName="hora_fin" type="time" required>
+      </mat-form-field>
+      </mat-dialog-content>
+
+      <mat-dialog-actions>
+        <button mat-button type="submit" [disabled]="!entityForm.valid" class="btn btn-success">
+          {{ isEdit ? 'Actualizar' : 'Crear'}}
+        </button>
+      
+        <button mat-button type="button" class="btn-secondary" (click)="onClose()">
+          Cancelar
+        </button>
+      </mat-dialog-actions>
+  </form>
+
+</div>

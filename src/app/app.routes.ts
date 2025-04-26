@@ -10,6 +10,7 @@ import { NoticiaDetalleComponent } from './pages/noticias-crud/noticia-detalle/n
 import { CasosInformationDialogComponent } from './pages/cuu-casos/casos-information-dialog/casos-information-dialog.component.js';
 import { LoginComponent } from './pages/login/login.component.js';
 import { AppointmentBookingComponent } from './pages/appointment-booking/appointment-booking.component.js';
+import { HorariosTurnosListComponent } from './pages/horarios-turnos-crud/horarios-turnos-list/horarios-turnos-list.component.js';
 
 export const routes: Routes = [
   {
@@ -53,5 +54,10 @@ export const routes: Routes = [
   {
     path: 'noticias-detalle/:id',
     component: NoticiaDetalleComponent,
+  },
+
+  {
+    path: 'horarios-turnos',
+    component: HorariosTurnosListComponent,
   },
 ];
