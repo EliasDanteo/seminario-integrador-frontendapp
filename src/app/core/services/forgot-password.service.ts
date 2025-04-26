@@ -18,9 +18,12 @@ export class ForgotPasswordService {
   }
 
   resetPassword(code: string, newPassword: string) {
-    return this.http.post(`${environment.apiUrl}/reseteo-clave/${code}`, {
-      nueva_contrasena: newPassword,
-      confirmar_contrasena: newPassword,
-    });
+    return this.http.post(
+      `${environment.apiUrl}/usuarios/restablecer-contrasena/${code}`,
+      {
+        nueva_contrasena: newPassword,
+        confirmar_contrasena: newPassword,
+      }
+    );
   }
 }
