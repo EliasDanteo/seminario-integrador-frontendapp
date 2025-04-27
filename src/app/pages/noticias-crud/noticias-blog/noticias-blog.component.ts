@@ -26,7 +26,11 @@ export class NoticiasBlogComponent implements OnInit {
       .get<{ message: string; data: INoticia[] }>(environment.noticiasUrl)
       .subscribe({
         next: (res) => {
-          this.noticias = res.data;
+          const fechaHoy = new Date();
+          this.noticias = res.data.filter((noticia) => {
+            const fechaPublicacion = new Date(noticia.fecha_publicacion);
+            return fechaPublicacion <= fechaHoy;
+          });
         },
         error: (error) => {
           console.error('Error al cargar noticias', error);
