@@ -8,4 +8,6 @@ export interface IAbogado extends IUsuario {
   especialidades: IEspecialidad[];
   horarioTurnos?: string[]; //TODO: hasta crear la interfaz de horarios
   id_abogado: string; // NO LO SAQUES PORQUE ASI DEVUELVE LA BD
+  is_admin: boolean;
+  tipo_usuario: string;
 }

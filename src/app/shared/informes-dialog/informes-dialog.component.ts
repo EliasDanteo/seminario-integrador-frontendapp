@@ -68,9 +68,10 @@ export class InformesDialogComponent implements OnInit {
   ngOnInit(): void {
     if (this.data.informeType === 'desempenio') {
       this.cargarAboogados();
-      this.informeForm.patchValue({
-        id_abogado: new FormControl('', [Validators.required]),
-      });
+      this.informeForm.addControl(
+        'id_abogado',
+        new FormControl('', Validators.required)
+      );
     }
   }
 
@@ -86,84 +87,85 @@ export class InformesDialogComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.informeForm.valid) {
-      const informeData: IInforme = {
-        mes: this.informeForm.value.mes,
-        id_abogado:
-          this.data.informeType === 'desempenio'
-            ? this.informeForm.value.id_abogado
-            : undefined,
-      };
-      switch (this.data.informeType) {
-        case 'ingresos':
-          this.informesService.solicitarInformeIngresos(informeData).subscribe({
-            next: (response) => {
-              if (response) {
-                this.snackBarService.showSuccess(
-                  'Informe de ingresos solicitado correctamente'
-                );
-              } else {
-                this.snackBarService.showError(
-                  'Error al solicitar informe de ingresos'
-                );
-              }
-            },
-            error: () => {
-              this.snackBarService.showError(
-                'Error al solicitar informe de ingresos'
-              );
-            },
-          });
-          break;
-        case 'desempenio':
-          this.informesService
-            .solicitarInformeDesempenio(informeData)
-            .subscribe({
-              next: (response) => {
-                if (response) {
-                  this.snackBarService.showSuccess(
-                    'Informe de desempeño solicitado correctamente'
-                  );
-                } else {
-                  this.snackBarService.showError(
-                    'Error al solicitar informe de desempeño'
-                  );
-                }
-              },
-              error: () => {
-                this.snackBarService.showError(
-                  'Error al solicitar informe de desempeño'
-                );
-              },
-            });
-          break;
-        case 'caso':
-          this.informesService
-            .solicitarInformeCaso(this.data.caso!.id)
-            .subscribe({
-              next: (response) => {
-                if (response) {
-                  this.snackBarService.showSuccess(
-                    'Informe de caso solicitado correctamente'
-                  );
-                } else {
-                  this.snackBarService.showError(
-                    'Error al solicitar informe de caso'
-                  );
-                }
-              },
-              error: () => {
-                this.snackBarService.showError(
-                  'Error al solicitar informe de caso'
-                );
-              },
-            });
-          break;
-        default:
-          console.error('Tipo de informe no válido');
-      }
+    const { informeType, caso } = this.data;
+
+    if (informeType === 'caso') {
+      this.handleInformeCaso(caso!.id);
       this.dialogRef.close();
+      return;
     }
+
+    if (!this.informeForm.valid) {
+      this.snackBarService.showError(
+        'Por favor, completa todos los campos obligatorios'
+      );
+      return;
+    }
+
+    const informeData: IInforme = {
+      mes: this.informeForm.value.mes,
+      id_abogado:
+        informeType === 'desempenio'
+          ? this.informeForm.value.id_abogado
+          : undefined,
+    };
+
+    if (informeType === 'ingresos') {
+      this.handleInformeIngresos(informeData);
+    } else if (informeType === 'desempenio') {
+      this.handleInformeDesempenio(informeData);
+    }
+
+    this.dialogRef.close();
+  }
+
+  private handleInformeIngresos(data: IInforme) {
+    this.informesService.solicitarInformeIngresos(data).subscribe({
+      next: (ok) =>
+        ok
+          ? this.snackBarService.showSuccess(
+              'Informe de ingresos solicitado correctamente'
+            )
+          : this.snackBarService.showError(
+              'Error al solicitar informe de ingresos'
+            ),
+      error: () =>
+        this.snackBarService.showError(
+          'Error al solicitar informe de ingresos'
+        ),
+    });
+  }
+
+  private handleInformeDesempenio(data: IInforme) {
+    this.informesService.solicitarInformeDesempenio(data).subscribe({
+      next: (ok) =>
+        ok
+          ? this.snackBarService.showSuccess(
+              'Informe de desempeño solicitado correctamente'
+            )
+          : this.snackBarService.showError(
+              'Error al solicitar informe de desempeño'
+            ),
+      error: () =>
+        this.snackBarService.showError(
+          'Error al solicitar informe de desempeño'
+        ),
+    });
+  }
+
+  private handleInformeCaso(casoId: number) {
+    this.informesService.solicitarInformeCaso(casoId).subscribe({
+      next: (ok) =>
+        ok
+          ? this.snackBarService.showSuccess(
+              'Informe de caso solicitado correctamente'
+            )
+          : this.snackBarService.showError(
+              'Error al solicitar informe de caso'
+            ),
+      error: () =>
+        this.snackBarService.showError('Error al solicitar informe de caso'),
+    });
   }
 
   maxMonthValidator(maxMonth: string): ValidatorFn {
