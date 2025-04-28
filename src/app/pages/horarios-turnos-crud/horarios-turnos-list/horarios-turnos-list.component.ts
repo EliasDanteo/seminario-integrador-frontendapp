@@ -37,7 +37,14 @@ export class HorariosTurnosListComponent {
       )
       .subscribe({
         next: (res) => {
-          this.horarios = res.data;
+          this.horarios = res.data.sort(
+            (a: IHorarioTurno, b: IHorarioTurno) => {
+              if (a.dia_semana !== b.dia_semana) {
+                return a.dia_semana - b.dia_semana;
+              }
+              return a.hora_inicio.localeCompare(b.hora_inicio);
+            }
+          );
         },
         error: (err) => {
           console.error('Error', err);

@@ -43,7 +43,6 @@ import { AuthService } from '../../../core/services/auth.service.js';
 })
 export class HorariosTurnosDialogComponent {
   entityForm: FormGroup;
-  isEdit: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -71,7 +70,6 @@ export class HorariosTurnosDialogComponent {
   ngOnInit(): void {
     if (this.data.action === 'put' && this.data.entity) {
       this.entityForm.patchValue(this.data.entity);
-      this.isEdit = true;
     }
   }
 
