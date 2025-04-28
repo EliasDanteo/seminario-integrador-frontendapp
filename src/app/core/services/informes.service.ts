@@ -28,7 +28,7 @@ export class InformesService {
   solicitarInformeCaso(id_caso: number): Observable<ApiResponse<any>> {
     return this.httpClient.post<ApiResponse<any>>(
       `${environment.informesUrl}/caso`,
-      { caso: id_caso }
+      { id_caso: id_caso }
     );
   }
 }
