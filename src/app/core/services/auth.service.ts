@@ -22,7 +22,9 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private snackBarService: SnackbarService
-  ) {}
+  ) {
+    console.log(this.userSignal);
+  }
 
   login(
     user: ILogin
@@ -73,6 +75,7 @@ export class AuthService {
     if (user !== null) {
       const parsed = JSON.parse(user);
       this.userSignal.set(parsed);
+      console.log('Parsed user:', parsed);
       return parsed;
     }
 

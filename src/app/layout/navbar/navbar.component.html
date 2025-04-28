@@ -18,6 +18,8 @@
         <li class="nav-item">
           <a class="nav-link animated-link" href="#">Inicio</a>
         </li>
+        @if(this.esAdmin()){
+
         <li class="nav-item">
           <a class="nav-link animated-link" href="/abogados-list">Abogados</a>
         </li>
@@ -38,20 +40,23 @@
           >
         </li>
         <li class="nav-item">
+          <a class="nav-link animated-link" href="/noticias-list"
+            >Crear noticia</a
+          >
+        </li>
+        } @if(this.esAbogado()){
+        <li>
+          <a class="nav-link animated-link" href="/mis-casos">Mis Casos</a>
+        </li>
+        } @if(this.esSecretario()){} @if(this.esCliente()){}
+
+        <li class="nav-item">
           <a class="nav-link animated-link" href="/noticias-blog">Noticias</a>
         </li>
         <li class="nav-item">
           <a class="nav-link animated-link" href="/obtener-turnos"
             >Obtener turno abogado</a
           >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link animated-link" href="/noticias-list"
-            >Crear noticia</a
-          >
-        </li>
-        <li>
-          <a class="nav-link animated-link" href="/mis-casos">Mis Casos</a>
         </li>
       </ul>
       @if(this.userSignal() !== null){

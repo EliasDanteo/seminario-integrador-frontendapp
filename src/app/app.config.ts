@@ -8,7 +8,11 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
-import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { AuthInterceptor } from './core/interceptors/auth.interceptors.js';
@@ -22,6 +26,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     importProvidersFrom(MatNativeDateModule),
     importProvidersFrom(MatBottomSheetModule),
+    provideHttpClient(withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
 };
