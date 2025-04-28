@@ -58,7 +58,7 @@ export class ResetPasswordComponent {
 
       this.success = true;
       this.snackBarService.showSuccess('Contraseña actualizada correctamente');
-
+   
       setTimeout(() => {
         this.router.navigate(['/login']);
       }, 3000);

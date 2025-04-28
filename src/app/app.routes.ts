@@ -14,8 +14,15 @@ import { MisActividadesComponent } from './pages/actividades-realizadas-crud/mis
 import { MisCasosListComponent } from './pages/mis-casos-list/mis-casos-list.component.js';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component.js';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component.js';
+import { adminGuard } from './core/guards/admin.guard.js';
+import { abogadoGuard } from './core/guards/abogado.guard.js';
 
 export const routes: Routes = [
+  {
+    path: '',
+
+    component: LoginComponent,
+  },
   {
     path: 'restablecer-contrasena',
     component: ResetPasswordComponent,
@@ -28,33 +35,40 @@ export const routes: Routes = [
     path: 'obtener-turnos',
     component: AppointmentBookingComponent,
   },
-  {
-    path: 'login',
-    component: LoginComponent,
-  },
+
   {
     path: 'abogados-list',
+    canActivate: [adminGuard],
     component: AbogadosListComponent,
   },
   {
     path: 'clientes-list',
+    canActivate: [adminGuard],
     component: ClientesListComponent,
   },
   {
     path: 'secretarios-list',
+    canActivate: [adminGuard],
     component: SecretariosListComponent,
   },
   {
     path: 'actividades-list',
+    canActivate: [adminGuard],
     component: ActividadesListComponent,
   },
   {
     path: 'casos-list',
+    canActivate: [adminGuard],
     component: CasosListComponent,
   },
-  { path: 'casos/:id', component: CasosInformationDialogComponent },
+  {
+    path: 'casos/:id',
+    canActivate: [adminGuard],
+    component: CasosInformationDialogComponent,
+  },
   {
     path: 'noticias-list',
+    canActivate: [adminGuard],
     component: NoticiasListComponent,
   },
   {
@@ -67,10 +81,12 @@ export const routes: Routes = [
   },
   {
     path: 'mis-actividades',
+    canActivate: [abogadoGuard],
     component: MisActividadesComponent,
   },
   {
     path: 'mis-casos',
+    canActivate: [abogadoGuard],
     component: MisCasosListComponent,
   },
 ];

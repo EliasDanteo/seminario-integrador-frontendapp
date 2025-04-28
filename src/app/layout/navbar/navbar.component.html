@@ -50,7 +50,21 @@
             >Crear noticia</a
           >
         </li>
+        <li>
+          <a class="nav-link animated-link" href="/mis-casos">Mis Casos</a>
+        </li>
       </ul>
+      @if(this.userSignal() !== null){
+      <button mat-button [matMenuTriggerFor]="menu" class="text-black fw-light">
+        {{ this.userSignal()?.nombre + " " + this.userSignal()?.apellido }}
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <a class="nav-link" routerLink="/home">Mi Perfil</a>
+        </button>
+        <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
+      </mat-menu>
+      }
     </div>
   </div>
 </nav>
