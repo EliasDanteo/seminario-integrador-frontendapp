@@ -19,12 +19,18 @@ import { adminGuard } from './core/guards/admin.guard.js';
 import { abogadoGuard } from './core/guards/abogado.guard.js';
 import { authGuard } from './core/guards/auth.guard.js';
 import { clienteGuard } from './core/guards/cliente.guard.js';
+import { HomeComponent } from './pages/home/home.component.js';
 
 export const routes: Routes = [
   {
     path: '',
 
     component: LoginComponent,
+  },
+  {
+    path: 'home',
+    canActivate: [authGuard],
+    component: HomeComponent,
   },
   {
     path: 'restablecer-contrasena',

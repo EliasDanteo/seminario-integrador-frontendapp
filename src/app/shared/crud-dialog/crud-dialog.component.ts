@@ -218,7 +218,7 @@ export class CRUDDialogComponent implements OnInit {
         );
         this.form.addControl(
           'especialidades',
-          new FormControl<string[]>([], Validators.required)
+          new FormControl<number[]>([], Validators.required)
         );
         this.form.addControl(
           'foto',
@@ -284,14 +284,18 @@ export class CRUDDialogComponent implements OnInit {
         this.form.patchValue({
           matricula: (user as IAbogado).matricula,
           id_rol: (user as IAbogado).rol.id,
+          foto: (user as IAbogado).foto,
         });
 
         (this.crudService as AbogadoService)
           .findEspecialidad(user.id!)
           .subscribe({
             next: (res) => {
-              const nombres = res.data.map((e: IEspecialidad) => e.nombre);
-              this.form.get('especialidades')!.setValue(nombres);
+              const idsEspecialidades = res.data.map(
+                (e: IEspecialidad) => e.id
+              );
+
+              this.form.get('especialidades')?.setValue(idsEspecialidades);
             },
             error: (err) => console.error('Error cargando especialidades', err),
           });

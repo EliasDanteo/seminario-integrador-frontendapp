@@ -27,6 +27,9 @@ export class LoginComponent {
     private fb: FormBuilder,
     private authService: AuthService
   ) {
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/home']);
+    }
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
@@ -44,7 +47,7 @@ export class LoginComponent {
 
     this.authService.login(data).subscribe({
       next: () => {
-        this.router.navigate(['/noticias-blog']);
+        this.router.navigate(['/home']);
       },
       error: (err: HttpErrorResponse) => {
         if (err.status === 401) {
