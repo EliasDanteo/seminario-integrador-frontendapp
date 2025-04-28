@@ -55,7 +55,7 @@ export class AppointmentBookingComponent {
 
       (this.form as FormGroup<any>).addControl(
         'id_cliente',
-        new FormControl(this.user.id_cliente)
+        new FormControl(this.user.id)
       );
     }
   }
@@ -185,7 +185,7 @@ export class AppointmentBookingComponent {
       if (this.user && this.user.tipo_usuario === 'cliente') {
         turnoData = {
           ...turnoData,
-          id_cliente: this.user.id_cliente,
+          id_cliente: this.user.id,
         };
       } else {
         if (formData.nombre && formData.telefono && formData.email) {
@@ -202,7 +202,6 @@ export class AppointmentBookingComponent {
           return;
         }
       }
-
       this.turnoOtorgadoService
         .create(turnoData as ITurnoOtorgadoCreate)
         .subscribe({

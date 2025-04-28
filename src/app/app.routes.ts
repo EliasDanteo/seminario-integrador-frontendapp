@@ -16,6 +16,8 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component.js';
 import { adminGuard } from './core/guards/admin.guard.js';
 import { abogadoGuard } from './core/guards/abogado.guard.js';
+import { authGuard } from './core/guards/auth.guard.js';
+import { clienteGuard } from './core/guards/cliente.guard.js';
 
 export const routes: Routes = [
   {
@@ -35,7 +37,10 @@ export const routes: Routes = [
     path: 'obtener-turnos',
     component: AppointmentBookingComponent,
   },
-
+  {
+    path: 'noticias-blog',
+    component: NoticiasBlogComponent,
+  },
   {
     path: 'abogados-list',
     canActivate: [adminGuard],
@@ -58,7 +63,7 @@ export const routes: Routes = [
   },
   {
     path: 'casos-list',
-    canActivate: [adminGuard],
+    canActivate: [authGuard],
     component: CasosListComponent,
   },
   {
@@ -71,10 +76,7 @@ export const routes: Routes = [
     canActivate: [adminGuard],
     component: NoticiasListComponent,
   },
-  {
-    path: 'noticias-blog',
-    component: NoticiasBlogComponent,
-  },
+
   {
     path: 'noticias-detalle/:id',
     component: NoticiaDetalleComponent,
@@ -86,7 +88,7 @@ export const routes: Routes = [
   },
   {
     path: 'mis-casos',
-    canActivate: [abogadoGuard],
+    canActivate: [clienteGuard], //revisar si lo dejamos asi
     component: MisCasosListComponent,
   },
 ];
