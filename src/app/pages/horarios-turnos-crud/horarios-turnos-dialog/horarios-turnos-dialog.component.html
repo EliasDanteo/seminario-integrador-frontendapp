@@ -2,7 +2,7 @@
   <div class="dialog-title">
     <div class="d-flex justify-content-between align-items-center">
       <h2 mat-dialog-title>
-        {{ isEdit ? 'Editar' + ' ' + data.entityType : 'Registrar' + ' ' + data.entityType }}
+        {{ isEdit ? 'Editar horario de turno': 'Registrar horario de turno' }}
       </h2>
       <button type="button" class="btn-close" title="Cerrar ventana" (click)="onClose()"></button>
     </div>
@@ -11,14 +11,6 @@
 
   <form [formGroup]="entityForm" (ngSubmit)="onSubmit()">
     <mat-dialog-content *ngIf="isEdit">
-      <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Abogado</mat-label>
-        <mat-select formControlName="abogado" required>
-          <mat-option *ngFor="let abogado of abogados" [value]="abogado.id">
-            {{ abogado.nombre }} {{ abogado.apellido }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
 
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Dia de la semana</mat-label>
@@ -29,30 +21,23 @@
           <mat-option [value]="4">Jueves</mat-option>
           <mat-option [value]="5">Viernes</mat-option>
           <mat-option [value]="6">Sábado</mat-option>
-          <mat-option [value]="7">Domingo</mat-option>
         </mat-select>
       </mat-form-field>
-    
-      <mat-form-field appearance="outline">
-        <mat-label>Hora de Inicio</mat-label>
-        <input matInput formControlName="hora_inicio" type="time" required>
-      </mat-form-field>
-      
-      <mat-form-field appearance="outline">
-        <mat-label>Hora de Fin</mat-label>
-        <input matInput formControlName="hora_fin" type="time" required>
-      </mat-form-field>
+
+      <div class="d-flex gap-3">
+        <mat-form-field appearance="outline" class="flex-fill">
+          <mat-label>Hora de Inicio</mat-label>
+          <input matInput formControlName="hora_inicio" type="time" required>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="flex-fill">
+          <mat-label>Hora de Fin</mat-label>
+          <input matInput formControlName="hora_fin" type="time" required>
+        </mat-form-field>
+      </div>
     </mat-dialog-content>
 
     <mat-dialog-content *ngIf="!isEdit" class="common-dialog">
-      <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Abogado</mat-label>
-        <mat-select formControlName="abogado" required>
-          <mat-option *ngFor="let abogado of abogados" [value]="abogado.id">
-            {{ abogado.nombre }} {{ abogado.apellido }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
       
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Dia de la semana</mat-label>
@@ -63,19 +48,20 @@
           <mat-option [value]="4">Jueves</mat-option>
           <mat-option [value]="5">Viernes</mat-option>
           <mat-option [value]="6">Sábado</mat-option>
-          <mat-option [value]="7">Domingo</mat-option>
         </mat-select>
       </mat-form-field>
       
-      <mat-form-field appearance="outline">
-        <mat-label>Hora de Inicio</mat-label>
-        <input matInput formControlName="hora_inicio" type="time" required>
-      </mat-form-field>
-      
-      <mat-form-field appearance="outline">
-        <mat-label>Hora de Fin</mat-label>
-        <input matInput formControlName="hora_fin" type="time" required>
-      </mat-form-field>
+      <div class="d-flex gap-3">
+        <mat-form-field appearance="outline" class="flex-fill">
+          <mat-label>Hora de Inicio</mat-label>
+          <input matInput formControlName="hora_inicio" type="time" required>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="flex-fill">
+          <mat-label>Hora de Fin</mat-label>
+          <input matInput formControlName="hora_fin" type="time" required>
+        </mat-form-field>
+      </div>
       </mat-dialog-content>
 
       <mat-dialog-actions>

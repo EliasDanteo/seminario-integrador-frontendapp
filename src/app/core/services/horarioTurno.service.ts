@@ -50,11 +50,11 @@ export class HorarioTurnoService {
     return this.http.post<ApiResponse<IHorarioTurno>>(this.url, horarioTurno);
   }
 
-  update(id: string): Observable<ApiResponse<IHorarioTurno>> {
+  update(id: number): Observable<ApiResponse<IHorarioTurno>> {
     return this.http.put<ApiResponse<IHorarioTurno>>(`${this.url}/${id}`, {});
   }
 
-  deactivate(id: string): Observable<ApiResponse<IHorarioTurno>> {
+  deactivate(id: number): Observable<ApiResponse<IHorarioTurno>> {
     return this.http.patch<ApiResponse<IHorarioTurno>>(
       `${this.url}/deactivate/${id}`,
       {}

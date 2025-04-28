@@ -7,6 +7,7 @@ import { ComponentType } from '@angular/cdk/portal';
 import { HorariosTurnosDialogComponent } from '../horarios-turnos-dialog/horarios-turnos-dialog.component.js';
 import { HorarioTurnoService } from '../../../core/services/horarioTurno.service.js';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
+import { AuthService } from '../../../core/services/auth.service.js';
 
 @Component({
   selector: 'app-horarios-turnos-list',
@@ -21,20 +22,27 @@ export class HorariosTurnosListComponent {
   constructor(
     private http: HttpClient,
     private dialog: MatDialog,
-    private horarioTurnoService: HorarioTurnoService
+    private horarioTurnoService: HorarioTurnoService,
+    private authService: AuthService
   ) {
     this.getHorariosTurnos();
   }
 
   getHorariosTurnos() {
-    this.horarioTurnoService.getAll().subscribe({
-      next: (res) => {
-        this.horarios = res.data;
-      },
-      error: (err) => {
-        console.error('Error', err);
-      },
-    });
+    this.http
+      .get<any>(
+        environment.turnosUrl +
+          '/horarios/abogados/' +
+          this.authService.getUser()?.id
+      )
+      .subscribe({
+        next: (res) => {
+          this.horarios = res.data;
+        },
+        error: (err) => {
+          console.error('Error', err);
+        },
+      });
   }
 
   openDialog(dialog: ComponentType<unknown>, data: object): void {
@@ -84,7 +92,7 @@ export class HorariosTurnosListComponent {
   }
 
   eliminarHorarioTurno(hor: IHorarioTurno): void {
-    this.horarioTurnoService.deactivate(hor.id.toString()).subscribe({
+    this.horarioTurnoService.deactivate(hor.id).subscribe({
       next: () => this.getHorariosTurnos(),
       error: (err) => {
         console.error('Hubo un error al eliminar el horario de turno.', err);
