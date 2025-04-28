@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { SnackbarService } from './snackbar.service.js';
-import { firstValueFrom, Observable, tap } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable, tap } from 'rxjs';
 import { ICliente } from '../interfaces/ICliente.interface.js';
 import { IAbogado } from '../interfaces/IAbogado.interface.js';
 import { ISecretario } from '../interfaces/ISecretario.interface.js';
@@ -17,13 +17,19 @@ export interface ILogin {
   providedIn: 'root',
 })
 export class AuthService {
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(
+    this.isAuthenticated()
+  );
+
+  public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+
   public userSignal = signal<ICliente | IAbogado | ISecretario | null>(null);
 
   constructor(
     private http: HttpClient,
     private snackBarService: SnackbarService
   ) {
-    console.log(this.userSignal);
+    this.getUser();
   }
 
   login(
@@ -46,6 +52,7 @@ export class AuthService {
           this.userSignal.set({
             ...response.data,
           });
+          this.isAuthenticatedSubject.next(true);
         })
       );
   }
@@ -57,6 +64,7 @@ export class AuthService {
       );
 
       this.clearUserSession();
+      this.isAuthenticatedSubject.next(false);
       return true;
     } catch (error) {
       this.snackBarService.showError('No se pudo cerrar la sesión');
@@ -67,6 +75,11 @@ export class AuthService {
   clearUserSession(): void {
     this.userSignal.set(null);
     sessionStorage.removeItem('user');
+  }
+
+  isAuthenticated(): boolean {
+    const user = sessionStorage.getItem('user');
+    return user !== null;
   }
 
   getUser(): ICliente | IAbogado | ISecretario | null {

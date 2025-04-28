@@ -62,7 +62,7 @@
             }
           </select>
         </div>
-
+        @if(!this.user) {
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre</label>
           <input
@@ -95,6 +95,21 @@
             type="email"
           />
         </div>
+        } @else{
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input
+            id="nombre"
+            class="form-control"
+            formControlName="nombre"
+            placeholder="Ej: Juan"
+            type="text"
+            [value]="user.nombre"
+            [readonly]="true"
+          />
+        </div>
+
+        }
 
         <div class="d-flex justify-content-end gap-2 mt-4">
           <button type="button" class="btn btn-outline-secondary" href="/">
