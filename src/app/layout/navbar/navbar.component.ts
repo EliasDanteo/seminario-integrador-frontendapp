@@ -21,10 +21,6 @@ export class NavbarComponent {
     this.userSignal = this.authService.userSignal;
 
     this.user = this.authService.getUser();
-
-    if (this.userSignal() === null) {
-      this.router.navigate(['/']);
-    }
   }
 
   async logout() {

@@ -49,14 +49,15 @@
           <a class="nav-link animated-link" href="/mis-casos">Mis Casos</a>
         </li>
         } @if(this.esSecretario()){} @if(this.esCliente()){}
-
-        <li class="nav-item">
-          <a class="nav-link animated-link" href="/noticias-blog">Noticias</a>
-        </li>
+        @if(!this.esAbogado() && !this.esAdmin() && !this.esSecretario()){
         <li class="nav-item">
           <a class="nav-link animated-link" href="/obtener-turnos"
             >Obtener turno abogado</a
           >
+        </li>
+        }
+        <li class="nav-item">
+          <a class="nav-link animated-link" href="/noticias-blog">Noticias</a>
         </li>
       </ul>
       @if(this.userSignal() !== null){

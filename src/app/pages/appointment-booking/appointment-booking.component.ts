@@ -13,6 +13,7 @@ import {
 import { HorarioTurnoService } from '../../core/services/horarioTurno.service.js';
 import { IHorarioTurno } from '../../core/interfaces/IHorarioTurno.interface.js';
 import { IAbogado } from '../../core/interfaces/IAbogado.interface.js';
+import { AuthService } from '../../core/services/auth.service.js';
 
 @Component({
   selector: 'app-appointment-booking',
@@ -36,12 +37,27 @@ export class AppointmentBookingComponent {
     email: new FormControl('', [Validators.required, Validators.email]),
   });
 
+  user: any = null;
+
   constructor(
     private snackBarService: SnackbarService,
     private turnoOtorgadoService: turnoOtorgadoService,
-    private horariosTurnoService: HorarioTurnoService
+    private horariosTurnoService: HorarioTurnoService,
+    private auth: AuthService
   ) {
-    //en el constructor si el cliente se encuentra logueado se le carga el id_cliente al form y se saca nombre, telefono y email
+    this.user = this.auth.getUser();
+    if (this.user) {
+      this.form.controls.nombre.setValue(this.user.nombre);
+      this.form.controls.telefono.clearValidators();
+      this.form.controls.email.clearValidators();
+      this.form.controls.telefono.updateValueAndValidity();
+      this.form.controls.email.updateValueAndValidity();
+
+      (this.form as FormGroup<any>).addControl(
+        'id_cliente',
+        new FormControl(this.user.id_cliente)
+      );
+    }
   }
 
   abogadosDisponibles: Array<Pick<IAbogado, 'id' | 'nombre' | 'apellido'>> = [];
@@ -50,6 +66,22 @@ export class AppointmentBookingComponent {
 
   get today(): string {
     return new Date().toISOString().split('T')[0];
+  }
+
+  validateIfClient() {
+    if (this.user && this.user.tipo_usuario === 'cliente') {
+      this.form.controls.nombre.setValue(this.user.nombre);
+      this.form.controls.telefono.clearValidators();
+      this.form.controls.email.clearValidators();
+      this.form.controls.telefono.updateValueAndValidity();
+      this.form.controls.email.updateValueAndValidity();
+    } else {
+      this.form.controls.telefono.setValidators([Validators.required]);
+      this.form.controls.email.setValidators([
+        Validators.required,
+        Validators.email,
+      ]);
+    }
   }
 
   onAbogadoSelected(event: Event): void {
@@ -144,19 +176,40 @@ export class AppointmentBookingComponent {
   onSubmit() {
     if (this.form.valid) {
       const formData = this.form.value;
-      const turnoData = {
+
+      let turnoData: Partial<ITurnoOtorgadoCreate> = {
         id_horario_turno: formData.horarioTurno?.id.toString(),
         fecha_turno: formData.fechaTurno?.toString(),
-        nombre: formData.nombre,
-        telefono: formData.telefono,
-        email: formData.email,
       };
+
+      if (this.user && this.user.tipo_usuario === 'cliente') {
+        turnoData = {
+          ...turnoData,
+          id_cliente: this.user.id_cliente,
+        };
+      } else {
+        if (formData.nombre && formData.telefono && formData.email) {
+          turnoData = {
+            ...turnoData,
+            nombre: formData.nombre as string,
+            telefono: formData.telefono as string,
+            email: formData.email as string,
+          };
+        } else {
+          this.snackBarService.showError(
+            'Faltan completar nombre, teléfono o email.'
+          );
+          return;
+        }
+      }
+
       this.turnoOtorgadoService
         .create(turnoData as ITurnoOtorgadoCreate)
         .subscribe({
           next: (response) => {
             this.snackBarService.showSuccess('Turno creado con éxito.');
             this.form.reset();
+            this.validateIfClient();
           },
           error: (error) => {
             this.snackBarService.showError('Error al crear el turno.');
