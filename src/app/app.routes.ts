@@ -85,6 +85,7 @@ export const routes: Routes = [
 
   {
     path: 'horarios-turnos',
+    canActivate: [abogadoGuard],
     component: HorariosTurnosListComponent,
   },
   {
