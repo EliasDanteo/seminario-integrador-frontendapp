@@ -35,6 +35,7 @@ import { CRUDDialogComponent } from '../../../shared/crud-dialog/crud-dialog.com
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { PlanPagoDialogComponent } from './plan-pago-dialog/plan-pago-dialog.component.js';
+import { AuthService } from '../../../core/services/auth.service.js';
 
 @Component({
   selector: 'app-casos-crud-dialog',
@@ -71,7 +72,7 @@ export class CasosCrudDialogComponent implements OnInit {
   clienteForm: FormGroup;
   abogadoForm: FormGroup;
   casosForm: FormGroup;
-
+  isAdmin: boolean = false;
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public data: { action: string; caso: ICaso | null },
@@ -80,6 +81,7 @@ export class CasosCrudDialogComponent implements OnInit {
     private clienteService: ClienteService,
     private abogadoService: AbogadoService,
     private especialidadesService: EspecialidadesService,
+    private authService: AuthService,
     private dialogRef: MatDialogRef<CasosCrudDialogComponent>,
     private dialog: MatDialog
   ) {
@@ -93,6 +95,9 @@ export class CasosCrudDialogComponent implements OnInit {
     this.clienteForm = new FormGroup({
       id_cliente: new FormControl('', [Validators.required]),
     });
+    if (authService.getUser()?.is_admin) {
+      this.isAdmin = true;
+    }
   }
 
   ngOnInit(): void {
@@ -166,7 +171,6 @@ export class CasosCrudDialogComponent implements OnInit {
     this.abogadoService.getAvailable().subscribe({
       next: (response) => {
         this.abogados = response.data;
-        console.log(this.abogados);
       },
       error: () => {
         this.snackBarService.showError('Error al cargar los abogados');
@@ -276,9 +280,16 @@ export class CasosCrudDialogComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result !== 'none') {
+      if (result === 'abogado') {
+        let id_esp = this.casosForm.get('id_especialidad')?.value;
         this.loadAbogados();
-      } // Validar la respuesta del dialogo, si se creo abogado, recargue solo abogados
+        this.filterAbogadosByEspecialidad(id_esp);
+      } else if (result === 'cliente') {
+        console.log('Cliente creado');
+        this.loadClientes();
+      } else {
+        this.ngOnInit();
+      }
     });
   }
 

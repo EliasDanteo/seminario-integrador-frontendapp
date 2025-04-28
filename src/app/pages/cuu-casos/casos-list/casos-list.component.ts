@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CasosCrudDialogComponent } from '../casos-crud-dialog/casos-crud-dialog.component.js';
 import { InformesDialogComponent } from '../../../shared/informes-dialog/informes-dialog.component.js';
+import { AuthService } from '../../../core/services/auth.service.js';
 @Component({
   selector: 'app-casos-list',
   standalone: true,
@@ -22,20 +23,31 @@ export class CasosListComponent {
   estadoFilter: string = '';
   especialidadFilter: string = '';
   descripcionFilter: string = '';
+  usuario: any = null;
+  is_admin: boolean = false;
 
   constructor(
     private http: HttpClient,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
-    this.loadCasos();
+    console.log('hOLAAAAAAA', authService.getUser());
+    this.usuario = authService.getUser();
+    this.is_admin = this.usuario?.is_admin;
+
+    if (this.is_admin) {
+      this.loadCasosTotales();
+    } else {
+      this.loadCasosNoAdmin(this.usuario!.id);
+    }
   }
 
   openDialog(dialog: ComponentType<unknown>, data: object): void {
     const dialogRef = this.dialog.open(dialog, { data });
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== 'none') {
-        this.loadCasos();
+        this.loadCasosTotales();
       }
     });
   }
@@ -86,9 +98,22 @@ export class CasosListComponent {
     return text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
   }
 
-  loadCasos() {
+  loadCasosTotales() {
     this.http
       .get<{ message: string; data: ICaso[] }>(environment.casosUrl)
+      .subscribe({
+        next: (res) => {
+          this.casos = res.data;
+          this.applyFilters();
+        },
+      });
+  }
+
+  loadCasosNoAdmin(id: string) {
+    this.http
+      .get<{ message: string; data: ICaso[] }>(
+        `${environment.casosUrl}/${id}/usuario`
+      )
       .subscribe({
         next: (res) => {
           this.casos = res.data;
