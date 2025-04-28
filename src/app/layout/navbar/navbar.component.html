@@ -18,6 +18,8 @@
         <li class="nav-item">
           <a class="nav-link animated-link" href="#">Inicio</a>
         </li>
+        @if(this.esAdmin()){
+
         <li class="nav-item">
           <a class="nav-link animated-link" href="/abogados-list">Abogados</a>
         </li>
@@ -38,6 +40,17 @@
           >
         </li>
         <li class="nav-item">
+          <a class="nav-link animated-link" href="/noticias-list"
+            >Crear noticia</a
+          >
+        </li>
+        } @if(this.esAbogado()){
+        <li>
+          <a class="nav-link animated-link" href="/mis-casos">Mis Casos</a>
+        </li>
+        } @if(this.esSecretario()){} @if(this.esCliente()){}
+
+        <li class="nav-item">
           <a class="nav-link animated-link" href="/noticias-blog">Noticias</a>
         </li>
         <li class="nav-item">
@@ -45,12 +58,18 @@
             >Obtener turno abogado</a
           >
         </li>
-        <li class="nav-item">
-          <a class="nav-link animated-link" href="/noticias-list"
-            >Crear noticia</a
-          >
-        </li>
       </ul>
+      @if(this.userSignal() !== null){
+      <button mat-button [matMenuTriggerFor]="menu" class="text-black fw-light">
+        {{ this.userSignal()?.nombre + " " + this.userSignal()?.apellido }}
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <a class="nav-link" routerLink="/home">Mi Perfil</a>
+        </button>
+        <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
+      </mat-menu>
+      }
     </div>
   </div>
 </nav>
