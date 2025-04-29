@@ -10,6 +10,7 @@ import { CasosCrudDialogComponent } from '../casos-crud-dialog/casos-crud-dialog
 import { InformesDialogComponent } from '../../../shared/informes-dialog/informes-dialog.component.js';
 import { AuthService } from '../../../core/services/auth.service.js';
 import { CommonModule } from '@angular/common';
+import { ApiResponse } from '../../../core/interfaces/IApiResponse.interface.js';
 @Component({
   selector: 'app-casos-list',
   standalone: true,
@@ -107,9 +108,7 @@ export class CasosListComponent {
   loadCasosNoAdmin(id: string) {
     if (this.usuario.tipo_usuario === 'abogado') {
       this.http
-        .get<{ message: string; data: ICaso[] }>(
-          `${environment.casosUrl}/encurso/`
-        )
+        .get<ApiResponse<ICaso[]>>(`${environment.casosUrl}/encurso/`)
         .subscribe({
           next: (res) => {
             this.casos = res.data;

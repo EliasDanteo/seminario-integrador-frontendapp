@@ -61,12 +61,22 @@
             Volver
           </button>
           <button
+            *ngIf="isAdmin"
             mat-raised-button
-            matStepperNext
             color="primary"
+            matStepperNext
             [disabled]="!casosForm.valid"
           >
             Siguiente
+          </button>
+          <button
+            *ngIf="!isAdmin"
+            mat-raised-button
+            color="primary"
+            (click)="submit()"
+            [disabled]="!casosForm.valid"
+          >
+            Crear
           </button>
         </div>
       </form>

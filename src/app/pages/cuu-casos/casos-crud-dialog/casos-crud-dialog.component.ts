@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -24,7 +24,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { IEspecialidad } from '../../../core/interfaces/IEspecialidad.interface.js';
 import { EspecialidadesService } from '../../../core/services/especialidades.service.js';
@@ -73,6 +73,8 @@ export class CasosCrudDialogComponent implements OnInit {
   abogadoForm: FormGroup;
   casosForm: FormGroup;
   isAdmin: boolean = false;
+
+  @ViewChild('stepper') stepper!: MatStepper;
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public data: { action: string; caso: ICaso | null },
@@ -218,6 +220,13 @@ export class CasosCrudDialogComponent implements OnInit {
   }
 
   submit() {
+    console.log('submit', this.casosForm.value);
+    console.log('submit', this.clienteForm.value);
+    console.log('submit', this.abogadoForm.value);
+    console.log(
+      'Caso',
+      this.casosForm.valid && this.clienteForm.valid && this.abogadoForm.valid
+    );
     if (
       this.casosForm.valid &&
       this.clienteForm.valid &&
