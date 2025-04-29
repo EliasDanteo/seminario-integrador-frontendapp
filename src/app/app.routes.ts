@@ -10,6 +10,7 @@ import { NoticiaDetalleComponent } from './pages/noticias-crud/noticia-detalle/n
 import { CasosInformationDialogComponent } from './pages/cuu-casos/casos-information-dialog/casos-information-dialog.component.js';
 import { LoginComponent } from './pages/login/login.component.js';
 import { AppointmentBookingComponent } from './pages/appointment-booking/appointment-booking.component.js';
+import { HorariosTurnosListComponent } from './pages/horarios-turnos-crud/horarios-turnos-list/horarios-turnos-list.component.js';
 import { MisActividadesComponent } from './pages/actividades-realizadas-crud/mis-actividades/mis-actividades.component.js';
 import { MisCasosListComponent } from './pages/mis-casos-list/mis-casos-list.component.js';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component.js';
@@ -85,6 +86,12 @@ export const routes: Routes = [
   {
     path: 'noticias-detalle/:id',
     component: NoticiaDetalleComponent,
+  },
+
+  {
+    path: 'horarios-turnos',
+    canActivate: [abogadoGuard],
+    component: HorariosTurnosListComponent,
   },
   {
     path: 'mis-actividades',

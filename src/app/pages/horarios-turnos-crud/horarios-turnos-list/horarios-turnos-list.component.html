@@ -1,0 +1,42 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4 text-black p-3 rounded">Listado de Horarios de Turnos</h2>
+
+  <div class="d-flex gap-3 mb-3">
+    <button class="btn btn-success shadow" (click)="openCreateDialog()">Agregar nuevo horario de turno</button>
+  </div>
+
+  @if (horarios == null || horarios.length>0) {
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered shadow-sm">
+        <thead class="bg-success text-white">
+          <tr>
+            <th>Día de semana</th>
+            <th>Hora inicio</th>
+            <th>Hora fin</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (hor of horarios; track hor.id) {
+            <tr class="align-middle">
+              <td>{{ hor.dia_semana }}</td>
+              <td>{{ hor.hora_inicio }}</td>
+              <td>{{ hor.hora_fin }}</td>
+              <td>
+                <div class="d-flex justify-content-start gap-2 flex-wrap">
+                  <button class="btn btn-warning btn-sm shadow-sm mt-1" (click)="openEditDialog(hor)">Actualizar</button>
+                  <button class="btn btn-danger btn-sm shadow-sm mt-1" (click)="deleteHorarioTurno(hor)">Eliminar</button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+
+      </table>
+    </div>
+  }@else {
+    <div class="alert alert-info text-center" role="alert">No hay horarios de turnos para mostrar.</div>
+  }
+
+</div>
