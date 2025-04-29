@@ -73,9 +73,20 @@ export class HomeComponent implements OnInit {
   }
 
   openEditProfileDialog(): void {
-    this.openDialog(EditProfileComponent, {
-      user: this.user,
-      service: this.service,
+    if (!this.user) return;
+
+    const dialogRef = this.dialog.open(EditProfileComponent, {
+      width: '600px',
+      data: {
+        user: this.user,
+        service: this.service,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result !== 'none') {
+        this.user = this.authService.getUser();
+      }
     });
   }
 }

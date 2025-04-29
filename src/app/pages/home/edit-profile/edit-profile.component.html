@@ -1,1 +1,165 @@
-<p>edit-profile works!</p>
+<div class="dialog-container">
+  <div class="dialog-box fade-in">
+    <h2 class="dialog-title">Editar Perfil</h2>
+
+    <!-- Formulario principal de perfil -->
+    <form [formGroup]="profileForm" class="dialog-form">
+      @if (isAdmin) {
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" required />
+        <mat-error *ngIf="profileForm.get('nombre')?.hasError('required')">
+          Nombre es requerido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Apellido</mat-label>
+        <input matInput formControlName="apellido" required />
+        <mat-error *ngIf="profileForm.get('apellido')?.hasError('required')">
+          Apellido es requerido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" required />
+        <mat-error *ngIf="profileForm.get('email')?.hasError('required')">
+          Email es requerido
+        </mat-error>
+        <mat-error *ngIf="profileForm.get('email')?.hasError('email')">
+          Ingrese un email válido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="telefono" type="tel" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de documento</mat-label>
+        <mat-select formControlName="tipo_doc">
+          <mat-option value="DNI">DNI</mat-option>
+          <mat-option value="Pasaporte">Pasaporte</mat-option>
+          <mat-option value="Cédula">Cédula</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Número de documento</mat-label>
+        <input matInput formControlName="nro_doc" required />
+        <mat-error *ngIf="profileForm.get('nro_doc')?.hasError('required')">
+          Número de documento es requerido
+        </mat-error>
+      </mat-form-field>
+
+      @if (profileForm.contains('matricula')) {
+      <mat-form-field appearance="outline">
+        <mat-label>Matrícula</mat-label>
+        <input matInput formControlName="matricula" required />
+        <mat-error *ngIf="profileForm.get('matricula')?.hasError('required')">
+          Matrícula es requerida
+        </mat-error>
+      </mat-form-field>
+      } @if (profileForm.contains('turno_trabajo')) {
+      <mat-form-field appearance="outline">
+        <mat-label>Turno de trabajo</mat-label>
+        <input matInput formControlName="turno_trabajo" />
+      </mat-form-field>
+      } }
+
+      <h3 class="password-title">Cambiar contraseña</h3>
+
+      <!-- Sección de contraseña (sin form separado) -->
+      <div [formGroup]="passwordForm" class="password-fields">
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña actual</mat-label>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="currentPassword"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword"
+          >
+            <mat-icon>{{
+              hidePassword ? "visibility_off" : "visibility"
+            }}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nueva contraseña</mat-label>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="newPassword"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword"
+          >
+            <mat-icon>{{
+              hidePassword ? "visibility_off" : "visibility"
+            }}</mat-icon>
+          </button>
+          <mat-hint>Mínimo 6 caracteres</mat-hint>
+          <mat-error
+            *ngIf="passwordForm.get('newPassword')?.hasError('minlength')"
+          >
+            La contraseña debe tener al menos 6 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Confirmar contraseña</mat-label>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="confirmPassword"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword"
+          >
+            <mat-icon>{{
+              hidePassword ? "visibility_off" : "visibility"
+            }}</mat-icon>
+          </button>
+          <mat-error *ngIf="passwordForm.hasError('notSame')">
+            Las contraseñas no coinciden
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="dialog-actions">
+        <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+        @if (isAdmin) {
+        <button
+          mat-raised-button
+          color="primary"
+          type="button"
+          (click)="onSubmit()"
+          [disabled]="
+            !profileForm.valid ||
+            (passwordForm.value.currentPassword && !passwordForm.valid)
+          "
+        >
+          Guardar cambios
+        </button>
+        }
+      </div>
+    </form>
+  </div>
+</div>
