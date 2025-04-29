@@ -22,21 +22,8 @@ export class HomeComponent implements OnInit {
   showContent = false;
   service: any = null;
 
-  constructor(
-    private authService: AuthService,
-    private dialog: MatDialog,
-    private serviceAbogado: AbogadoService,
-    private serviceSecretario: SecreatarioService,
-    private serviceCliente: ClienteService
-  ) {
+  constructor(private authService: AuthService, private dialog: MatDialog) {
     this.user = this.authService.getUser();
-    if (this.user.tipo_usuario === TipoUsuarioEnum.ABOGADO) {
-      this.service = this.serviceAbogado;
-    } else if (this.user.tipo_usuario === TipoUsuarioEnum.CLIENTE) {
-      this.service = this.serviceCliente;
-    } else if (this.user.tipo_usuario === TipoUsuarioEnum.SECRETARIO) {
-      this.service = this.serviceSecretario;
-    }
   }
 
   ngOnInit() {
@@ -79,7 +66,6 @@ export class HomeComponent implements OnInit {
       width: '600px',
       data: {
         user: this.user,
-        service: this.service,
       },
     });
 
