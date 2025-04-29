@@ -23,7 +23,6 @@ import { HomeComponent } from './pages/home/home.component.js';
 export const routes: Routes = [
   {
     path: '',
-
     component: LoginComponent,
   },
   {
