@@ -7,7 +7,7 @@
       <button
         class="btn btn-success shadow"
         (click)="openCreateDialog()"
-        [disabled]="caso.estado !== 'En curso'"
+        *ngIf="caso.estado === 'En curso'"
       >
         Agregar Recordatorio
       </button>
@@ -39,7 +39,12 @@
               mat-raised-button
               color="primary"
               (click)="openEditDialog(recordatorio)"
-              [disabled]="caso.estado !== 'En curso' || recordatorio.vencido"
+              *ngIf="
+                caso.estado === 'En curso' &&
+                usuario.id === recordatorio.abogado.id &&
+                !usuario.is_admin &&
+                !recordatorio.vencido
+              "
               class="me-2"
             >
               Editar
@@ -48,7 +53,11 @@
               mat-raised-button
               color="warn"
               (click)="deleteRecordatorio(recordatorio)"
-              [disabled]="caso.estado !== 'En curso'"
+              *ngIf="
+                caso.estado === 'En curso' &&
+                usuario.id === recordatorio.abogado.id &&
+                !usuario.is_admin
+              "
             >
               Eliminar
             </button>

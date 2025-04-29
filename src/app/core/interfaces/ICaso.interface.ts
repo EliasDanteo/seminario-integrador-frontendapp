@@ -14,6 +14,7 @@ export interface ICaso {
   estado: string;
   fecha_estado: string;
   abogado_principal: IAbogado;
+  abogados_activos: IAbogado[];
 }
 
 export interface IFinalizarCaso {

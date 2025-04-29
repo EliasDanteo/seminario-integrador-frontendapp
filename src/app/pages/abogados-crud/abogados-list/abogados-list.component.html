@@ -7,6 +7,7 @@
   <button
     class="btn btn-success mb-3 me-3 shadow"
     (click)="openInformeDesempenioDialog()"
+    *ngIf="usuario.is_admin"
   >
     Solicitar Informe de Desempeño
   </button>
