@@ -14,11 +14,12 @@ import { HorarioTurnoService } from '../../core/services/horarioTurno.service.js
 import { IHorarioTurno } from '../../core/interfaces/IHorarioTurno.interface.js';
 import { IAbogado } from '../../core/interfaces/IAbogado.interface.js';
 import { AuthService } from '../../core/services/auth.service.js';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-appointment-booking',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './appointment-booking.component.html',
   styleUrl: './appointment-booking.component.css',
 })
@@ -48,6 +49,7 @@ export class AppointmentBookingComponent {
     this.user = this.auth.getUser();
     if (this.user) {
       this.form.controls.nombre.setValue(this.user.nombre);
+      this.form.controls.email.setValue(this.user.email);
       this.form.controls.telefono.clearValidators();
       this.form.controls.email.clearValidators();
       this.form.controls.telefono.updateValueAndValidity();
@@ -112,6 +114,7 @@ export class AppointmentBookingComponent {
   loadAbogadosDisponbiles(fecha: string): void {
     this.horariosTurnoService.getDisponibles(fecha).subscribe({
       next: (response) => {
+        console.log(response.data);
         this.form.controls.horarioTurno.setValue(null);
         this.turnosDisponbiles = response.data || [];
         this.abogadosDisponibles = this.turnosDisponbiles.map(
@@ -209,6 +212,9 @@ export class AppointmentBookingComponent {
             this.snackBarService.showSuccess('Turno creado con éxito.');
             this.form.reset();
             this.validateIfClient();
+            this.horariosDisponibles = [];
+            this.abogadosDisponibles = [];
+            this.turnosDisponbiles = [];
           },
           error: (error) => {
             this.snackBarService.showError('Error al crear el turno.');
