@@ -43,7 +43,7 @@ import { AuthService } from '../../../core/services/auth.service.js';
 })
 export class HorariosTurnosDialogComponent {
   entityForm: FormGroup;
-
+  isEdit: boolean = false;
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public data: {
@@ -57,6 +57,7 @@ export class HorariosTurnosDialogComponent {
     private snackbarService: SnackbarService,
     private authService: AuthService
   ) {
+    this.isEdit = this.data.action === 'put' ? true : false;
     this.entityForm = new FormGroup({
       id_abogado: new FormControl(Number(this.authService.getUser()?.id), [
         Validators.required,
