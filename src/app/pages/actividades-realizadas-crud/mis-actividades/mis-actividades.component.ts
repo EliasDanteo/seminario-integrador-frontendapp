@@ -7,6 +7,10 @@ import { MatIconButton } from '@angular/material/button';
 import { ComponentType } from '@angular/cdk/portal';
 import { MatDialog } from '@angular/material/dialog';
 import { MisActividadesDialogComponent } from '../mis-actividades-dialog/mis-actividades-dialog.component.js';
+import { AuthService } from '../../../core/services/auth.service.js';
+import { ICliente } from '../../../core/interfaces/ICliente.interface.js';
+import { ISecretario } from '../../../core/interfaces/ISecretario.interface.js';
+import { IAbogado } from '../../../core/interfaces/IAbogado.interface.js';
 
 @Component({
   selector: 'app-mis-actividades',
@@ -17,14 +21,20 @@ import { MisActividadesDialogComponent } from '../mis-actividades-dialog/mis-act
 })
 export class MisActividadesComponent implements OnInit {
   actividadesRealizadas: IActividadRealizada[] = [];
-  idAbogado: number = 2; // Cambiar el ID
+  idAbogado: any;
+  user: ICliente | ISecretario | IAbogado | null = null;
 
   constructor(
     private actividadesAbogadoService: ActividadesAbogadoService,
     private snackBarService: SnackbarService,
-    private dialog: MatDialog
-  ) {}
-
+    private dialog: MatDialog,
+    private authService: AuthService
+  ) {
+    this.user = this.authService.getUser();
+    if (this.user) {
+      this.idAbogado = this.user.id;
+    }
+  }
   openDialog(dialog: ComponentType<unknown>, data: object): void {
     const dialogRef = this.dialog.open(dialog, {
       data: data,
@@ -38,8 +48,6 @@ export class MisActividadesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //FALTA EL ID DEL ABOGADO
-    // Cambiar el ID
     this.loadActividadesAbogado(this.idAbogado);
   }
 

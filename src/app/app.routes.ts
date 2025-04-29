@@ -20,6 +20,7 @@ import { abogadoGuard } from './core/guards/abogado.guard.js';
 import { authGuard } from './core/guards/auth.guard.js';
 import { clienteGuard } from './core/guards/cliente.guard.js';
 import { HomeComponent } from './pages/home/home.component.js';
+import { secretarioAbogadoGuard } from './core/guards/secretario-abogado.guard.js';
 
 export const routes: Routes = [
   {
@@ -74,7 +75,7 @@ export const routes: Routes = [
   },
   {
     path: 'casos/:id',
-    canActivate: [adminGuard],
+    canActivate: [secretarioAbogadoGuard],
     component: CasosInformationDialogComponent,
   },
   {
