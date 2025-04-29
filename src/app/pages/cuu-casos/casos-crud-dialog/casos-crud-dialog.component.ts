@@ -95,8 +95,27 @@ export class CasosCrudDialogComponent implements OnInit {
     this.clienteForm = new FormGroup({
       id_cliente: new FormControl('', [Validators.required]),
     });
-    if (authService.getUser()?.is_admin) {
-      this.isAdmin = true;
+
+    authService.getUser()?.is_admin
+      ? (this.isAdmin = true)
+      : (this.isAdmin = false);
+
+    if (this.data.action === 'put' && this.data.caso) {
+      this.casosForm.patchValue({
+        descripcion: this.data.caso.descripcion,
+        id_especialidad: this.data.caso.especialidad.id,
+      });
+      this.clienteForm.patchValue({
+        id_cliente: this.data.caso.cliente.id,
+      });
+      this.abogadoForm.patchValue({
+        id_abogado_principal: this.data.caso.abogado_principal.id,
+      });
+    }
+    if (this.data.action === 'post' && !this.isAdmin) {
+      this.abogadoForm.patchValue({
+        id_abogado_principal: this.authService.getUser()?.id,
+      });
     }
   }
 
@@ -105,28 +124,12 @@ export class CasosCrudDialogComponent implements OnInit {
       this.snackBarService.showError('Acción no válida');
       return;
     }
-
     this.loadClientes();
     this.loadEspecialidades();
 
-    this.abogadoService.getAvailable().subscribe({
-      next: ({ data }) => {
-        this.abogados = data;
-
-        if (this.data.action === 'put' && this.data.caso) {
-          const { descripcion, cliente, especialidad, id } = this.data.caso;
-          this.casosForm.patchValue({
-            descripcion,
-            id_especialidad: especialidad.id,
-          });
-          this.clienteForm.patchValue({ id_cliente: cliente.id });
-
-          this.loadAbogadosEnCaso(id, especialidad.id);
-        }
-      },
-      error: () =>
-        this.snackBarService.showError('Error al cargar los abogados'),
-    });
+    if (this.isAdmin) {
+      this.loadAbogados();
+    }
 
     this.casosForm
       .get('id_especialidad')!
@@ -150,16 +153,11 @@ export class CasosCrudDialogComponent implements OnInit {
     }
   }
 
-  cargarObjetos(): void {
-    this.loadClientes();
-    this.loadAbogados();
-    this.loadEspecialidades();
-  }
-
   loadClientes(): void {
     this.clienteService.getAll().subscribe({
       next: (response) => {
         this.clientes = response.data;
+        console.log('Clientes', this.clientes);
       },
       error: () => {
         this.snackBarService.showError('Error al cargar los clientes');
@@ -171,10 +169,20 @@ export class CasosCrudDialogComponent implements OnInit {
     this.abogadoService.getAvailable().subscribe({
       next: (response) => {
         this.abogados = response.data;
+        if (this.data.action === 'put' && this.data.caso) {
+          this.loadAbogadosEnCaso(
+            this.data.caso.id,
+            this.data.caso.especialidad.id
+          );
+        }
+        if (this.casosForm.get('id_especialidad')?.value) {
+          this.filterAbogadosByEspecialidad(
+            this.casosForm.get('id_especialidad')?.value
+          );
+        }
       },
-      error: () => {
-        this.snackBarService.showError('Error al cargar los abogados');
-      },
+      error: () =>
+        this.snackBarService.showError('Error al cargar los abogados'),
     });
   }
 
@@ -192,28 +200,17 @@ export class CasosCrudDialogComponent implements OnInit {
   private loadAbogadosEnCaso(casoId: number, idEsp: number) {
     this.casosService.getAbogadosEnCaso(casoId).subscribe({
       next: (resp) => {
-        console.log(resp.data);
         const casoAbogados = resp.data || [];
         const principalItem = casoAbogados.find((item) => item.es_principal);
 
         if (principalItem) {
           this.abogadoPrincipal = principalItem.abogado;
+          this.abogadoForm.patchValue({
+            id_abogado_principal: this.abogadoPrincipal?.id,
+          });
         }
 
         this.filterAbogadosByEspecialidad(idEsp);
-
-        if (
-          this.abogadoPrincipal &&
-          !this.filteredAbogadosEspecialidad.some(
-            (a) => a.id === this.abogadoPrincipal!.id
-          )
-        ) {
-          this.filteredAbogadosEspecialidad.unshift(this.abogadoPrincipal);
-        }
-
-        this.abogadoForm.patchValue({
-          id_abogado_principal: this.abogadoPrincipal?.id,
-        });
       },
       error: () =>
         this.snackBarService.showError('Error al cargar los abogados del caso'),
@@ -281,11 +278,8 @@ export class CasosCrudDialogComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'abogado') {
-        let id_esp = this.casosForm.get('id_especialidad')?.value;
         this.loadAbogados();
-        this.filterAbogadosByEspecialidad(id_esp);
       } else if (result === 'cliente') {
-        console.log('Cliente creado');
         this.loadClientes();
       } else {
         this.ngOnInit();

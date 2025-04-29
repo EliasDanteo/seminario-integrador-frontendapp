@@ -9,10 +9,11 @@ import { Router } from '@angular/router';
 import { CasosCrudDialogComponent } from '../casos-crud-dialog/casos-crud-dialog.component.js';
 import { InformesDialogComponent } from '../../../shared/informes-dialog/informes-dialog.component.js';
 import { AuthService } from '../../../core/services/auth.service.js';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-casos-list',
   standalone: true,
-  imports: [HttpClientModule, FormsModule],
+  imports: [HttpClientModule, FormsModule, CommonModule],
   templateUrl: './casos-list.component.html',
   styleUrl: './casos-list.component.css',
 })
@@ -32,9 +33,10 @@ export class CasosListComponent {
     private router: Router,
     private authService: AuthService
   ) {
-    console.log('hOLAAAAAAA', authService.getUser());
-    this.usuario = authService.getUser();
-    this.is_admin = this.usuario?.is_admin;
+    this.usuario = this.authService.getUser();
+    authService.getUser()?.is_admin
+      ? (this.is_admin = true)
+      : (this.is_admin = false);
 
     if (this.is_admin) {
       this.loadCasosTotales();
@@ -53,15 +55,8 @@ export class CasosListComponent {
   }
 
   showDetails(caso: ICaso): void {
-    // Navegar a la ruta de detalle de caso y pasar los datos necesarios
     this.router.navigate(['/casos', caso.id]);
   }
-
-  /*
-  verCliente(cliente: any): void {
-    alert(`Ver información del cliente: ${cliente.apellido} ${cliente.nombre}`);
-  }
-  */
 
   applyFilters(): void {
     this.filteredCasos = this.casos ? [...this.casos] : [];
@@ -110,16 +105,29 @@ export class CasosListComponent {
   }
 
   loadCasosNoAdmin(id: string) {
-    this.http
-      .get<{ message: string; data: ICaso[] }>(
-        `${environment.casosUrl}/${id}/usuario`
-      )
-      .subscribe({
-        next: (res) => {
-          this.casos = res.data;
-          this.applyFilters();
-        },
-      });
+    if (this.usuario.tipo_usuario === 'abogado') {
+      this.http
+        .get<{ message: string; data: ICaso[] }>(
+          `${environment.casosUrl}/encurso/`
+        )
+        .subscribe({
+          next: (res) => {
+            this.casos = res.data;
+            this.applyFilters();
+          },
+        });
+    } else if (this.usuario.tipo_usuario === 'cliente') {
+      this.http
+        .get<{ message: string; data: ICaso[] }>(
+          `${environment.casosUrl}/cliente/${id}`
+        )
+        .subscribe({
+          next: (res) => {
+            this.casos = res.data;
+            this.applyFilters();
+          },
+        });
+    }
   }
 
   openCreateDialog(): void {
@@ -161,5 +169,12 @@ export class CasosListComponent {
       informeType: 'ingresos',
       caso: null,
     });
+  }
+
+  validarAdminPrincipal(caso: ICaso): boolean {
+    if (this.is_admin || this.usuario?.id === caso.abogado_principal.id) {
+      return true;
+    }
+    return false;
   }
 }
