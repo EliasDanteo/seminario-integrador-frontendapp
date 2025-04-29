@@ -39,7 +39,7 @@
 
     <mat-dialog-actions>
       <button mat-button type="submit" [disabled]="!entityForm.valid" class="btn btn-success">
-        {{ isEdit ? 'Actualizar' : 'Crear'}}
+        {{ this.data.action === 'put' ? 'Actualizar' : 'Crear'}}
       </button>
     
       <button mat-button type="button" class="btn-secondary" (click)="onClose()">
