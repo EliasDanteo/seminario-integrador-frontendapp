@@ -28,7 +28,9 @@
         class="ms-3"
         color="warn"
         (click)="onDelete()"
-        [disabled]="casoEstado !== 'En curso'"
+        *ngIf="
+          casoEstado === 'En curso' && comentario.abogado.id === usuario.id
+        "
       >
         Eliminar
       </button>
@@ -37,7 +39,7 @@
         class="ms-3"
         color="primary"
         (click)="onReply()"
-        [disabled]="casoEstado !== 'En curso'"
+        *ngIf="casoEstado === 'En curso'"
       >
         Responder
       </button>

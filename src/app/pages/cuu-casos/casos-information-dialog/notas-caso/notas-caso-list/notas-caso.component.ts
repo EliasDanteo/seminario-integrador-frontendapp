@@ -12,6 +12,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ComponentType } from '@angular/cdk/portal';
 import { MatDialog } from '@angular/material/dialog';
 import { NotasCasoDialogComponent } from '../notas-caso-dialog/notas-caso-dialog.component.js';
+import { AuthService } from '../../../../../core/services/auth.service.js';
 
 @Component({
   selector: 'app-notas-caso',
@@ -23,18 +24,21 @@ import { NotasCasoDialogComponent } from '../notas-caso-dialog/notas-caso-dialog
 export class NotasCasoComponent implements OnInit {
   notasCaso: INota[] = [];
   formNota: FormGroup;
+  usuario: any = null;
 
   @Input() caso!: ICaso;
 
   constructor(
     private httpClient: HttpClient,
     private snackBarService: SnackbarService,
+    private authService: AuthService,
     private dialog: MatDialog
   ) {
     this.formNota = new FormGroup({
       titulo: new FormControl('', Validators.required),
       descripcion: new FormControl('', Validators.required),
     });
+    this.usuario = this.authService.getUser();
   }
 
   ngOnInit(): void {

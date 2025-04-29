@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../../../core/services/auth.service.js';
 
 @Component({
   selector: 'app-comentarios-unidad',
@@ -18,6 +19,12 @@ export class ComentariosUnidadComponent {
   @Input() casoEstado!: string;
   @Output() delete = new EventEmitter<IComentario>();
   @Output() reply = new EventEmitter<IComentario>();
+
+  usuario: any = null;
+
+  constructor(private authService: AuthService) {
+    this.usuario = this.authService.getUser();
+  }
 
   toggleRespuestas(): void {
     this.comentario.mostrarRespuestas = !this.comentario.mostrarRespuestas;

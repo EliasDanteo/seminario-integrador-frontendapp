@@ -6,7 +6,7 @@
         <button
           class="btn btn-success shadow"
           (click)="openCreateDialog('create')"
-          [disabled]="caso.estado !== 'En curso'"
+          *ngIf="caso.estado === 'En curso'"
         >
           Agregar Comentario
         </button>

@@ -58,7 +58,7 @@
             type="button"
             color="primary"
             (click)="openCreateDialog()"
-            [disabled]="caso.estado !== 'En curso'"
+            *ngIf="caso.estado === 'En curso'"
           >
             Subir Documento
           </button>

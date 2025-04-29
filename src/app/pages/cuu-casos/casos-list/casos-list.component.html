@@ -1,12 +1,17 @@
 <div class="container mt-4">
   <h2 class="text-center mb-4 text-black p-3 rounded">Listado de Casos</h2>
 
-  <button class="btn btn-success mb-3 me-3 shadow" (click)="openCreateDialog()">
+  <button
+    class="btn btn-success mb-3 me-3 shadow"
+    (click)="openCreateDialog()"
+    *ngIf="this.usuario.tipo_usuario !== 'cliente'"
+  >
     Agregar Caso
   </button>
   <button
     class="btn btn-success mb-3 me-3 shadow"
     (click)="openInformeIngresosDialog()"
+    *ngIf="is_admin"
   >
     Solicitar Informe de Ingresos
   </button>
@@ -67,24 +72,40 @@
       <thead class="bg-success text-white">
         <tr>
           <th>ID</th>
-          <th>Cliente</th>
+          <th *ngIf="this.usuario.tipo_usuario !== 'cliente'">Cliente</th>
+          <th *ngIf="this.usuario.tipo_usuario === 'cliente'">Abogado</th>
           <th>Especialidad</th>
           <th>Fecha de Inicio</th>
           <th>Descripción</th>
           <th>Estado</th>
           <th>Última Actualización</th>
-          <th>Acciones</th>
+          <th *ngIf="this.usuario.tipo_usuario !== 'cliente'">Acciones</th>
         </tr>
       </thead>
       <tbody>
         @for (caso of filteredCasos; track caso.id) {
-        <tr class="align-middle clickable-row" (click)="showDetails(caso)">
+        <tr
+          class="align-middle clickable-row"
+          [style.cursor]="
+            usuario.tipo_usuario !== 'cliente' ? 'pointer' : 'default'
+          "
+          (click)="
+            this.usuario.tipo_usuario !== 'cliente' ? showDetails(caso) : null
+          "
+        >
           <td>{{ caso.id }}</td>
-          <td>
+          <td *ngIf="this.usuario.tipo_usuario !== 'cliente'">
             {{
               caso.cliente.es_empresa
                 ? caso.cliente.nombre
                 : caso.cliente.apellido + " " + caso.cliente.nombre
+            }}
+          </td>
+          <td *ngIf="this.usuario.tipo_usuario === 'cliente'">
+            {{
+              caso.abogado_principal.nombre +
+                " " +
+                caso.abogado_principal.apellido
             }}
           </td>
           <td>{{ caso.especialidad.nombre }}</td>
@@ -92,30 +113,34 @@
           <td>{{ caso.descripcion }}</td>
           <td>{{ caso.estado }}</td>
           <td>{{ caso.fecha_estado }}</td>
-          <td>
+          <td *ngIf="this.usuario.tipo_usuario !== 'cliente'">
             <div class="d-flex justify-content-start gap-2 flex-wrap">
               <button
                 class="btn btn-warning btn-sm shadow-sm mt-1"
                 (click)="$event.stopPropagation(); openEditDialog(caso)"
-                [disabled]="
-                  caso.estado === 'Finalizado' || caso.estado === 'Cancelado'
+                *ngIf="
+                  caso.estado !== 'Finalizado' && caso.estado !== 'Cancelado'
                 "
+                [disabled]="!validarAdminPrincipal(caso)"
               >
                 Editar
               </button>
               <button
                 class="btn btn-secondary btn-sm shadow-sm mt-1"
                 (click)="$event.stopPropagation(); openEndDialog(caso)"
-                [disabled]="
-                  caso.estado === 'Finalizado' || caso.estado === 'Cancelado'
+                *ngIf="
+                  caso.estado !== 'Finalizado' && caso.estado !== 'Cancelado'
                 "
+                [disabled]="!validarAdminPrincipal(caso)"
               >
                 Finalizar
               </button>
               <button
                 class="btn btn-danger btn-sm shadow-sm mt-1"
                 (click)="$event.stopPropagation(); openDeleteDialog(caso)"
-                [disabled]="caso.estado !== 'En curso'"
+                *ngIf="
+                  caso.estado !== 'Finalizado' && caso.estado !== 'Cancelado'
+                "
               >
                 Eliminar
               </button>

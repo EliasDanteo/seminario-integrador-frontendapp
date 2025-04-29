@@ -1,3 +1,4 @@
+import { IAbogado } from './IAbogado.interface.js';
 import { ICliente } from './ICliente.interface.js';
 
 export interface ICaso {
@@ -12,6 +13,8 @@ export interface ICaso {
   descripcion: string;
   estado: string;
   fecha_estado: string;
+  abogado_principal: IAbogado;
+  abogados_activos: IAbogado[];
 }
 
 export interface IFinalizarCaso {

@@ -65,7 +65,7 @@
             </button>
             <button
               class="btn btn-outline-primary"
-              *ngIf="caso?.estado === 'Finalizado'"
+              *ngIf="caso?.estado === 'Finalizado' && usuario.is_admin"
               (click)="showCuotas()"
             >
               Ver Cuotas
@@ -73,6 +73,7 @@
             <button
               class="btn btn-outline-primary"
               (click)="solicitarInformeCaso(caso!)"
+              *ngIf="usuario.is_admin"
             >
               Solicitar Informe
             </button>

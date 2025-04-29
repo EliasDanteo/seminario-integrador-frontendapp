@@ -12,6 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { IAbogadoCaso } from '../../../../../core/interfaces/IAbogadoCaso.interface.js';
+import { AuthService } from '../../../../../core/services/auth.service.js';
 
 @Component({
   selector: 'app-recordatorios-list',
@@ -25,13 +26,17 @@ export class RecordatoriosListComponent implements OnInit {
   abogadosActivos: IAbogadoCaso[] = [];
   currentDate: Date = new Date();
 
+  usuario: any = null;
   @Input() caso!: ICaso;
 
   constructor(
     private httpClient: HttpClient,
     private snackBarService: SnackbarService,
+    private authService: AuthService,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.usuario = this.authService.getUser();
+  }
 
   openDialog(dialog: ComponentType<unknown>, data: object): void {
     const dialogRef = this.dialog.open(dialog, {
@@ -73,13 +78,6 @@ export class RecordatoriosListComponent implements OnInit {
   }
 
   openCreateDialog() {
-    /*if (this.validarPermisosAbogado()) {
-      this.openDialog(RecordatoriosDialogComponent, {
-        action: 'post',
-        caso: this.caso,
-        recordatorio: null,
-      });
-    }*/
     this.openDialog(RecordatoriosDialogComponent, {
       action: 'post',
       caso: this.caso,
@@ -88,13 +86,6 @@ export class RecordatoriosListComponent implements OnInit {
   }
 
   openEditDialog(recordatorio: IRecordatorio) {
-    /*if (this.validarPermisosAbogado()) {
-      this.openDialog(RecordatoriosDialogComponent, {
-        action: 'put',
-        caso: this.caso,
-        recordatorio: recordatorio,
-      });
-    }*/
     this.openDialog(RecordatoriosDialogComponent, {
       action: 'put',
       caso: this.caso,
@@ -103,9 +94,6 @@ export class RecordatoriosListComponent implements OnInit {
   }
 
   deleteRecordatorio(recordatorio: IRecordatorio) {
-    if (!this.validarPermisosAbogado()) {
-      return;
-    }
     this.httpClient
       .delete<{ message: string; data: IRecordatorio }>(
         `${environment.casosUrl}/recordatorios/${recordatorio.id}`
@@ -135,25 +123,5 @@ export class RecordatoriosListComponent implements OnInit {
           this.snackBarService.showError('Error al cargar abogados activos');
         },
       });
-  }
-
-  validarPermisosAbogado(): boolean {
-    const abogado = localStorage.getItem('abogado');
-    if (abogado) {
-      const abogadoData = JSON.parse(abogado);
-      const tienePermisos = this.abogadosActivos.some(
-        (abogadoActivo) => abogadoActivo.id === abogadoData.id
-      );
-      if (!tienePermisos) {
-        this.snackBarService.showError(
-          'No tienes permisos para realizar esa accion'
-        );
-        return false;
-      }
-      return true;
-    } else {
-      this.snackBarService.showError('No se encontró el abogado en la sesión');
-      return false;
-    }
   }
 }

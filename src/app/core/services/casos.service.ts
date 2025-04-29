@@ -19,6 +19,24 @@ export interface ICasoCreate {
 export class CasosService {
   constructor(private httpClient: HttpClient) {}
 
+  getCasosAbogado(): Observable<ApiResponse<ICaso[]>> {
+    return this.httpClient.get<ApiResponse<ICaso[]>>(
+      `${environment.casosUrl}/encurso/`
+    );
+  }
+
+  getCasosCliente(id: number): Observable<ApiResponse<ICaso[]>> {
+    return this.httpClient.get<ApiResponse<ICaso[]>>(
+      `${environment.casosUrl}/cliente/${id}`
+    );
+  }
+
+  getAbogadosEnCaso(id_caso: number): Observable<ApiResponse<IAbogadoCaso[]>> {
+    return this.httpClient.get<ApiResponse<IAbogadoCaso[]>>(
+      `${environment.casosUrl}/${id_caso}/abogados`
+    );
+  }
+
   create(caso: ICasoCreate): Observable<ApiResponse<ICaso>> {
     return this.httpClient.post<ApiResponse<ICaso>>(
       `${environment.casosUrl}`,
@@ -33,19 +51,6 @@ export class CasosService {
     );
   }
 
-  getAbogadosEnCaso(id_caso: number): Observable<ApiResponse<IAbogadoCaso[]>> {
-    return this.httpClient.get<ApiResponse<IAbogadoCaso[]>>(
-      `${environment.casosUrl}/${id_caso}/abogados`
-    );
-  }
-
-  delete(id: number): Observable<ApiResponse<ICaso>> {
-    return this.httpClient.patch<ApiResponse<ICaso>>(
-      `${environment.casosUrl}/${id}/cancelar`,
-      {}
-    );
-  }
-
   finalizarCaso(
     id_caso: number,
     plan_pago: IFinalizarCaso
@@ -53,6 +58,13 @@ export class CasosService {
     return this.httpClient.patch<ApiResponse<ICaso>>(
       `${environment.casosUrl}/${id_caso}/finalizar`,
       plan_pago
+    );
+  }
+
+  delete(id: number): Observable<ApiResponse<ICaso>> {
+    return this.httpClient.patch<ApiResponse<ICaso>>(
+      `${environment.casosUrl}/${id}/cancelar`,
+      {}
     );
   }
 }

@@ -9,11 +9,13 @@ import { CRUDDialogComponent } from '../../../shared/crud-dialog/crud-dialog.com
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
 import { AbogadoService } from '../../../core/services/abogados.service.js';
 import { InformesDialogComponent } from '../../../shared/informes-dialog/informes-dialog.component.js';
+import { AuthService } from '../../../core/services/auth.service.js';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-abogados-list',
   standalone: true,
-  imports: [HttpClientModule, MatButtonModule, FormsModule],
+  imports: [HttpClientModule, MatButtonModule, FormsModule, CommonModule],
   templateUrl: './abogados-list.component.html',
   styleUrl: './abogados-list.component.css',
 })
@@ -22,11 +24,14 @@ export class AbogadosListComponent {
   filteredAbogados: IAbogado[] | null = null;
   fullNameFilter: string = '';
   matriculaFilter: string = '';
+  usuario: any = null;
 
   constructor(
     private dialog: MatDialog,
-    private abogadoService: AbogadoService
+    private abogadoService: AbogadoService,
+    private authService: AuthService
   ) {
+    this.usuario = this.authService.getUser();
     this.loadAbogados();
   }
   openDialog(dialog: ComponentType<unknown>, data: object): void {

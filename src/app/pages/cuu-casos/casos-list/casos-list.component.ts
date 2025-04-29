@@ -8,10 +8,12 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CasosCrudDialogComponent } from '../casos-crud-dialog/casos-crud-dialog.component.js';
 import { InformesDialogComponent } from '../../../shared/informes-dialog/informes-dialog.component.js';
+import { AuthService } from '../../../core/services/auth.service.js';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-casos-list',
   standalone: true,
-  imports: [HttpClientModule, FormsModule],
+  imports: [HttpClientModule, FormsModule, CommonModule],
   templateUrl: './casos-list.component.html',
   styleUrl: './casos-list.component.css',
 })
@@ -22,34 +24,39 @@ export class CasosListComponent {
   estadoFilter: string = '';
   especialidadFilter: string = '';
   descripcionFilter: string = '';
+  usuario: any = null;
+  is_admin: boolean = false;
 
   constructor(
     private http: HttpClient,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
-    this.loadCasos();
+    this.usuario = this.authService.getUser();
+    authService.getUser()?.is_admin
+      ? (this.is_admin = true)
+      : (this.is_admin = false);
+
+    if (this.is_admin) {
+      this.loadCasosTotales();
+    } else {
+      this.loadCasosNoAdmin(this.usuario!.id);
+    }
   }
 
   openDialog(dialog: ComponentType<unknown>, data: object): void {
     const dialogRef = this.dialog.open(dialog, { data });
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== 'none') {
-        this.loadCasos();
+        this.loadCasosTotales();
       }
     });
   }
 
   showDetails(caso: ICaso): void {
-    // Navegar a la ruta de detalle de caso y pasar los datos necesarios
     this.router.navigate(['/casos', caso.id]);
   }
-
-  /*
-  verCliente(cliente: any): void {
-    alert(`Ver información del cliente: ${cliente.apellido} ${cliente.nombre}`);
-  }
-  */
 
   applyFilters(): void {
     this.filteredCasos = this.casos ? [...this.casos] : [];
@@ -86,7 +93,7 @@ export class CasosListComponent {
     return text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
   }
 
-  loadCasos() {
+  loadCasosTotales() {
     this.http
       .get<{ message: string; data: ICaso[] }>(environment.casosUrl)
       .subscribe({
@@ -95,6 +102,32 @@ export class CasosListComponent {
           this.applyFilters();
         },
       });
+  }
+
+  loadCasosNoAdmin(id: string) {
+    if (this.usuario.tipo_usuario === 'abogado') {
+      this.http
+        .get<{ message: string; data: ICaso[] }>(
+          `${environment.casosUrl}/encurso/`
+        )
+        .subscribe({
+          next: (res) => {
+            this.casos = res.data;
+            this.applyFilters();
+          },
+        });
+    } else if (this.usuario.tipo_usuario === 'cliente') {
+      this.http
+        .get<{ message: string; data: ICaso[] }>(
+          `${environment.casosUrl}/cliente/${id}`
+        )
+        .subscribe({
+          next: (res) => {
+            this.casos = res.data;
+            this.applyFilters();
+          },
+        });
+    }
   }
 
   openCreateDialog(): void {
@@ -136,5 +169,12 @@ export class CasosListComponent {
       informeType: 'ingresos',
       caso: null,
     });
+  }
+
+  validarAdminPrincipal(caso: ICaso): boolean {
+    if (this.is_admin || this.usuario?.id === caso.abogado_principal.id) {
+      return true;
+    }
+    return false;
   }
 }

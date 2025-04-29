@@ -139,7 +139,13 @@ export class CRUDDialogComponent implements OnInit {
           `¡${titulo} ${entidad} exitosamente!`,
           5000
         );
-        this.dialogRef.close(response);
+        if (this.dialogData.entityType === 'abogado') {
+          this.dialogRef.close('abogado');
+        } else if (this.dialogData.entityType === 'cliente') {
+          this.dialogRef.close('cliente');
+        } else {
+          this.dialogRef.close();
+        }
       },
       error: (err) => {
         this.snackbarService.showError(
