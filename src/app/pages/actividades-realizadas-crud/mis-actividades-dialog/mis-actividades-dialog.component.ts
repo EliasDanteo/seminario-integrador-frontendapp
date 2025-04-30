@@ -24,6 +24,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { JusService } from '../../../core/services/jus.service.js';
+import { AuthService } from '../../../core/services/auth.service.js';
+import { TipoUsuarioEnum } from '../../../core/utils/enums.js';
 
 @Component({
   selector: 'app-mis-actividades-dialog',
@@ -46,6 +48,8 @@ export class MisActividadesDialogComponent implements OnInit {
   actividades: IActividad[] = [];
   clientes: ICliente[] = [];
   precioJus: number = 0;
+  idAbogado: number | null = null;
+  user: any = null;
   costoActividad: number = 0;
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -55,8 +59,13 @@ export class MisActividadesDialogComponent implements OnInit {
     private actividadesService: ActividadesService,
     private jusService: JusService,
     private snackBarService: SnackbarService,
-    private matDialogRef: MatDialogRef<MisActividadesDialogComponent>
+    private matDialogRef: MatDialogRef<MisActividadesDialogComponent>,
+    private authService: AuthService
   ) {
+    this.user = this.authService.getUser();
+    if (this.user && this.user.tipo_usuario === TipoUsuarioEnum.ABOGADO) {
+      this.idAbogado = this.user.id;
+    }
     if (data.action !== 'delete') {
       this.actividadRealizadaForm = new FormGroup({
         id_actividad: new FormControl('', Validators.required),
@@ -145,7 +154,7 @@ export class MisActividadesDialogComponent implements OnInit {
         const actividad = {
           ...this.actividadRealizadaForm.value,
           fecha_hora: new Date().toISOString(),
-          id_abogado: 2, // Cambiar el ID del abogado
+          id_abogado: this.idAbogado,
         };
         if (this.data.action === 'create') {
           this.createActividad(actividad);
