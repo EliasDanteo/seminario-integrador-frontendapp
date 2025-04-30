@@ -8,4 +8,5 @@ export interface INota {
   fecha_hora: Date;
   titulo: string;
   descripcion: string;
+  sePuedeEliminar?: boolean;
 }

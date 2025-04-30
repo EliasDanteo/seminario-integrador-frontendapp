@@ -64,7 +64,7 @@ export class NotasCasoComponent implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          this.notasCaso = response.data;
+          this.notasCaso = this.marcarEliminables(response.data);
         },
         error: (error) => {
           this.snackBarService.showError('Error al cargar las notas del caso');
@@ -81,29 +81,6 @@ export class NotasCasoComponent implements OnInit {
   }
 
   openEditDialog(nota: INota): void {
-    if (!nota) {
-      console.error('Nota no disponible');
-      return;
-    }
-    const abogadoData = localStorage.getItem('abogado');
-    if (!abogadoData) {
-      this.snackBarService.showError('No se reconoce el abogado en la sesión');
-      return;
-    }
-    const parsedAbogado = JSON.parse(abogadoData);
-
-    if (nota.abogado.id !== parsedAbogado.id) {
-      this.snackBarService.showError('Solo el autor puede editar esta nota');
-      return;
-    }
-
-    if (!this.validarHora(nota)) {
-      this.snackBarService.showError(
-        'No puedes editar esta nota, han pasado más de 2 horas desde su creación'
-      );
-      return;
-    }
-
     this.openDialog(NotasCasoDialogComponent, {
       action: 'put',
       nota: nota,
@@ -112,12 +89,6 @@ export class NotasCasoComponent implements OnInit {
   }
 
   deleteNota(nota: INota) {
-    if (!this.validarHora(nota)) {
-      this.snackBarService.showError(
-        'No puedes eliminar esta nota, han pasado más de 2 horas desde su creación'
-      );
-      return;
-    }
     this.httpClient
       .delete<{ message: string }>(`${environment.casosUrl}/notas/${nota.id}`)
       .subscribe({
@@ -131,9 +102,17 @@ export class NotasCasoComponent implements OnInit {
       });
   }
 
-  private validarHora(nota: INota): boolean {
-    const fechaCreacion = new Date(nota.fecha_hora);
-    const diferenciaMs = Date.now() - fechaCreacion.getTime();
-    return diferenciaMs <= 120 * 60 * 1000;
+  private marcarEliminables(notas: INota[]): INota[] {
+    const ahora = new Date();
+
+    return notas.map((nota) => {
+      const fechaComentario = new Date(nota.fecha_hora);
+      const diferenciaHoras =
+        (ahora.getTime() - fechaComentario.getTime()) / (1000 * 60 * 60);
+
+      nota.sePuedeEliminar = diferenciaHoras <= 2;
+
+      return nota;
+    });
   }
 }

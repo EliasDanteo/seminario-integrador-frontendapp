@@ -1,10 +1,7 @@
-<div
-  class="container mt-4"
-  *ngIf="caso.estado === 'En curso'; else finalizadoDocs"
->
+<div class="container" *ngIf="caso.estado === 'En curso'; else finalizadoDocs">
   <div class="card shadow-sm">
-    <div class="card-header bg-primary text-white text-center">
-      <h2 class="mb-0">Documentos del Caso</h2>
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0">Documentos del Caso</h3>
     </div>
     <div class="card-body">
       <ng-container *ngIf="documentos.length > 0; else sinDocs">

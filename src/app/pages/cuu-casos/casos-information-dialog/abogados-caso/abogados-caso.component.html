@@ -1,4 +1,4 @@
-<div class="container mt-4" *ngIf="caso.estado === 'En curso'; else finalizado">
+<div class="container" *ngIf="caso.estado === 'En curso'; else finalizado">
   <div class="card shadow-sm">
     <div class="card-header bg-primary text-white text-center">
       <h2 class="mb-0">Vincular / Desvincular - Abogado/a</h2>
@@ -100,7 +100,7 @@
 </div>
 
 <ng-template #finalizado>
-  <div class="container mt-4">
+  <div class="container">
     <div class="card shadow-sm">
       <div class="card-header bg-primary text-white text-center">
         <h2 class="mb-0">Vincular / Desvincular - Abogado/a</h2>
