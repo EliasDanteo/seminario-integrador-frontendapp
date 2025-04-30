@@ -5,11 +5,11 @@
   [style.border-left]="nivel > 0 ? '3px solid #673ab7' : ''"
 >
   <mat-card-header>
-    <div style="display: flex; justify-content: space-between; width: 100%">
-      <p class="text-muted ms-0">
+    <div class="d-flex justify-content-between w-100">
+      <p class="text-muted mb-0">
         {{ comentario.fecha_hora | date : "dd/MM/yyyy HH:mm" }}
       </p>
-      <p class="text-muted">
+      <p class="text-muted mb-0">
         Autor: {{ comentario.abogado.nombre }} {{ comentario.abogado.apellido }}
       </p>
     </div>
@@ -25,48 +25,49 @@
     <div class="acciones">
       <button
         mat-raised-button
-        class="ms-3"
         color="warn"
-        (click)="onDelete()"
         *ngIf="
-          casoEstado === 'En curso' && comentario.abogado.id === usuario.id
+          casoEstado === 'En curso' &&
+          comentario.abogado.id === usuario.id &&
+          comentario.sePuedeEliminar
         "
+        (click)="onDelete()"
+        class="me-3"
       >
         Eliminar
       </button>
       <button
         mat-raised-button
-        class="ms-3"
         color="primary"
-        (click)="onReply()"
         *ngIf="casoEstado === 'En curso'"
+        (click)="onReply()"
       >
         Responder
       </button>
     </div>
 
-    @if (comentario.respuestas.length) {
-    <div class="hilo">
+    <div class="hilo" *ngIf="comentario.respuestas?.length">
       <button mat-raised-button color="secondary" (click)="toggleRespuestas()">
         {{ comentario.mostrarRespuestas ? "Ocultar" : "Ver" }} Respuestas ({{
           comentario.respuestas.length
         }})
       </button>
     </div>
-    }
   </mat-card-actions>
 
-  @if (comentario.mostrarRespuestas && comentario.respuestas.length) {
-  <div class="respuestas-container">
-    @for (respuesta of comentario.respuestas; track respuesta.id) {
+  <div
+    class="respuestas-container"
+    *ngIf="comentario.mostrarRespuestas && comentario.respuestas?.length"
+  >
+    @for(resp of comentario.respuestas; track resp.id){
     <app-comentarios-unidad
-      [comentario]="respuesta"
+      [comentario]="resp"
       [nivel]="nivel + 1"
+      [casoEstado]="casoEstado"
       (delete)="delete.emit($event)"
       (reply)="reply.emit($event)"
-      [casoEstado]="casoEstado"
-    ></app-comentarios-unidad>
+    >
+    </app-comentarios-unidad>
     }
   </div>
-  }
 </mat-card>

@@ -6,10 +6,9 @@ import { environment } from '../../../../../../environments/environment.js';
 import { IComentario } from '../../../../../core/interfaces/IComentario.interface.js';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { ComponentType } from '@angular/cdk/portal';
 import { ComentariosDialogComponent } from '../comentarios-dialog/comentarios-dialog.component.js';
 import { ComentariosUnidadComponent } from '../comentarios-unidad/comentarios-unidad.component.js';
 
@@ -27,143 +26,120 @@ import { ComentariosUnidadComponent } from '../comentarios-unidad/comentarios-un
   styleUrl: './comentarios-list.component.css',
 })
 export class ComentariosListComponent implements OnInit {
-  responseComentarios: IComentario[] = [];
-  comentariosCaso: IComentario[] = [];
-  private expansionStates = new Map<number, boolean>();
-
   @Input() caso!: ICaso;
+  comentariosCaso: IComentario[] = [];
 
   constructor(
-    private httpClient: HttpClient,
-    private snackBarService: SnackbarService,
+    private http: HttpClient,
+    private snack: SnackbarService,
     private dialog: MatDialog
   ) {}
-
-  openDialog(dialog: ComponentType<unknown>, data: object): void {
-    const dialogRef = this.dialog.open(dialog, {
-      data: data,
-    });
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result === 'none') return;
-
-      if (result?.action) {
-        switch (result.action) {
-          case 'delete':
-            this.removeCommentLocally(result.data);
-            break;
-          default:
-            this.loadComentarios();
-        }
-      } else if (result) {
-        this.addCommentLocally(result);
-      } else {
-        this.loadComentarios();
-      }
-    });
-  }
 
   ngOnInit(): void {
     this.loadComentarios();
   }
 
-  addCommentLocally(newComment: IComentario): void {
-    this.preserveExpansionStates();
-
-    this.responseComentarios.push(newComment);
-    this.comentariosCaso = this.buildCommentTree(this.responseComentarios);
-
-    if (newComment.padre?.id) {
-      this.expansionStates.set(newComment.padre.id, true);
-    }
-  }
-
-  private removeCommentLocally(deletedComment: IComentario): void {
-    this.preserveExpansionStates();
-
-    this.responseComentarios = this.responseComentarios.filter(
-      (c) => c.id !== deletedComment.id
-    );
-    this.comentariosCaso = this.buildCommentTree(this.responseComentarios);
-  }
-
-  private preserveExpansionStates(): void {
-    this.expansionStates = new Map();
-    this.comentariosCaso.forEach((comment) => {
-      this.traverseComments(comment);
-    });
-  }
-
-  private traverseComments(comment: IComentario): void {
-    this.expansionStates.set(comment.id, comment.mostrarRespuestas || false);
-    comment.respuestas?.forEach((child) => this.traverseComments(child));
-  }
-
-  private buildCommentTree(comments: IComentario[]): IComentario[] {
-    const commentMap = new Map<number, IComentario>();
-    const rootComments: IComentario[] = [];
-
-    comments.forEach((comment) => {
-      commentMap.set(comment.id, {
-        ...comment,
-        respuestas: [],
-        mostrarRespuestas: this.expansionStates.get(comment.id) || false,
-      });
-    });
-
-    comments.forEach((comment) => {
-      const currentComment = commentMap.get(comment.id)!;
-      if (comment.padre?.id) {
-        const parent = commentMap.get(comment.padre.id);
-        parent?.respuestas?.push(currentComment);
-      } else {
-        rootComments.push(currentComment);
-      }
-    });
-
-    return rootComments;
-  }
-
-  loadComentarios() {
-    this.httpClient
+  private loadComentarios(): void {
+    this.http
       .get<{ message: string; data: IComentario[] }>(
         `${environment.casosUrl}/comentarios/${this.caso.id}`
       )
       .subscribe({
         next: (response) => {
-          this.responseComentarios = response.data;
-          this.comentariosCaso = this.buildCommentTree(
-            this.responseComentarios
-          );
+          this.comentariosCaso = this.marcarEliminables(response.data);
         },
-        error: () => {
-          this.snackBarService.showError('Error al cargar los comentarios');
-        },
+        error: () => this.snack.showError('Error al cargar los comentarios'),
       });
   }
 
-  openCreateDialog(action: string, parentComment?: IComentario): void {
-    this.openDialog(ComentariosDialogComponent, {
-      action: action,
-      comentario: parentComment,
-      caso: this.caso,
+  openCreateDialog(action: 'create' | 'reply', parent?: IComentario): void {
+    const dialogRef = this.dialog.open(ComentariosDialogComponent, {
+      data: { action, comentario: parent, caso: this.caso },
     });
 
-    if (action === 'reply' && parentComment) {
-      parentComment.mostrarRespuestas = true;
-    }
+    dialogRef.afterClosed().subscribe((res: any) => {
+      if (!res) return;
+
+      switch (res.action) {
+        case 'create':
+          this.addCommentLocally(res.data);
+          break;
+        case 'reply':
+          this.addReplyLocally(res.data, parent!);
+          break;
+        case 'delete':
+          this.removeCommentLocally(res.data);
+          break;
+      }
+    });
   }
 
-  openDeleteDialog(comentario: IComentario) {
-    const data = {
-      action: 'delete',
-      comentario: comentario,
-      caso: this.caso,
+  private addCommentLocally(newComment: IComentario) {
+    this.comentariosCaso.push({
+      ...newComment,
+      respuestas: [],
+      mostrarRespuestas: true,
+      sePuedeEliminar: true,
+      fecha_hora: new Date(),
+    });
+  }
+
+  private addReplyLocally(reply: IComentario, parent: IComentario) {
+    if (!parent.respuestas) parent.respuestas = [];
+    parent.respuestas.push({
+      ...reply,
+      respuestas: [],
+      mostrarRespuestas: true,
+      sePuedeEliminar: true,
+      fecha_hora: new Date(),
+    });
+    parent.mostrarRespuestas = true;
+  }
+
+  private removeCommentLocally(toDelete: IComentario) {
+    const eliminarEn = (arr: IComentario[]): boolean => {
+      const idx = arr.findIndex((c) => c.id === toDelete.id);
+      if (idx >= 0) {
+        arr.splice(idx, 1);
+        return true;
+      }
+      for (const c of arr) {
+        if (c.respuestas && eliminarEn(c.respuestas)) {
+          return true;
+        }
+      }
+      return false;
     };
-    this.openDialog(ComentariosDialogComponent, data);
+    eliminarEn(this.comentariosCaso);
   }
 
-  toggleRespuestas(comentario: IComentario): void {
-    comentario.mostrarRespuestas = !comentario.mostrarRespuestas;
+  openDeleteDialog(comentario: IComentario): void {
+    const dialogRef = this.dialog.open(ComentariosDialogComponent, {
+      data: { action: 'delete', comentario, caso: this.caso },
+    });
+
+    dialogRef.afterClosed().subscribe((res: any) => {
+      if (res?.action === 'delete') {
+        this.removeCommentLocally(res.data);
+      }
+    });
+  }
+
+  private marcarEliminables(comentarios: IComentario[]): IComentario[] {
+    const ahora = new Date();
+
+    return comentarios.map((comentario) => {
+      const fechaComentario = new Date(comentario.fecha_hora);
+      const diferenciaHoras =
+        (ahora.getTime() - fechaComentario.getTime()) / (1000 * 60 * 60);
+
+      comentario.sePuedeEliminar = diferenciaHoras < 24;
+
+      if (comentario.respuestas?.length) {
+        comentario.respuestas = this.marcarEliminables(comentario.respuestas);
+      }
+
+      return comentario;
+    });
   }
 }

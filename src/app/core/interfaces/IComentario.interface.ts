@@ -8,4 +8,5 @@ export interface IComentario {
   fecha_hora: Date;
   comentario: string;
   mostrarRespuestas?: boolean;
+  sePuedeEliminar?: boolean;
 }

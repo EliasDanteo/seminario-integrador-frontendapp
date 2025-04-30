@@ -13,7 +13,8 @@
       </div>
     </div>
     <div class="card-body">
-      @for (comentario of comentariosCaso; track comentario.id) {
+      @if (comentariosCaso.length > 0) { @for (comentario of comentariosCaso;
+      track comentario.id) {
       <div class="mb-3">
         <app-comentarios-unidad
           [comentario]="comentario"
@@ -23,9 +24,11 @@
           [casoEstado]="caso.estado"
         ></app-comentarios-unidad>
       </div>
+      } } @else {
+      <div class="alert alert-info" role="alert">
+        No hay comentarios disponibles para este caso.
+      </div>
       }
-      <p class="text-center mt-3">Ver comentario en archivo</p>
-      <!-- Se debe implementar la sesión del abogado -->
     </div>
   </div>
 </div>
