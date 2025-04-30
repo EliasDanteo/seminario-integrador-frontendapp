@@ -95,14 +95,12 @@ export class CasosListComponent {
   }
 
   loadCasosTotales() {
-    this.http
-      .get<{ message: string; data: ICaso[] }>(environment.casosUrl)
-      .subscribe({
-        next: (res) => {
-          this.casos = res.data;
-          this.applyFilters();
-        },
-      });
+    this.http.get<ApiResponse<ICaso[]>>(environment.casosUrl).subscribe({
+      next: (res) => {
+        this.casos = res.data;
+        this.applyFilters();
+      },
+    });
   }
 
   loadCasosNoAdmin(id: string) {

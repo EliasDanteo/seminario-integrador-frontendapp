@@ -376,4 +376,8 @@ export class CRUDDialogComponent implements OnInit {
 
     return fd;
   }
+
+  isEmpresa(): boolean {
+    return this.dialogData.entityType === 'empresa';
+  }
 }

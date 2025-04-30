@@ -56,8 +56,8 @@ export class AbogadoService implements ICrudService<IAbogado, IAbogadoCreate> {
       {}
     );
   }
-  findEspecialidad(id: string): Observable<ApiResponse<IEspecialidad>> {
-    return this.http.get<ApiResponse<IEspecialidad>>(
+  findEspecialidad(id: string): Observable<ApiResponse<IEspecialidad[]>> {
+    return this.http.get<ApiResponse<IEspecialidad[]>>(
       `${environment.abogadosUrl}/${id}/especialidades`
     );
   }

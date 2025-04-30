@@ -16,4 +16,10 @@ export class EspecialidadesService {
       `${environment.especialidadesUrl}`
     );
   }
+
+  getByAbogado(id: number): Observable<ApiResponse<IEspecialidad[]>> {
+    return this.httpClient.get<ApiResponse<IEspecialidad[]>>(
+      `${environment.especialidadesUrl}/abogado/${id}`
+    );
+  }
 }

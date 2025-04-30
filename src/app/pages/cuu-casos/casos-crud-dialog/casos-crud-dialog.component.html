@@ -22,7 +22,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <a class="text-primary" (click)="openClienteDialog()"
+        <a *ngIf="isAdmin" class="text-primary" (click)="openClienteDialog()"
           >No encuentra su cliente? Cargar Nuevo</a
         >
         <div class="d-flex justify-content-end mt-3">

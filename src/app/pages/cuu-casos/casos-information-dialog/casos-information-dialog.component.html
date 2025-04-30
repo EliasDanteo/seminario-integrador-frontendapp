@@ -48,7 +48,11 @@
             <button class="btn btn-outline-primary" (click)="showNotas()">
               Ver Notas
             </button>
-            <button class="btn btn-outline-primary" (click)="showAbogados()">
+            <button
+              class="btn btn-outline-primary"
+              (click)="showAbogados()"
+              *ngIf="usuario.is_admin"
+            >
               Ver Abogados
             </button>
             <button class="btn btn-outline-primary" (click)="showDocumentos()">

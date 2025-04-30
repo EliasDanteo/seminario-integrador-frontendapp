@@ -189,14 +189,28 @@ export class CasosCrudDialogComponent implements OnInit {
   }
 
   loadEspecialidades(): void {
-    this.especialidadesService.getAll().subscribe({
-      next: (response) => {
-        this.especialidades = response.data;
-      },
-      error: () => {
-        this.snackBarService.showError('Error al cargar las especialidades');
-      },
-    });
+    if (this.isAdmin) {
+      this.especialidadesService.getAll().subscribe({
+        next: (response) => {
+          this.especialidades = response.data;
+        },
+        error: () =>
+          this.snackBarService.showError('Error al cargar las especialidades'),
+      });
+    } else {
+      this.abogadoService
+        .findEspecialidad(this.authService.getUser()?.id!)
+        .subscribe({
+          next: (response) => {
+            console.log('especialidades', response.data);
+            this.especialidades = response.data;
+          },
+          error: () =>
+            this.snackBarService.showError(
+              'Error al cargar las especialidades'
+            ),
+        });
+    }
   }
 
   private loadAbogadosEnCaso(casoId: number, idEsp: number) {

@@ -8,7 +8,12 @@
       <mat-divider class="mb-3"></mat-divider>
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="row mb-3">
-          <div class="col-md-6">
+          <div
+            [ngClass]="{
+              'col-md-12': dialogData.entityType === 'empresa',
+              'col-md-6': dialogData.entityType !== 'empresa'
+            }"
+          >
             <mat-form-field appearance="fill" class="w-100">
               <mat-label>Nombre</mat-label>
               <input matInput formControlName="nombre" placeholder="Ej: Juan" />
@@ -22,8 +27,7 @@
             *ngIf="
               dialogData.entityType === 'cliente' ||
               dialogData.entityType === 'abogado' ||
-              dialogData.entityType === 'secretario' ||
-              dialogData.entityType === 'empresa'
+              dialogData.entityType === 'secretario'
             "
           >
             <div class="col-md-6">
@@ -33,7 +37,6 @@
                   matInput
                   formControlName="apellido"
                   placeholder="Ej: Pérez"
-                  [disabled]="dialogData.entityType === 'empresa'"
                 />
                 <mat-error *ngIf="form.get('apellido')?.hasError('required')">
                   Campo requerido
