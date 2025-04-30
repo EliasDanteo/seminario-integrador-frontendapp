@@ -38,6 +38,7 @@ import { AuthService } from '../../../core/services/auth.service.js';
 export class CasosInformationDialogComponent {
   caso: ICaso | null = null;
   usuario: any = null;
+  selectedSection: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -65,32 +66,41 @@ export class CasosInformationDialogComponent {
           },
         });
     }
+    this.selectedSection = localStorage.getItem('selectedSection') || null;
   }
 
-  selectedSection: string | null = null;
+  ngOnDestroy(): void {
+    localStorage.removeItem('selectedSection');
+  }
 
   showNotas() {
     this.selectedSection = 'notas';
+    localStorage.setItem('selectedSection', 'notas');
   }
 
   showAbogados() {
     this.selectedSection = 'abogados';
+    localStorage.setItem('selectedSection', 'abogados');
   }
 
   showDocumentos() {
     this.selectedSection = 'documentos';
+    localStorage.setItem('selectedSection', 'documentos');
   }
 
   showRecordatorios() {
     this.selectedSection = 'recordatorios';
+    localStorage.setItem('selectedSection', 'recordatorios');
   }
 
   showComentarios() {
     this.selectedSection = 'comentarios';
+    localStorage.setItem('selectedSection', 'comentarios');
   }
 
   showCuotas() {
     this.selectedSection = 'cuotas';
+    localStorage.setItem('selectedSection', 'cuotas');
   }
 
   solicitarInformeCaso(caso: ICaso) {
