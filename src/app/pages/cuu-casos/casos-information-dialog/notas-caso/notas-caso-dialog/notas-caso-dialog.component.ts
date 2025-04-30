@@ -12,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ICaso } from '../../../../../core/interfaces/ICaso.interface.js';
+import { AuthService } from '../../../../../core/services/auth.service.js';
 
 @Component({
   selector: 'app-notas-caso-dialog',
@@ -30,14 +31,17 @@ import { ICaso } from '../../../../../core/interfaces/ICaso.interface.js';
 export class NotasCasoDialogComponent implements OnInit {
   notaForm!: FormGroup;
   isEdit: boolean = false;
+  usuario: any = null;
 
   constructor(
     private dialogRef: MatDialogRef<NotasCasoDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
     public data: { nota: INota | null; action: string; caso: ICaso | null },
     private httpClient: HttpClient,
-    private snackBarService: SnackbarService
+    private snackBarService: SnackbarService,
+    private authService: AuthService
   ) {
+    this.usuario = this.authService.getUser();
     this.notaForm = new FormGroup({
       titulo: new FormControl('', Validators.required),
       descripcion: new FormControl('', Validators.required),
@@ -73,14 +77,7 @@ export class NotasCasoDialogComponent implements OnInit {
   editNota() {
     const formData = {
       ...this.notaForm.value,
-      id_abogado: (() => {
-        const abogadoData = localStorage.getItem('abogado'); //FALTA ABOGADO CUANDO SE LOGUEA
-        if (!abogadoData) {
-          throw new Error('Abogado no existente en sesión');
-        }
-        const parsedAbogado = JSON.parse(abogadoData);
-        return parsedAbogado.id;
-      })(),
+      id_abogado: this.usuario.id,
     };
     this.httpClient
       .put<{ message: string; data: INota }>(
@@ -105,14 +102,7 @@ export class NotasCasoDialogComponent implements OnInit {
     }
     const formData = {
       ...this.notaForm.value,
-      id_abogado: (() => {
-        const abogadoData = localStorage.getItem('abogado'); //FALTA ABOGADO CUANDO SE LOGUEA
-        if (!abogadoData) {
-          throw new Error('Abogado no existente en sesión');
-        }
-        const parsedAbogado = JSON.parse(abogadoData);
-        return parsedAbogado.id;
-      })(),
+      id_abogado: this.usuario.id,
       id_caso: this.data.caso?.id,
     };
     this.httpClient

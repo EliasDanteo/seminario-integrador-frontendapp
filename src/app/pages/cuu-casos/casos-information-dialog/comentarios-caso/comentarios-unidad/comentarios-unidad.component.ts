@@ -15,12 +15,11 @@ import { AuthService } from '../../../../../core/services/auth.service.js';
 })
 export class ComentariosUnidadComponent {
   @Input() comentario!: IComentario;
-  @Input() nivel!: number;
+  @Input() nivel: number = 0;
   @Input() casoEstado!: string;
   @Output() delete = new EventEmitter<IComentario>();
   @Output() reply = new EventEmitter<IComentario>();
-
-  usuario: any = null;
+  usuario: any;
 
   constructor(private authService: AuthService) {
     this.usuario = this.authService.getUser();

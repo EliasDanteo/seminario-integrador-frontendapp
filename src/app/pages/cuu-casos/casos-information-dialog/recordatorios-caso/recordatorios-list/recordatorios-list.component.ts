@@ -23,7 +23,6 @@ import { AuthService } from '../../../../../core/services/auth.service.js';
 })
 export class RecordatoriosListComponent implements OnInit {
   recordatoriosCaso: IRecordatorio[] = [];
-  abogadosActivos: IAbogadoCaso[] = [];
   currentDate: Date = new Date();
 
   usuario: any = null;
@@ -51,7 +50,6 @@ export class RecordatoriosListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadAbogadosActivos();
     this.loadRecordatorios();
   }
 
@@ -106,21 +104,6 @@ export class RecordatoriosListComponent implements OnInit {
         error: (err) => {
           this.snackBarService.showError('Error al eliminar recordatorio');
           console.error(err);
-        },
-      });
-  }
-
-  loadAbogadosActivos() {
-    this.httpClient
-      .get<{ message: string; data: IAbogadoCaso[] }>(
-        `${environment.casosUrl}/${this.caso.id}/abogados`
-      )
-      .subscribe({
-        next: (response) => {
-          this.abogadosActivos = response.data;
-        },
-        error: () => {
-          this.snackBarService.showError('Error al cargar abogados activos');
         },
       });
   }

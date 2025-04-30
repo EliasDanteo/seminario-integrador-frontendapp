@@ -65,7 +65,6 @@ export class NotasCasoComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.notasCaso = response.data;
-          console.log(this.notasCaso);
         },
         error: (error) => {
           this.snackBarService.showError('Error al cargar las notas del caso');

@@ -21,6 +21,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../../../core/services/auth.service.js';
 
 @Component({
   selector: 'app-recordatorios-dialog',
@@ -42,11 +43,13 @@ import { CommonModule } from '@angular/common';
 export class RecordatoriosDialogComponent {
   recordatorioForm: FormGroup;
   minDate: Date;
+  usuario: any = null;
 
   constructor(
     private httpClient: HttpClient,
     private snackBarService: SnackbarService,
     private dialogRef: MatDialogRef<RecordatoriosDialogComponent>,
+    private authService: AuthService,
     @Inject(MAT_DIALOG_DATA)
     public data: {
       action: string;
@@ -54,6 +57,7 @@ export class RecordatoriosDialogComponent {
       recordatorio: IRecordatorio;
     }
   ) {
+    this.usuario = this.authService.getUser();
     this.minDate = new Date(new Date().getTime() + 60 * 60 * 1000);
     this.recordatorioForm = new FormGroup({
       descripcion: new FormControl('', Validators.required),
@@ -85,10 +89,7 @@ export class RecordatoriosDialogComponent {
       const recordatorio = {
         ...this.recordatorioForm.value,
         id_caso: this.data.caso.id,
-        id_abogado: (() => {
-          const abogado = localStorage.getItem('abogado');
-          return abogado ? JSON.parse(abogado).id : null; //FALTA ABOGADO
-        })(),
+        id_abogado: this.usuario.id,
       };
       if (this.data.action === 'post') {
         this.httpClient
