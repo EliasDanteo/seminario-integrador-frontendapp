@@ -11,6 +11,7 @@ import { InformesDialogComponent } from '../../../shared/informes-dialog/informe
 import { AuthService } from '../../../core/services/auth.service.js';
 import { CommonModule } from '@angular/common';
 import { ApiResponse } from '../../../core/interfaces/IApiResponse.interface.js';
+import { FeedbackDialogComponent } from '../../feedback-dialog/feedback-dialog.component.js';
 @Component({
   selector: 'app-casos-list',
   standalone: true,
@@ -166,6 +167,10 @@ export class CasosListComponent {
       informeType: 'ingresos',
       caso: null,
     });
+  }
+
+  openFeedbackDialog(id_caso: number): void {
+    this.openDialog(FeedbackDialogComponent, { id_caso });
   }
 
   validarAdminPrincipal(caso: ICaso): boolean {

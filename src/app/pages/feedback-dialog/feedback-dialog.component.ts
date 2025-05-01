@@ -168,7 +168,7 @@ export class FeedbackDialogComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.snackBarService.showSuccess(response.message);
-          this.dialogRef.close();
+          this.dialogRef.close('none');
         },
         error: (error) => {
           this.snackBarService.showError(error.error.message);
@@ -178,6 +178,5 @@ export class FeedbackDialogComponent implements OnInit {
 
   onClose(): void {
     this.dialogRef.close();
-    this.snackBarService.showError('Calificación cancelada');
   }
 }

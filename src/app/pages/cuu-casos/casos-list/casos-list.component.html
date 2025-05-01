@@ -71,7 +71,7 @@
     <table class="table table-hover table-bordered shadow-sm">
       <thead class="bg-success text-white">
         <tr>
-          <th>ID</th>
+          <th *ngIf="this.usuario.tipo_usuario !== 'cliente'">ID</th>
           <th *ngIf="this.usuario.tipo_usuario !== 'cliente'">Cliente</th>
           <th *ngIf="this.usuario.tipo_usuario === 'cliente'">Abogado</th>
           <th>Especialidad</th>
@@ -79,7 +79,7 @@
           <th>Descripción</th>
           <th>Estado</th>
           <th>Última Actualización</th>
-          <th *ngIf="this.usuario.tipo_usuario !== 'cliente'">Acciones</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -93,7 +93,7 @@
             this.usuario.tipo_usuario !== 'cliente' ? showDetails(caso) : null
           "
         >
-          <td>{{ caso.id }}</td>
+          <td *ngIf="this.usuario.tipo_usuario !== 'cliente'">{{ caso.id }}</td>
           <td *ngIf="this.usuario.tipo_usuario !== 'cliente'">
             {{
               caso.cliente.es_empresa
@@ -113,36 +113,50 @@
           <td>{{ caso.descripcion }}</td>
           <td>{{ caso.estado }}</td>
           <td>{{ caso.fecha_estado }}</td>
-          <td *ngIf="this.usuario.tipo_usuario !== 'cliente'">
+          <td>
             <div class="d-flex justify-content-start gap-2 flex-wrap">
+              <ng-container *ngIf="usuario.tipo_usuario !== 'cliente'">
+                <button
+                  class="btn btn-warning btn-sm shadow-sm mt-1"
+                  (click)="$event.stopPropagation(); openEditDialog(caso)"
+                  *ngIf="
+                    caso.estado !== 'Finalizado' && caso.estado !== 'Cancelado'
+                  "
+                  [disabled]="!validarAdminPrincipal(caso)"
+                >
+                  Editar
+                </button>
+                <button
+                  class="btn btn-secondary btn-sm shadow-sm mt-1"
+                  (click)="$event.stopPropagation(); openEndDialog(caso)"
+                  *ngIf="
+                    caso.estado !== 'Finalizado' && caso.estado !== 'Cancelado'
+                  "
+                  [disabled]="!validarAdminPrincipal(caso)"
+                >
+                  Finalizar
+                </button>
+                <button
+                  class="btn btn-danger btn-sm shadow-sm mt-1"
+                  (click)="$event.stopPropagation(); openDeleteDialog(caso)"
+                  *ngIf="
+                    caso.estado !== 'Finalizado' && caso.estado !== 'Cancelado'
+                  "
+                >
+                  Eliminar
+                </button>
+              </ng-container>
+
               <button
+                *ngIf="
+                  usuario.tipo_usuario === 'cliente' &&
+                  caso.estado === 'Finalizado'
+                "
                 class="btn btn-warning btn-sm shadow-sm mt-1"
-                (click)="$event.stopPropagation(); openEditDialog(caso)"
-                *ngIf="
-                  caso.estado !== 'Finalizado' && caso.estado !== 'Cancelado'
-                "
-                [disabled]="!validarAdminPrincipal(caso)"
+                (click)="$event.stopPropagation(); openFeedbackDialog(caso.id)"
+                [disabled]="caso.estado !== 'Finalizado'"
               >
-                Editar
-              </button>
-              <button
-                class="btn btn-secondary btn-sm shadow-sm mt-1"
-                (click)="$event.stopPropagation(); openEndDialog(caso)"
-                *ngIf="
-                  caso.estado !== 'Finalizado' && caso.estado !== 'Cancelado'
-                "
-                [disabled]="!validarAdminPrincipal(caso)"
-              >
-                Finalizar
-              </button>
-              <button
-                class="btn btn-danger btn-sm shadow-sm mt-1"
-                (click)="$event.stopPropagation(); openDeleteDialog(caso)"
-                *ngIf="
-                  caso.estado !== 'Finalizado' && caso.estado !== 'Cancelado'
-                "
-              >
-                Eliminar
+                Feedback
               </button>
             </div>
           </td>
