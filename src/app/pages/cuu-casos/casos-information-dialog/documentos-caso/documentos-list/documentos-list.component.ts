@@ -9,6 +9,7 @@ import { ComponentType } from '@angular/cdk/portal';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DocumentosDialogComponent } from '../documentos-dialog/documentos-dialog.component.js';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../../../../../core/services/auth.service.js';
 
 @Component({
   selector: 'app-documentos-list',
@@ -26,12 +27,16 @@ export class DocumentosListComponent {
   @Input() caso!: ICaso;
   documentos: IDocumentos[] = [];
   documentoParaVer: IDocumentos | null = null;
+  usuario: any = null;
 
   constructor(
     private httpClient: HttpClient,
     private snackBarService: SnackbarService,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    private authService: AuthService
+  ) {
+    this.usuario = this.authService.getUser();
+  }
 
   openDialog(dialog: ComponentType<unknown>, data: object): void {
     const dialogRef = this.dialog.open(dialog, {
@@ -65,7 +70,7 @@ export class DocumentosListComponent {
             }));
           },
           error: (err) => {
-            this.snackBarService.showError('Error al cargar los documentos');
+            this.snackBarService.showError(err.error.message);
           },
         });
     }

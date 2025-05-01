@@ -76,7 +76,7 @@
             (click)="submit()"
             [disabled]="!casosForm.valid"
           >
-            Crear
+            {{ data.action === "create" ? "Crear" : "Actualizar" }}
           </button>
         </div>
       </form>
@@ -115,7 +115,7 @@
             (click)="submit()"
             [disabled]="!abogadoForm.valid"
           >
-            Crear
+            {{ data.action === "create" ? "Crear" : "Actualizar" }}
           </button>
         </div>
       </form>

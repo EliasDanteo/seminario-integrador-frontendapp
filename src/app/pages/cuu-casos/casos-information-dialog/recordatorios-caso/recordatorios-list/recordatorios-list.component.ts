@@ -69,8 +69,7 @@ export class RecordatoriosListComponent implements OnInit {
           });
         },
         error: (err) => {
-          this.snackBarService.showError('Error al cargar recordatorios');
-          console.error(err);
+          this.snackBarService.showError(err.error.message);
         },
       });
   }

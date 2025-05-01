@@ -66,8 +66,8 @@ export class NotasCasoComponent implements OnInit {
         next: (response) => {
           this.notasCaso = this.marcarEliminables(response.data);
         },
-        error: (error) => {
-          this.snackBarService.showError('Error al cargar las notas del caso');
+        error: (err) => {
+          this.snackBarService.showError(err.error.message);
         },
       });
   }

@@ -39,7 +39,7 @@
       <button
         mat-raised-button
         color="primary"
-        *ngIf="casoEstado === 'En curso'"
+        *ngIf="casoEstado === 'En curso' && !usuario.is_admin"
         (click)="onReply()"
       >
         Responder

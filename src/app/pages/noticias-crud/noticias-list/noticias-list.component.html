@@ -1,10 +1,7 @@
 <div class="container mt-4">
   <h2 class="text-center mb-4 text-black p-3 rounded">Listado de Noticias</h2>
 
-  <button
-    class="btn btn-success mb-md-0 shadow"
-    (click)="openCreateDialog()"
-  >
+  <button class="btn btn-success mb-md-0 shadow" (click)="openCreateDialog()">
     Agregar Noticia
   </button>
 
@@ -20,7 +17,6 @@
     </div>
   </div>
 
-  @if (filteredNoticias) {
   <div class="table-responsive">
     <table class="table table-hover table-bordered shadow-sm">
       <thead class="bg-success text-white">
@@ -33,7 +29,8 @@
         </tr>
       </thead>
       <tbody>
-        @for (noticia of filteredNoticias; track noticia.id) {
+        @if (filteredNoticias && filteredNoticias.length > 0) { @for (noticia of
+        filteredNoticias; track noticia.id) {
         <tr class="align-middle">
           <td data-label="Título">{{ noticia.titulo }}</td>
           <td data-label="Cuerpo" class="d-none d-lg-table-cell">
@@ -68,9 +65,12 @@
             </div>
           </td>
         </tr>
+        } } @else{
+        <td colspan="5" class="alert alert-secondary text-center" role="alert">
+          No hay noticias cargadas.
+        </td>
         }
       </tbody>
     </table>
   </div>
-  }
 </div>

@@ -79,6 +79,7 @@ export class AbogadosListComponent {
   loadAbogados() {
     this.abogadoService.getAll().subscribe({
       next: (response) => {
+        console.log('Abogados cargados:', response.data);
         this.abogados = response.data;
         this.filteredAbogados = [...this.abogados];
         this.applyFilters();

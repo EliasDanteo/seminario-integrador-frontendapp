@@ -7,13 +7,14 @@
       <button
         class="btn btn-success shadow"
         (click)="openCreateDialog()"
-        *ngIf="caso.estado === 'En curso'"
+        *ngIf="caso.estado === 'En curso' && !usuario.is_admin"
       >
         Agregar Recordatorio
       </button>
     </div>
     <div class="card-body">
-      @for (recordatorio of recordatoriosCaso; track recordatorio.id) {
+      @if (recordatoriosCaso.length > 0) { @for (recordatorio of
+      recordatoriosCaso; track recordatorio.id) {
       <div class="mb-3">
         <mat-card appearance="outlined">
           <mat-card-header>
@@ -63,6 +64,10 @@
             </button>
           </mat-card-actions>
         </mat-card>
+      </div>
+      } } @else {
+      <div class="alert alert-info">
+        <p class="mb-0">No se encontraron recordatorios registrados</p>
       </div>
       }
     </div>

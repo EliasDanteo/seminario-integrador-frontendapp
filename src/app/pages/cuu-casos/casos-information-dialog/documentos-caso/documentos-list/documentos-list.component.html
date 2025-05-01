@@ -48,14 +48,15 @@
         Recuerda que puedes subir documentos en formato PDF, JPG o PNG.
       </div>
       <div class="mt-4 d-flex justify-end">
-        <div class="input-group mt-2">
+        <div class="input-group mt-2 d-flex justify-content-end">
           <button
             mat-raised-button
             class="btn btn-success"
             type="button"
+            align="end"
             color="primary"
             (click)="openCreateDialog()"
-            *ngIf="caso.estado === 'En curso'"
+            *ngIf="caso.estado === 'En curso' && !usuario.is_admin"
           >
             Subir Documento
           </button>

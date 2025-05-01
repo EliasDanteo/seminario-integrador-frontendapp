@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ComentariosDialogComponent } from '../comentarios-dialog/comentarios-dialog.component.js';
 import { ComentariosUnidadComponent } from '../comentarios-unidad/comentarios-unidad.component.js';
+import { AuthService } from '../../../../../core/services/auth.service.js';
 
 @Component({
   selector: 'app-comentarios-list',
@@ -28,12 +29,16 @@ import { ComentariosUnidadComponent } from '../comentarios-unidad/comentarios-un
 export class ComentariosListComponent implements OnInit {
   @Input() caso!: ICaso;
   comentariosCaso: IComentario[] = [];
+  usuario: any = null;
 
   constructor(
     private http: HttpClient,
     private snack: SnackbarService,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    private authService: AuthService
+  ) {
+    this.usuario = this.authService.getUser();
+  }
 
   ngOnInit(): void {
     this.loadComentarios();
@@ -48,7 +53,7 @@ export class ComentariosListComponent implements OnInit {
         next: (response) => {
           this.comentariosCaso = this.marcarEliminables(response.data);
         },
-        error: () => this.snack.showError('Error al cargar los comentarios'),
+        error: (err) => this.snack.showError(err.error.message),
       });
   }
 

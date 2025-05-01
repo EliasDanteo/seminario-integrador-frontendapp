@@ -57,8 +57,8 @@ export class CuotasListComponent implements OnInit {
       next: (res) => {
         this.cuotas = res.data;
       },
-      error: () => {
-        this.snackBarService.showError('Error al cargar las cuotas');
+      error: (err) => {
+        this.snackBarService.showError(err.error.message);
       },
     });
   }

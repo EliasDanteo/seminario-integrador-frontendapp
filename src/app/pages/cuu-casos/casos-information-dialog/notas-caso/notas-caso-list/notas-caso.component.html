@@ -6,7 +6,7 @@
         <button
           class="btn btn-success shadow"
           (click)="openCreateDialog()"
-          *ngIf="caso.estado === 'En curso'"
+          *ngIf="caso.estado === 'En curso' && !usuario.is_admin"
         >
           Agregar Nota
         </button>
@@ -64,7 +64,7 @@
         }
       </div>
       } @else {
-      <div class="alert alert-info mt-4 text-center">
+      <div class="alert alert-info">
         <p class="mb-0">No se encontraron notas registradas</p>
       </div>
       }
