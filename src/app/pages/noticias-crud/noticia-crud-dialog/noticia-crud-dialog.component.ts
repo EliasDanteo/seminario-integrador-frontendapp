@@ -17,6 +17,7 @@ import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-noticia-crud-dialog',
@@ -28,6 +29,7 @@ import { CommonModule } from '@angular/common';
     MatNativeDateModule,
     MatInputModule,
     MatButtonModule,
+    MatDividerModule,
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
@@ -57,7 +59,10 @@ export class NoticiaCrudDialogComponent implements OnInit {
     console.log('Today date', this.todayDate);
     this.entityType = data.entityType;
     this.newsForm = new FormGroup({
-      titulo: new FormControl('', [Validators.required]),
+      titulo: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(75),
+      ]),
       cuerpo: new FormControl('', [Validators.required]),
       fecha_publicacion: new FormControl(null),
       fecha_vencimiento: new FormControl(null),
@@ -158,7 +163,6 @@ export class NoticiaCrudDialogComponent implements OnInit {
   }
 
   onClose(): void {
-    this.snackbarService.showError('Cancelando', 5000);
     this.dialogRef.close('none');
   }
 

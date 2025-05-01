@@ -1,29 +1,41 @@
 <div class="container">
-    <header class="bg-light py-3 my-4 border-bottom">
-        <div class="container text-center">
-          <h1 class="mb-2">Bienvenido al Blog de nuestro Estudio Jurídico</h1>
-          <p class="lead mb-0">Explora las últimas noticias y artículos de interés, actualizados nuestros profesionales.</p>
-        </div>
-    </header>
-      
-  
-    <div *ngIf="noticias && noticias.length > 0; else noNoticias">
-      <div class="row">
-          <div *ngFor="let noticia of noticias" class="col-12 col-md-4 mb-3">
-            <article class="news-card w-100 h-100">
-              <div class="content d-flex flex-column h-100">
-                <h2>{{ noticia.titulo }}</h2>
-                <p class="meta">{{ noticia.fecha_publicacion }}</p>
-                <p class="excerpt">{{ noticia.cuerpo }}</p>
-                <a [routerLink]="['/noticias-detalle', noticia.id]" class="btn btn-primary w-100 mt-auto">Leer noticia</a>
-              </div>
-            </article>
+  <header class="bg-primary py-4 my-4 border-bottom rounded-4">
+    <div class="container text-center text-white">
+      <h1 class="mb-2 display-5 fw-bold">
+        Bienvenido al Blog de nuestro Estudio Jurídico
+      </h1>
+      <p class="lead mb-0 fs-5">
+        Explora las últimas noticias y artículos de interés, actualizados por
+        nuestros profesionales.
+      </p>
+    </div>
+  </header>
+
+  <div *ngIf="noticias && noticias.length > 0; else noNoticias">
+    <div class="row g-4">
+      <div *ngFor="let noticia of noticias" class="col-12 col-md-6 col-lg-4">
+        <article class="news-card">
+          <div class="content d-flex flex-column h-100">
+            <h2 class="news-title">{{ noticia.titulo }}</h2>
+            <p class="meta text-muted mb-2">
+              {{ noticia.fecha_publicacion | date : "dd/MM/yyyy" }}
+            </p>
+            <p class="excerpt flex-grow-1">{{ noticia.cuerpo }}</p>
+            <a
+              [routerLink]="['/noticias-detalle', noticia.id]"
+              class="btn btn-primary w-100 mt-3"
+              >Leer noticia completa</a
+            >
           </div>
-        </div>
+        </article>
       </div>
-  
-    <ng-template #noNoticias>
-      <p class="text-center">No hay noticias recientes.</p>
-    </ng-template>
+    </div>
   </div>
-  
+
+  <ng-template #noNoticias>
+    <div class="alert alert-secondary text-center py-4" role="alert">
+      <i class="bi bi-newspaper fs-3 d-block mb-2"></i>
+      No hay noticias disponibles en este momento.
+    </div>
+  </ng-template>
+</div>

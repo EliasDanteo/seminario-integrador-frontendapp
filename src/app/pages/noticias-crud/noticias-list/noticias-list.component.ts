@@ -137,4 +137,10 @@ export class NoticiasListComponent {
         },
       });
   }
+
+  cortarTexto(texto: string, maxLength: number = 100): string {
+    return texto?.length > maxLength
+      ? texto.substr(0, maxLength) + '...'
+      : texto;
+  }
 }

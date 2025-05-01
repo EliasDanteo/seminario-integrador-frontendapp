@@ -15,7 +15,7 @@ export class ActividadesAbogadoService {
     id_abogado: number
   ): Observable<ApiResponse<IActividadRealizada[]>> {
     return this.httpClient.get<ApiResponse<IActividadRealizada[]>>(
-      `${environment.actividadesUrl}/realizadas/${id_abogado}` // Cambiar el ID
+      `${environment.actividadesUrl}/realizadas/abogado/${id_abogado}`
     );
   }
 

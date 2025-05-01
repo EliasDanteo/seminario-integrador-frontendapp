@@ -34,7 +34,7 @@
         <tr class="align-middle">
           <td data-label="Título">{{ noticia.titulo }}</td>
           <td data-label="Cuerpo" class="d-none d-lg-table-cell">
-            {{ noticia.cuerpo }}
+            {{ cortarTexto(noticia.cuerpo, 150) }}
           </td>
           <td data-label="Publicación">{{ noticia.fecha_publicacion }}</td>
           <td data-label="Vencimiento" class="d-none d-sm-table-cell">

@@ -1,22 +1,23 @@
 <div class="container my-4">
-    <ng-container *ngIf="noticia; else noNoticia">
-      <div class="card shadow-lg">
-        <div class="card-header bg-light">
-          <h2 class="mb-0">{{ noticia.titulo }}</h2>
-        </div>
-        <div class="card-body">
-          <p class="text-muted mb-2 text-end">{{ noticia.fecha_publicacion }}</p>
-          <p class="fs-5">{{ noticia.cuerpo }}</p>
-        </div>
-        <div class="card-footer text-end">
-          <a routerLink="/noticias-blog" class="btn btn-secondary">Volver al listado</a>
-        </div>
+  <ng-container *ngIf="noticia; else noNoticia">
+    <div class="card shadow-lg">
+      <div class="card-header bg-primary text-white text-center">
+        <h2 class="mb-0">{{ noticia.titulo }}</h2>
       </div>
-    </ng-container>
-    <ng-template #noNoticia>
-      <div class="alert alert-info text-center mt-4">
-        La noticia no se encontró.
+      <div class="card-body">
+        <p class="text-muted mb-2 text-end">{{ noticia.fecha_publicacion }}</p>
+        <p class="fs-5">{{ noticia.cuerpo }}</p>
       </div>
-    </ng-template>
-  </div>
-  
+      <div class="card-footer text-end">
+        <a routerLink="/noticias-blog" class="btn btn-secondary"
+          >Volver al listado</a
+        >
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #noNoticia>
+    <div class="alert alert-info text-center mt-4">
+      La noticia no se encontró.
+    </div>
+  </ng-template>
+</div>

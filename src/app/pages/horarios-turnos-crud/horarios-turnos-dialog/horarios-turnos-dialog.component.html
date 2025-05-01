@@ -1,17 +1,25 @@
-<div class="container" style="min-width: 500px;">
+<div class="container" style="min-width: 500px">
   <div class="dialog-title">
     <div class="d-flex justify-content-between align-items-center">
       <h2 mat-dialog-title>
-        {{ this.data.action === 'put' ? 'Editar horario de turno': 'Registrar horario de turno' }}
+        {{
+          this.data.action === "put"
+            ? "Editar horario de turno"
+            : "Registrar horario de turno"
+        }}
       </h2>
-      <button type="button" class="btn-close" title="Cerrar ventana" (click)="onClose()"></button>
+      <button
+        type="button"
+        class="btn-close"
+        title="Cerrar ventana"
+        (click)="onClose()"
+      ></button>
     </div>
   </div>
-  <hr>
+  <hr />
 
   <form [formGroup]="entityForm" (ngSubmit)="onSubmit()">
     <mat-dialog-content>
-
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Dia de la semana</mat-label>
         <mat-select formControlName="dia_semana" required>
@@ -27,25 +35,34 @@
       <div class="d-flex gap-3">
         <mat-form-field appearance="outline" class="flex-fill">
           <mat-label>Hora de Inicio</mat-label>
-          <input matInput formControlName="hora_inicio" type="time" required>
+          <input matInput formControlName="hora_inicio" type="time" required />
         </mat-form-field>
-        
+
         <mat-form-field appearance="outline" class="flex-fill">
           <mat-label>Hora de Fin</mat-label>
-          <input matInput formControlName="hora_fin" type="time" required>
+          <input matInput formControlName="hora_fin" type="time" required />
         </mat-form-field>
       </div>
     </mat-dialog-content>
 
-    <mat-dialog-actions>
-      <button mat-button type="submit" [disabled]="!entityForm.valid" class="btn btn-success">
-        {{ this.data.action === 'put' ? 'Actualizar' : 'Crear'}}
-      </button>
-    
-      <button mat-button type="button" class="btn-secondary" (click)="onClose()">
+    <mat-dialog-actions class="d-flex justify-content-end">
+      <button
+        mat-raised-button
+        type="button"
+        class="btn-secondary"
+        (click)="onClose()"
+      >
         Cancelar
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!entityForm.valid"
+        class="btn btn-success"
+      >
+        {{ this.data.action === "put" ? "Actualizar" : "Crear" }}
       </button>
     </mat-dialog-actions>
   </form>
-
 </div>

@@ -109,4 +109,18 @@ export class HorariosTurnosListComponent {
       },
     });
   }
+
+  transformarDia(dia: number): string {
+    const dias = [
+      '',
+      'Lunes',
+      'Martes',
+      'Miércoles',
+      'Jueves',
+      'Viernes',
+      'Sábado',
+      'Domingo',
+    ];
+    return dias[dia] || 'Día inválido';
+  }
 }
