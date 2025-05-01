@@ -82,12 +82,14 @@ export class HorariosTurnosListComponent {
     }
   }
 
-  deleteHorarioTurno(hor: IHorarioTurno): void {
+  deleteHorarioTurnoDialog(hor: IHorarioTurno): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: {
-        nombreCompleto: `Dia: ${hor.dia_semana}\nInicio: ${hor.hora_inicio}\nFin: ${hor.hora_fin}`,
-        entidad: 'horarioTurno',
+        nombreCompleto: `Dia: ${this.transformarDia(hor.dia_semana)}\nInicio: ${
+          hor.hora_inicio
+        }\nFin: ${hor.hora_fin}`,
+        entidad: 'Horario de Turno',
       },
     });
 
