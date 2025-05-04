@@ -87,7 +87,6 @@ export class ClientesListComponent {
       .subscribe({
         next: (res) => {
           this.clientes = res.data;
-          console.log('Clientes cargados:', this.clientes);
           this.applyFilters();
         },
       });

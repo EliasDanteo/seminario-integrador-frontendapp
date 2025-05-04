@@ -126,7 +126,6 @@ export class DocumentosListComponent {
   }
 
   deleteDocument(documento: IDocumentos) {
-    console.log(documento);
     this.httpClient
       .patch<{ message: string; data: IDocumentos }>(
         `${environment.documentosUrl}/deactivate/${documento.id}`,

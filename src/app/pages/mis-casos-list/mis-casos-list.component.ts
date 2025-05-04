@@ -33,7 +33,6 @@ export class MisCasosListComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.casos_usuario = response.data;
-          console.log(this.casos_usuario);
         },
         error: () => {
           this.snackBarService.showError('Error al cargar los casos');

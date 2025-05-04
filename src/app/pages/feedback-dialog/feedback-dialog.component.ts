@@ -86,7 +86,6 @@ export class FeedbackDialogComponent implements OnInit {
             ...abogado,
             id: abogado.id_abogado,
           }));
-          console.log('Abogados a calificar:', this.abogados_a_calificar);
         },
         error: (error) => {
           this.snackBarService.showError(error.error.message);

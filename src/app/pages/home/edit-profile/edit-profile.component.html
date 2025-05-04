@@ -100,11 +100,7 @@
           color="primary"
           type="button"
           (click)="onSubmit()"
-          [disabled]="
-            profileForm.invalid ||
-            (profileForm.get('newPassword')?.value &&
-              !profileForm.get('currentPassword')?.value)
-          "
+          [disabled]="profileForm.invalid"
         >
           Guardar cambios
         </button>

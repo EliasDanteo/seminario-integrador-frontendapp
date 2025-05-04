@@ -114,7 +114,6 @@ export class AppointmentBookingComponent {
   loadAbogadosDisponbiles(fecha: string): void {
     this.horariosTurnoService.getDisponibles(fecha).subscribe({
       next: (response) => {
-        console.log(response.data);
         this.form.controls.horarioTurno.setValue(null);
         this.turnosDisponbiles = response.data || [];
         this.abogadosDisponibles = this.turnosDisponbiles.map(

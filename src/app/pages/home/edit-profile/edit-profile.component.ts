@@ -76,12 +76,9 @@ export class EditProfileComponent implements OnInit {
     const newPassword = control.get('newPassword')?.value;
     const confirmPassword = control.get('confirmPassword')?.value;
 
-    if (newPassword || confirmPassword) {
-      return newPassword === confirmPassword
-        ? null
-        : { passwordMismatch: true };
-    }
-    return null;
+    if (!newPassword && !confirmPassword) return null;
+
+    return newPassword === confirmPassword ? null : { passwordMismatch: true };
   }
 
   passwordDifferentValidator(
@@ -90,9 +87,12 @@ export class EditProfileComponent implements OnInit {
     const currentPassword = control.get('currentPassword')?.value;
     const newPassword = control.get('newPassword')?.value;
 
-    if (currentPassword && newPassword && currentPassword === newPassword) {
+    if (!newPassword && !currentPassword) return null;
+
+    if (currentPassword === newPassword) {
       return { samePassword: true };
     }
+
     return null;
   }
 
@@ -122,8 +122,8 @@ export class EditProfileComponent implements OnInit {
     const updateData = {
       email: formValue.email,
       telefono: formValue.telefono,
-      contrasena: formValue.newPassword || undefined,
-      contrasena_anterior: formValue.currentPassword || undefined,
+      contrasena: formValue.newPassword,
+      contrasena_anterior: formValue.currentPassword,
     };
 
     this.usuarioService

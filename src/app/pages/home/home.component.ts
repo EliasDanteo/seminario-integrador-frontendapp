@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result !== 'none') {
-        this.user = this.authService.getUser();
+        this.user = result;
       }
     });
   }

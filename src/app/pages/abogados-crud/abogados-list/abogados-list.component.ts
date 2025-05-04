@@ -79,7 +79,6 @@ export class AbogadosListComponent {
   loadAbogados() {
     this.abogadoService.getAll().subscribe({
       next: (response) => {
-        console.log('Abogados cargados:', response.data);
         this.abogados = response.data;
         this.filteredAbogados = [...this.abogados];
         this.applyFilters();
@@ -102,7 +101,6 @@ export class AbogadosListComponent {
 
   openEditDialog(abogado: IAbogado): void {
     if (abogado) {
-      console.log('Abogado a editar:', abogado);
       this.openDialog(CRUDDialogComponent, {
         title: 'Actualizar Abogado',
         action: 'put',

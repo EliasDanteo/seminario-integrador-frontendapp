@@ -88,7 +88,6 @@ export class AuthService {
     if (user !== null) {
       const parsed = JSON.parse(user);
       this.userSignal.set(parsed);
-      console.log('Parsed user:', parsed);
       return parsed;
     }
 

@@ -56,7 +56,6 @@ export class NoticiaCrudDialogComponent implements OnInit {
     private snackbarService: SnackbarService
   ) {
     this.todayDate = new Date();
-    console.log('Today date', this.todayDate);
     this.entityType = data.entityType;
     this.newsForm = new FormGroup({
       titulo: new FormControl('', [
@@ -141,7 +140,6 @@ export class NoticiaCrudDialogComponent implements OnInit {
               },
             });
         } else if (!this.isEdit) {
-          console.log('Creando noticia', formData);
           this.http.post(`${environment.noticiasUrl}`, formData).subscribe({
             next: (response) => {
               this.snackbarService.showSuccess(

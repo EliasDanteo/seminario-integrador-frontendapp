@@ -159,7 +159,6 @@ export class CasosCrudDialogComponent implements OnInit {
     this.clienteService.getAll().subscribe({
       next: (response) => {
         this.clientes = response.data;
-        console.log('Clientes', this.clientes);
       },
       error: () => {
         this.snackBarService.showError('Error al cargar los clientes');
@@ -202,7 +201,6 @@ export class CasosCrudDialogComponent implements OnInit {
         .findEspecialidad(this.authService.getUser()?.id!)
         .subscribe({
           next: (response) => {
-            console.log('especialidades', response.data);
             this.especialidades = response.data;
           },
           error: () =>
@@ -234,13 +232,6 @@ export class CasosCrudDialogComponent implements OnInit {
   }
 
   submit() {
-    console.log('submit', this.casosForm.value);
-    console.log('submit', this.clienteForm.value);
-    console.log('submit', this.abogadoForm.value);
-    console.log(
-      'Caso',
-      this.casosForm.valid && this.clienteForm.valid && this.abogadoForm.valid
-    );
     if (
       this.casosForm.valid &&
       this.clienteForm.valid &&
