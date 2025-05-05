@@ -32,15 +32,15 @@ export class ClienteService implements ICrudService<ICliente, IClienteCreate> {
   getById(id: string): Observable<ApiResponse<ICliente>> {
     return this.http.get<ApiResponse<ICliente>>(`${this.url}/${id}`);
   }
-  create(abogado: IClienteCreate): Observable<ApiResponse<ICliente>> {
-    return this.http.post<ApiResponse<ICliente>>(this.url, abogado);
+  create(cliente: IClienteCreate): Observable<ApiResponse<ICliente>> {
+    return this.http.post<ApiResponse<ICliente>>(this.url, cliente);
   }
 
   update(
     id: string,
-    abogado: IClienteCreate
+    cliente: IClienteCreate
   ): Observable<ApiResponse<ICliente>> {
-    return this.http.put<ApiResponse<ICliente>>(`${this.url}/${id}`, abogado);
+    return this.http.put<ApiResponse<ICliente>>(`${this.url}/${id}`, cliente);
   }
 
   deactivate(id: string): Observable<ApiResponse<ICliente>> {

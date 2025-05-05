@@ -1,8 +1,8 @@
 <div class="appointment-container">
-  <div class="appointment-box" [ngClass]="{ 'fade-in': true }">
+  <div class="appointment-box fade-in">
     <h2>Reservar Turno</h2>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <!-- Fecha del Turno -->
+      <!-- Fecha del Turno (siempre visible) -->
       <div class="form-group">
         <label for="fechaTurno">Fecha del Turno</label>
         <input
@@ -20,14 +20,14 @@
         }
       </div>
 
-      <!-- Abogado -->
-      <div class="form-group">
+      <!-- Abogado (solo visible cuando hay fecha seleccionada) -->
+      @if (form.value.fechaTurno) {
+      <div class="form-group fade-in-field">
         <label for="abogado">Abogado</label>
         <select
           id="abogado"
           class="form-control"
           formControlName="abogado"
-          [disabled]="!form.value.fechaTurno"
           (change)="onAbogadoSelected($event)"
         >
           <option [ngValue]="null" disabled selected>
@@ -40,15 +40,16 @@
           }
         </select>
       </div>
+      }
 
-      <!-- Horario del Turno -->
-      <div class="form-group">
+      <!-- Horario del Turno (solo visible cuando hay abogado seleccionado) -->
+      @if (form.value.abogado && form.value.fechaTurno) {
+      <div class="form-group fade-in-field">
         <label for="horarioTurno">Horario del Turno</label>
         <select
           id="horarioTurno"
           class="form-control"
           formControlName="horarioTurno"
-          [disabled]="!form.value.fechaTurno && !form.value.abogado"
           [compareWith]="compareHorarios"
         >
           <option [ngValue]="null">Seleccione un horario</option>
@@ -59,8 +60,8 @@
           }
         </select>
       </div>
-
-      @if(!this.user) {
+      } @if(form.value.horarioTurno && form.value.fechaTurno &&
+      form.value.abogado) { @if(!this.user) {
       <!-- Campos para usuarios no logueados -->
       <div class="form-group">
         <label for="nombre">Nombre</label>
@@ -94,22 +95,21 @@
           type="email"
         />
       </div>
-      } @else{
-      <!-- Campo nombre para usuarios logueados -->
+      } @else {
+      <!-- Campos para usuarios logueados -->
       <div class="form-group">
         <label for="nombre">Nombre</label>
         <input
           id="nombre"
           class="form-control"
           formControlName="nombre"
-          placeholder="Ej: Juan"
           type="text"
           [value]="user.nombre"
           [readonly]="true"
         />
       </div>
       <div class="form-group">
-        <label for="nombre">Email</label>
+        <label for="email">Email</label>
         <input
           id="email"
           class="form-control"
@@ -127,6 +127,7 @@
           Reservar Turno
         </button>
       </div>
+      }
     </form>
   </div>
 </div>

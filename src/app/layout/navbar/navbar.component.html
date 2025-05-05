@@ -1,124 +1,163 @@
-<!-- NAVBAR HTML -->
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="/home">Sistema Jurídico</a>
+
+    <!-- Botón para móviles -->
     <button
       class="navbar-toggler"
       type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
+      (click)="toggleMobileMenu()"
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        @if(this.userSignal() === null){
-        <li class="nav-item">
-          <a class="nav-link animated-link" href="/">Iniciar Sesión</a>
-        </li>
-        } @if(this.esAdmin()){
 
+    <!-- Contenido del navbar -->
+    <div
+      class="navbar-collapse"
+      [class.show]="mobileMenuOpen"
+      id="navbarContent"
+    >
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- Menú para usuarios no autenticados -->
+        @if(userSignal() === null){
         <li class="nav-item">
-          <a class="nav-link animated-link" href="/abogados-list">Abogados</a>
+          <a class="nav-link animated-link" href="/" (click)="closeMobileMenu()"
+            >Iniciar Sesión</a
+          >
+        </li>
+        }
+
+        <!-- Menú para administradores -->
+        @if(esAdmin()){
+        <li class="nav-item">
+          <a
+            class="nav-link animated-link"
+            href="/abogados-list"
+            (click)="closeMobileMenu()"
+            >Abogados</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link animated-link" href="/clientes-list">Clientes</a>
+          <a
+            class="nav-link animated-link"
+            href="/clientes-list"
+            (click)="closeMobileMenu()"
+            >Clientes</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link animated-link" href="/secretarios-list"
+          <a
+            class="nav-link animated-link"
+            href="/secretarios-list"
+            (click)="closeMobileMenu()"
             >Secretarios</a
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link animated-link" href="/actividades-list"
+          <a
+            class="nav-link animated-link"
+            href="/actividades-list"
+            (click)="closeMobileMenu()"
             >Actividades</a
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link animated-link" href="/noticias-list"
+          <a
+            class="nav-link animated-link"
+            href="/noticias-list"
+            (click)="closeMobileMenu()"
             >Crear noticia</a
           >
         </li>
+        }
 
-        } @if(this.esAbogado() || this.esSecretario() || this.esAdmin()){
+        <!-- Menú común para abogados, secretarios y admin -->
+        @if(esAbogado() || esSecretario() || esAdmin()){
         <li class="nav-item">
-          <a class="nav-link animated-link" href="/casos-list">Casos</a>
+          <a
+            class="nav-link animated-link"
+            href="/casos-list"
+            (click)="closeMobileMenu()"
+            >Casos</a
+          >
         </li>
-        } @if(this.esAbogado()){
+        }
 
-        <li>
-          <a class="nav-link animated-link" href="/mis-actividades"
+        <!-- Menú específico para abogados -->
+        @if(esAbogado()){
+        <li class="nav-item">
+          <a
+            class="nav-link animated-link"
+            href="/mis-actividades"
+            (click)="closeMobileMenu()"
             >Mis Actividades</a
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link animated-link" href="/horarios-turnos"
+          <a
+            class="nav-link animated-link"
+            href="/horarios-turnos"
+            (click)="closeMobileMenu()"
             >Horarios de turnos</a
           >
         </li>
-        } @if(this.esSecretario()){} @if(this.esCliente()){
-        <li>
-          <a class="nav-link animated-link" href="/casos-list">Mis Casos</a>
-        </li>
-        } @if(!this.esAbogado() && !this.esAdmin() && !this.esSecretario()){
+        }
+
+        <!-- Menú para clientes -->
+        @if(esCliente()){
         <li class="nav-item">
-          <a class="nav-link animated-link" href="/obtener-turnos"
+          <a
+            class="nav-link animated-link"
+            href="/casos-list"
+            (click)="closeMobileMenu()"
+            >Mis Casos</a
+          >
+        </li>
+        }
+
+        <!-- Menú para usuarios no abogados/admin/secretarios -->
+        @if(!esAbogado() && !esAdmin() && !esSecretario()){
+        <li class="nav-item">
+          <a
+            class="nav-link animated-link"
+            href="/obtener-turnos"
+            (click)="closeMobileMenu()"
             >Obtener turno abogado</a
           >
         </li>
         }
+
+        <!-- Menú común a todos -->
         <li class="nav-item">
-          <a class="nav-link animated-link" href="/noticias-blog"
+          <a
+            class="nav-link animated-link"
+            href="/noticias-blog"
+            (click)="closeMobileMenu()"
             >Noticias Blog</a
           >
         </li>
       </ul>
 
-      @if(this.userSignal() !== null){
-      <button mat-button [matMenuTriggerFor]="menu" class="text-black fw-light">
-        {{ this.userSignal()?.nombre + " " + this.userSignal()?.apellido }}
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item>
-          <a class="nav-link" href="/home">Mi Perfil</a>
+      <!-- Menú de usuario -->
+      @if(userSignal() !== null){
+      <div class="user-menu">
+        <button
+          mat-button
+          [matMenuTriggerFor]="menu"
+          class="text-black fw-light"
+        >
+          {{ userSignal()?.nombre + " " + userSignal()?.apellido }}
         </button>
-        <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
-      </mat-menu>
+        <mat-menu class="user-option" #menu="matMenu">
+          <button mat-menu-item (click)="closeMobileMenu()">
+            <a class="nav-link" href="/home">Mi Perfil</a>
+          </button>
+          <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
+        </mat-menu>
+      </div>
       }
     </div>
   </div>
 </nav>
-
-<style>
-  .animated-link {
-    position: relative;
-    color: #000;
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-
-  .animated-link::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 2px;
-    width: 100%;
-    background-color: #007bff;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s ease;
-  }
-
-  .animated-link:hover::after,
-  .animated-link.active::after {
-    transform: scaleX(1);
-  }
-
-  .animated-link:hover {
-    color: #007bff;
-  }
-</style>
