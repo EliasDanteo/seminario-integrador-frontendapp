@@ -1,0 +1,146 @@
+.navbar {
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1000;
+}
+
+.navbar-brand {
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: #2c3e50;
+  transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+  color: #007bff;
+}
+
+.navbar-toggler {
+  border: none;
+  padding: 0.5rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  background-color: transparent;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.navbar-toggler:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.navbar-toggler[aria-expanded="true"] {
+  transform: rotate(90deg);
+}
+
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #f8f9fa;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease;
+    z-index: 1051;
+  }
+
+  .navbar-collapse.show {
+    max-height: 100vh;
+    opacity: 1;
+    transition: max-height 0.5s ease-in, opacity 0.3s ease;
+  }
+
+  .navbar-nav {
+    margin-bottom: 1rem;
+  }
+
+  .user-menu {
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+    z-index: 1052;
+    background-color: #f8f9fa;
+  }
+}
+
+.animated-link {
+  position: relative;
+  color: #000;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  padding: 0.5rem 1rem;
+  display: block;
+}
+
+.animated-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 1rem;
+  height: 2px;
+  width: calc(100% - 2rem);
+  background-color: #007bff;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.animated-link:hover::after,
+.animated-link.active::after {
+  transform: scaleX(1);
+}
+
+.animated-link:hover {
+  color: #007bff;
+}
+
+@media (min-width: 992px) {
+  .navbar-collapse {
+    display: flex !important;
+    flex-basis: auto;
+  }
+
+  .navbar-nav {
+    flex-direction: row;
+  }
+
+  .nav-item {
+    margin-right: 0.5rem;
+  }
+
+  .user-menu {
+    margin-left: auto;
+    background-color: #f8f9fa;
+    z-index: 1052;
+  }
+}
+
+.mat-menu-panel {
+  min-width: 180px;
+}
+
+.mat-menu-item {
+  display: flex;
+  align-items: center;
+}
+
+.mat-menu-item .nav-link {
+  color: inherit;
+  text-decoration: none;
+  width: 100%;
+}
+
+.user-option {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 1052;
+}

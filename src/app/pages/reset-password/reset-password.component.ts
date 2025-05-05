@@ -40,9 +40,9 @@ export class ResetPasswordComponent {
       return;
     }
 
-    if (this.newPassword.length < 5) {
+    if (this.newPassword.length < 4) {
       this.snackBarService.showError(
-        'La contraseña debe tener al menos 5 caracteres'
+        'La contraseña debe tener al menos 4 caracteres'
       );
       return;
     }
