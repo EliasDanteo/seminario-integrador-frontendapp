@@ -3,7 +3,6 @@
     <h2 class="dialog-title">Editar Perfil</h2>
 
     <form [formGroup]="profileForm" class="dialog-form">
-      @if(isAdmin) {
       <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
         <input matInput formControlName="email" type="email" />
@@ -19,9 +18,6 @@
         <mat-label>Teléfono</mat-label>
         <input matInput formControlName="telefono" type="tel" />
       </mat-form-field>
-      }
-      <h3 class="password-title">Cambiar contraseña</h3>
-
       <mat-form-field appearance="outline">
         <mat-label>Contraseña actual</mat-label>
         <input
@@ -40,8 +36,10 @@
             hidePassword ? "visibility_off" : "visibility"
           }}</mat-icon>
         </button>
-        <mat-hint>Requerido si desea cambiar la contraseña</mat-hint>
+        <mat-hint>Requerido para cambiar datos</mat-hint>
       </mat-form-field>
+
+      <h3 class="password-title">Cambiar contraseña</h3>
 
       <mat-form-field appearance="outline">
         <mat-label>Nueva contraseña</mat-label>

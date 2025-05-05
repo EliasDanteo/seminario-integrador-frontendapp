@@ -186,6 +186,7 @@ export class CRUDDialogComponent implements OnInit {
         this.crudService = this.abogadoService;
         break;
       case 'cliente':
+      case 'empresa':
         this.crudService = this.clienteService;
         break;
       case 'secretario':
