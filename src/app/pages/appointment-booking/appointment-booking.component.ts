@@ -25,7 +25,7 @@ import { CommonModule } from '@angular/common';
 })
 export class AppointmentBookingComponent {
   form = new FormGroup({
-    fechaTurno: new FormControl(Date, [Validators.required]),
+    fechaTurno: new FormControl(null as Date | null, [Validators.required]),
     abogado: new FormControl(
       {} as Pick<IAbogado, 'id' | 'nombre' | 'apellido'>,
       [Validators.required]
@@ -103,7 +103,7 @@ export class AppointmentBookingComponent {
 
     if (selectedDate < today) {
       this.snackBarService.showError('La fecha no puede ser anterior a hoy');
-      this.form.controls.fechaTurno.setValue(Date);
+      this.form.controls.fechaTurno.setValue(new Date());
       return;
     }
     this.form.controls.horarioTurno.setValue(null);

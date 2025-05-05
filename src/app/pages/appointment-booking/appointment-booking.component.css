@@ -28,6 +28,9 @@ h2 {
 
 .form-group {
   margin-bottom: 20px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.4s ease-out forwards;
 }
 
 .form-group label {
@@ -44,6 +47,7 @@ h2 {
   border-radius: 5px;
   border: 1px solid #ccc;
   box-sizing: border-box;
+  transition: border-color 0.3s ease;
 }
 
 .form-control:focus {
@@ -66,6 +70,10 @@ select.form-control {
   justify-content: space-between;
   margin-top: 25px;
   gap: 10px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.4s ease-out forwards;
+  animation-delay: 0.4s;
 }
 
 .btn {
@@ -112,6 +120,7 @@ select:invalid {
   color: #6c757d;
 }
 
+/* Animaciones */
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -121,4 +130,40 @@ select:invalid {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-group:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.form-group:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.form-group:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.form-group:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.form-group:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.form-group:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+.fade-in-field {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.4s ease-out forwards;
 }
