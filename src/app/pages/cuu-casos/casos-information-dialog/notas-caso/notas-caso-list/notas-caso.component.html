@@ -21,22 +21,28 @@
           <div class="card h-100 shadow-sm">
             <div class="card-header d-flex flex-column">
               <div class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title fw-bold mb-0">{{ nota.titulo }}</h5>
+                <h5
+                  class="card-title fw-bold mb-0 text-truncate"
+                  style="max-width: 80%"
+                >
+                  {{ nota.titulo }}
+                </h5>
                 <small class="text-muted">
                   {{ nota.fecha_hora | date : "dd/MM/yyyy HH:mm" }}
                 </small>
               </div>
+
               <small class="text-muted mt-1">
                 Autor: {{ nota.abogado.nombre }} {{ nota.abogado.apellido }}
               </small>
             </div>
 
-            <div class="card-body">
+            <div class="card-body overflow-auto" style="max-height: 200px">
               <p class="card-text">{{ nota.descripcion }}</p>
             </div>
 
             <div class="card-footer bg-transparent">
-              <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-end align-items-center">
                 <div>
                   @if (caso.estado === 'En curso' && usuario.id ===
                   nota.abogado.id && nota.sePuedeEliminar) {
@@ -51,7 +57,7 @@
                   <button
                     mat-raised-button
                     color="warn"
-                    (click)="deleteNota(nota)"
+                    (click)="openDeleteDialog(nota)"
                   >
                     Eliminar
                   </button>

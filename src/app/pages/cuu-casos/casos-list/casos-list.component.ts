@@ -51,7 +51,9 @@ export class CasosListComponent {
     const dialogRef = this.dialog.open(dialog, { data });
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== 'none') {
-        this.loadCasosTotales();
+        this.is_admin
+          ? this.loadCasosTotales()
+          : this.loadCasosNoAdmin(this.usuario!.id);
       }
     });
   }
@@ -178,5 +180,14 @@ export class CasosListComponent {
       return true;
     }
     return false;
+  }
+
+  solicitarInformeCaso(caso: ICaso) {
+    this.dialog.open(InformesDialogComponent, {
+      data: {
+        caso: caso,
+        informeType: 'caso',
+      },
+    });
   }
 }

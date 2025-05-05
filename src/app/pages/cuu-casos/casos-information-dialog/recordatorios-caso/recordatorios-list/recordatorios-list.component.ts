@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { IAbogadoCaso } from '../../../../../core/interfaces/IAbogadoCaso.interface.js';
 import { AuthService } from '../../../../../core/services/auth.service.js';
+import { ConfirmDialogComponent } from '../../../../../shared/confirm-dialog/confirm-dialog.component.js';
 
 @Component({
   selector: 'app-recordatorios-list',
@@ -87,6 +88,22 @@ export class RecordatoriosListComponent implements OnInit {
       action: 'put',
       caso: this.caso,
       recordatorio: recordatorio,
+    });
+  }
+
+  openDeleteDialog(recordatorio: IRecordatorio) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        nombreCompleto: recordatorio.descripcion,
+        entidad: 'Recordatorio',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res) {
+        this.deleteRecordatorio(recordatorio);
+      }
     });
   }
 

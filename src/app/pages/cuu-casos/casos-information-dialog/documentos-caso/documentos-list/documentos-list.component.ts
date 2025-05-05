@@ -10,6 +10,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DocumentosDialogComponent } from '../documentos-dialog/documentos-dialog.component.js';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../../../core/services/auth.service.js';
+import { ConfirmDialogComponent } from '../../../../../shared/confirm-dialog/confirm-dialog.component.js';
 
 @Component({
   selector: 'app-documentos-list',
@@ -125,7 +126,23 @@ export class DocumentosListComponent {
       });
   }
 
-  deleteDocument(documento: IDocumentos) {
+  openDeleteDialog(documento: IDocumentos) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        nombreCompleto: documento.nombre,
+        entidad: 'Documento',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res) {
+        this.eliminarDocumento(documento);
+      }
+    });
+  }
+
+  eliminarDocumento(documento: IDocumentos): void {
     this.httpClient
       .patch<{ message: string; data: IDocumentos }>(
         `${environment.documentosUrl}/deactivate/${documento.id}`,

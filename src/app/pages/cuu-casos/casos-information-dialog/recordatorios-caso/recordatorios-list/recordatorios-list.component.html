@@ -53,7 +53,7 @@
             <button
               mat-raised-button
               color="warn"
-              (click)="deleteRecordatorio(recordatorio)"
+              (click)="openDeleteDialog(recordatorio)"
               *ngIf="
                 caso.estado === 'En curso' &&
                 usuario.id === recordatorio.abogado.id &&
