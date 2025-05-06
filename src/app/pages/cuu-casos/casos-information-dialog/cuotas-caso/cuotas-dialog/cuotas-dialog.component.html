@@ -1,11 +1,7 @@
 <h2 mat-dialog-title>Registrar Cobro</h2>
 <hr />
 <mat-dialog-content>
-  <form
-    [formGroup]="cuotaForm"
-    class="registro-cobro-form"
-    (ngSubmit)="cobrarCuota()"
-  >
+  <form [formGroup]="cuotaForm" class="registro-cobro-form">
     <div class="fila mt-3">
       <mat-form-field appearance="outline">
         <mat-label>Id caso</mat-label>
@@ -52,12 +48,12 @@
       </mat-select>
     </mat-form-field>
     <mat-dialog-actions align="end">
-      <button mat-stroked-button (click)="onCancel()">Cancelar</button>
+      <button mat-flat-button (click)="onCancel()">Cancelar</button>
       <button
         mat-flat-button
         color="primary"
         [disabled]="cuotaForm.invalid"
-        type="submit"
+        (click)="cobrarCuota()"
       >
         Confirmar
       </button>

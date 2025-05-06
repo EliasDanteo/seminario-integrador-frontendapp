@@ -66,12 +66,16 @@
           <mat-label>Teléfono</mat-label>
           <input
             matInput
+            type="tel"
             formControlName="telefono"
             placeholder="Ej: 1234567890"
-            type="tel"
+            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
           />
           <mat-error *ngIf="form.get('telefono')?.hasError('required')">
             Campo requerido
+          </mat-error>
+          <mat-error *ngIf="form.get('telefono')?.hasError('maxlength')">
+            El teléfono no puede tener más de 20 caracteres
           </mat-error>
         </mat-form-field>
 
@@ -102,6 +106,9 @@
               />
               <mat-error *ngIf="form.get('nro_doc')?.hasError('required')">
                 Campo requerido
+              </mat-error>
+              <mat-error *ngIf="form.get('nro_doc')?.hasError('maxlength')">
+                El número de documento no puede tener más de 13 caracteres
               </mat-error>
             </mat-form-field>
           </div>
