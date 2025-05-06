@@ -11,9 +11,9 @@
           @if(user.tipo_usuario === 'abogado') {
           <div class="col-md-4 text-center mb-4 mb-md-0">
             <div class="avatar-container">
-              @if (userPhoto) {
+              @if (this.fotoAbogadoUrl) {
               <img
-                [src]="userPhoto"
+                [src]="this.fotoAbogadoUrl"
                 alt="Foto de perfil"
                 class="img-fluid rounded-circle shadow-sm"
                 width="150"

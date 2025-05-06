@@ -94,4 +94,30 @@ export class AuthService {
     this.userSignal.set(null);
     return null;
   }
+  async extendSession(): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this.http.post(`${environment.authUrl}/refresh/`, {}).subscribe({
+        next: (res: any) => {
+          console.log('res', res.data);
+          sessionStorage.setItem(
+            'user',
+            JSON.stringify({
+              ...res.data,
+            })
+          );
+
+          this.userSignal.set({
+            ...res.data,
+          });
+          this.isAuthenticatedSubject.next(true);
+
+          resolve(true);
+        },
+        error: () => {
+          this.isAuthenticatedSubject.next(false);
+          resolve(false);
+        },
+      });
+    });
+  }
 }

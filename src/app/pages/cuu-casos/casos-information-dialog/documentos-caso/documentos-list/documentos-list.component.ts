@@ -71,7 +71,11 @@ export class DocumentosListComponent {
             }));
           },
           error: (err) => {
-            this.snackBarService.showError(err.error.message);
+            this.snackBarService.showError(
+              err.error.isUserFriendly
+                ? err.error.message
+                : 'Error al cargar documentos'
+            );
           },
         });
     }
@@ -119,9 +123,11 @@ export class DocumentosListComponent {
             setTimeout(() => URL.revokeObjectURL(url), 10000);
           }
         },
-        error: () =>
+        error: (err) =>
           this.snackBarService.showError(
-            'Error al cargar el documento aaaaaaa'
+            err.error.isUserFriendly
+              ? err.error.message
+              : 'Error al cargar el documento'
           ),
       });
   }
@@ -154,7 +160,11 @@ export class DocumentosListComponent {
           this.loadDocuments();
         },
         error: (error) => {
-          this.snackBarService.showError(error.error.message);
+          this.snackBarService.showError(
+            error.error.isUserFriendly
+              ? error.error.message
+              : 'Error al eliminar el documento.'
+          );
         },
       });
   }

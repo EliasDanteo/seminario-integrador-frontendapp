@@ -25,10 +25,6 @@ export class NavbarComponent {
       this.isLoggedIn = authStatus;
       this.currentUser = authStatus ? this.authService.getUser() : null;
     });
-
-    effect(() => {
-      this.currentUser = this.authService.getUser();
-    });
   }
 
   toggleMobileMenu(): void {

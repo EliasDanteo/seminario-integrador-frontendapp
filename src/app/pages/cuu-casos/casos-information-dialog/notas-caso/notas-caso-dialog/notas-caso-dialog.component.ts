@@ -90,7 +90,11 @@ export class NotasCasoDialogComponent implements OnInit {
           this.dialogRef.close(true);
         },
         error: (err) => {
-          this.snackBarService.showError(err.error.message);
+          this.snackBarService.showError(
+            err.error.isUserFriendly
+              ? err.error.message
+              : 'Error al editar la nota'
+          );
         },
       });
   }
@@ -116,7 +120,11 @@ export class NotasCasoDialogComponent implements OnInit {
           this.dialogRef.close(true);
         },
         error: (err) => {
-          this.snackBarService.showError(err.error.message);
+          this.snackBarService.showError(
+            err.error.isUserFriendly
+              ? err.error.message
+              : 'Error al crear la nota'
+          );
         },
       });
   }

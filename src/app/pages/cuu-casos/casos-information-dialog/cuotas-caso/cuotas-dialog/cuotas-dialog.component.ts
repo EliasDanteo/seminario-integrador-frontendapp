@@ -73,8 +73,12 @@ export class CuotasDialogComponent implements OnInit {
           this.snackBarService.showError('No se encontró el precio del Jus');
         }
       },
-      error: () => {
-        this.snackBarService.showError('Error al buscar el precio del Jus');
+      error: (err) => {
+        this.snackBarService.showError(
+          err.error.isUserFriendly
+            ? err.error.message
+            : 'Error al buscar el precio del Jus'
+        );
       },
     });
   }
@@ -88,8 +92,12 @@ export class CuotasDialogComponent implements OnInit {
           this.snackBarService.showError('No se encontró la última cuota');
         }
       },
-      error: () => {
-        this.snackBarService.showError('Error al buscar la última cuota');
+      error: (err) => {
+        this.snackBarService.showError(
+          err.error.isUserFriendly
+            ? err.error.message
+            : 'Error al buscar la última cuota'
+        );
       },
     });
   }
@@ -115,8 +123,12 @@ export class CuotasDialogComponent implements OnInit {
               this.snackBarService.showSuccess('Cuota cobrada con éxito');
               this.dialogRef.close('success');
             },
-            error: () => {
-              this.snackBarService.showError('Error al cobrar la cuota');
+            error: (err) => {
+              this.snackBarService.showError(
+                err.error.isUserFriendly
+                  ? err.error.message
+                  : 'Error al cobrar la cuota'
+              );
             },
           });
       } else {

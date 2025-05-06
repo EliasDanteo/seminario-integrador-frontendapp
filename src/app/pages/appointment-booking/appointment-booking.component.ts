@@ -146,9 +146,11 @@ export class AppointmentBookingComponent {
           );
         }
       },
-      error: (error) => {
+      error: (err) => {
         this.snackBarService.showError(
-          'Error al cargar los abogados disponibles'
+          err.error.isUserFriendly
+            ? err.error.message
+            : 'Error al cargar los abogados'
         );
       },
     });
@@ -165,9 +167,11 @@ export class AppointmentBookingComponent {
           );
         }
       },
-      error: (error) => {
+      error: (err) => {
         this.snackBarService.showError(
-          'Error al cargar los horarios disponibles'
+          err.error.isUserFriendly
+            ? err.error.message
+            : 'Error al cargar los horarios'
         );
       },
     });
@@ -226,8 +230,12 @@ export class AppointmentBookingComponent {
             this.abogadosDisponibles = [];
             this.turnosDisponbiles = [];
           },
-          error: (error) => {
-            this.snackBarService.showError('Error al crear el turno.');
+          error: (err) => {
+            this.snackBarService.showError(
+              err.error.isUserFriendly
+                ? err.error.message
+                : 'Error al crear el turno'
+            );
           },
         });
     }

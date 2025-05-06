@@ -98,4 +98,8 @@ export const routes: Routes = [
     canActivate: [abogadoGuard],
     component: MisActividadesComponent,
   },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];

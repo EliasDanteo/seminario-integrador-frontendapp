@@ -71,7 +71,11 @@ export class RecordatoriosListComponent implements OnInit {
           this.recordatoriosCasoVigentes = response.data.recordatoriosFuturos;
         },
         error: (err) => {
-          this.snackBarService.showError(err.error.message);
+          this.snackBarService.showError(
+            err.error.isUserFriendly
+              ? err.error.message
+              : 'Error al cargar los recordatorios'
+          );
         },
       });
   }
@@ -119,7 +123,11 @@ export class RecordatoriosListComponent implements OnInit {
           this.loadRecordatorios();
         },
         error: (err) => {
-          this.snackBarService.showError('Error al eliminar recordatorio');
+          this.snackBarService.showError(
+            err.error.isUserFriendly
+              ? err.error.message
+              : 'Error al eliminar el recordatorio'
+          );
           console.error(err);
         },
       });

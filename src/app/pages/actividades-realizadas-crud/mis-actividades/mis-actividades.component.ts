@@ -12,18 +12,24 @@ import { ICliente } from '../../../core/interfaces/ICliente.interface.js';
 import { ISecretario } from '../../../core/interfaces/ISecretario.interface.js';
 import { IAbogado } from '../../../core/interfaces/IAbogado.interface.js';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-mis-actividades',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './mis-actividades.component.html',
   styleUrl: './mis-actividades.component.css',
 })
 export class MisActividadesComponent implements OnInit {
   actividadesRealizadas: IActividadRealizada[] = [];
+  filteredActividadesRealizadas: IActividadRealizada[] = [];
   idAbogado: any;
   user: ICliente | ISecretario | IAbogado | null = null;
+
+  // Filtros
+  actividadFilter: string = '';
+  clienteFilter: string = '';
 
   constructor(
     private actividadesAbogadoService: ActividadesAbogadoService,
@@ -36,17 +42,6 @@ export class MisActividadesComponent implements OnInit {
       this.idAbogado = this.user.id;
     }
   }
-  openDialog(dialog: ComponentType<unknown>, data: object): void {
-    const dialogRef = this.dialog.open(dialog, {
-      data: data,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result !== 'none') {
-        this.loadActividadesAbogado(this.idAbogado);
-      }
-    });
-  }
 
   ngOnInit(): void {
     this.loadActividadesAbogado(this.idAbogado);
@@ -56,12 +51,66 @@ export class MisActividadesComponent implements OnInit {
     this.actividadesAbogadoService.getActividadesAbogado(id_abogado).subscribe({
       next: (response) => {
         this.actividadesRealizadas = response.data;
+        this.filteredActividadesRealizadas = [...this.actividadesRealizadas];
+        this.applyFilters();
       },
-      error: () => {
+      error: (err) => {
         this.snackBarService.showError(
-          'Error al cargar las actividades del abogado'
+          err.error.isUserFriendly
+            ? err.error.message
+            : 'Error al cargar actividades'
         );
       },
+    });
+  }
+
+  applyFilters(): void {
+    this.filteredActividadesRealizadas = [...this.actividadesRealizadas];
+
+    // Filtro por nombre de actividad
+    if (this.actividadFilter) {
+      const filterText = this.normalizeText(this.actividadFilter);
+      this.filteredActividadesRealizadas =
+        this.filteredActividadesRealizadas.filter((ar) =>
+          this.normalizeText(ar.actividad.nombre).includes(filterText)
+        );
+    }
+
+    // Filtro por nombre/apellido de cliente
+    if (this.clienteFilter) {
+      const filterText = this.normalizeText(this.clienteFilter);
+      this.filteredActividadesRealizadas =
+        this.filteredActividadesRealizadas.filter((ar) => {
+          const nombreCompleto = this.normalizeText(
+            `${ar.cliente.nombre} ${ar.cliente.apellido}`
+          );
+          const apellidoNombre = this.normalizeText(
+            `${ar.cliente.apellido} ${ar.cliente.nombre}`
+          );
+          return (
+            nombreCompleto.includes(filterText) ||
+            apellidoNombre.includes(filterText)
+          );
+        });
+    }
+  }
+
+  normalizeText(text: string): string {
+    return text
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+  }
+
+  openDialog(dialog: ComponentType<unknown>, data: object): void {
+    const dialogRef = this.dialog.open(dialog, {
+      data: data,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== 'none') {
+        this.loadActividadesAbogado(this.idAbogado);
+      }
     });
   }
 

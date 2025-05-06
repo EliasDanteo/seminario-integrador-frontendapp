@@ -55,9 +55,11 @@ export class JusDialogComponent implements OnInit {
         next: (response) => {
           this.ultimoPrecioJUS = response.data;
         },
-        error: () => {
+        error: (err) => {
           this.snackBarService.showError(
-            'Error al obtener el último precio del JUS'
+            err.error.isUserFriendly
+              ? err.error.message
+              : 'Error al obtener el último precio del JUS'
           );
         },
       });
@@ -71,9 +73,11 @@ export class JusDialogComponent implements OnInit {
         next: (response) => {
           this.historicoJUS = response.data;
         },
-        error: () => {
+        error: (err) => {
           this.snackBarService.showError(
-            'Error al obtener el histórico del JUS'
+            err.error.isUserFriendly
+              ? err.error.message
+              : 'Error al obtener el histórico del JUS'
           );
         },
       });
@@ -98,7 +102,11 @@ export class JusDialogComponent implements OnInit {
           this.dialogRef.close('ok');
         },
         error: (err) => {
-          this.snackBarService.showError(err.error.message);
+          this.snackBarService.showError(
+            err.error.isUserFriendly
+              ? err.error.message
+              : 'Error al actualizar el JUS'
+          );
         },
       });
   }

@@ -5,10 +5,6 @@ import { AuthService } from '../../core/services/auth.service.js';
 import { ComponentType } from '@angular/cdk/portal';
 import { MatDialog } from '@angular/material/dialog';
 import { EditProfileComponent } from './edit-profile/edit-profile.component.js';
-import { AbogadoService } from '../../core/services/abogados.service.js';
-import { SecreatarioService } from '../../core/services/secretario.service.js';
-import { ClienteService } from '../../core/services/cliente.service.js';
-import { TipoUsuarioEnum } from '../../core/utils/enums.js';
 
 @Component({
   selector: 'app-home',
@@ -21,31 +17,27 @@ export class HomeComponent implements OnInit {
   user: any = null;
   showContent = false;
   service: any = null;
+  fotoAbogadoUrl: string | null = null;
 
   constructor(private authService: AuthService, private dialog: MatDialog) {
     this.user = this.authService.getUser();
   }
 
   ngOnInit() {
+    const aux = this.user?.foto;
+    if (aux)
+      if (aux.type === 'Buffer' && aux.data) {
+        const uint8Array = new Uint8Array(aux.data);
+        const blob = new Blob([uint8Array], { type: 'image/jpeg' });
+
+        this.fotoAbogadoUrl = URL.createObjectURL(blob);
+      }
     setTimeout(() => (this.showContent = true), 100);
   }
 
   get userType(): string {
     if (!this.user) return '';
     return this.user.tipo_usuario || 'usuario';
-  }
-
-  get userPhoto(): string | null {
-    if (!this.user?.foto) return null;
-
-    if (this.user.foto.type === 'Buffer' && this.user.foto.data) {
-      const base64String = btoa(
-        String.fromCharCode(...new Uint8Array(this.user.foto.data))
-      );
-      return `data:image/jpeg;base64,${base64String}`;
-    }
-
-    return null;
   }
 
   openDialog(dialog: ComponentType<unknown>, data: object): void {
