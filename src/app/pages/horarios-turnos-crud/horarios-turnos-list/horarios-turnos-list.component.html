@@ -1,58 +1,53 @@
 <div class="container mt-4">
-  <div class="card shadow">
-    <div
-      class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
-    >
-      <h3 class="mb-0">Listado de Horarios de Turnos</h3>
-      <button class="btn btn-success shadow" (click)="openCreateDialog()">
-        Agregar Horario
-      </button>
-    </div>
+  <h2 class="text-center mb-4 text-black p-3 rounded">
+    Listado de Horarios de Turnos
+  </h2>
 
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-striped table-hover table-bordered">
-          <thead class="thead-light">
-            <tr>
-              <th scope="col">Día de semana</th>
-              <th scope="col">Hora inicio</th>
-              <th scope="col">Hora fin</th>
-              <th scope="col">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (hor of horarios; track hor.id) {
-            <tr class="align-middle">
-              <td>{{ transformarDia(hor.dia_semana) }}</td>
-              <td>{{ hor.hora_inicio }}</td>
-              <td>{{ hor.hora_fin }}</td>
-              <td>
-                <div class="d-flex justify-content-start gap-2 flex-wrap">
-                  <button
-                    class="btn btn-warning btn-sm shadow-sm"
-                    (click)="openEditDialog(hor)"
-                  >
-                    Actualizar
-                  </button>
-                  <button
-                    class="btn btn-danger btn-sm shadow-sm"
-                    (click)="deleteHorarioTurnoDialog(hor)"
-                  >
-                    Eliminar
-                  </button>
-                </div>
-              </td>
-            </tr>
-            } @if (horarios?.length === 0) {
-            <tr>
-              <td colspan="4" class="text-center py-4">
-                No hay horarios de turnos para mostrar.
-              </td>
-            </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <button class="btn btn-success mb-3 me-3 shadow" (click)="openCreateDialog()">
+    Agregar Horario
+  </button>
+
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered shadow-sm">
+      <thead class="bg-success text-white">
+        <tr>
+          <th>Día de semana</th>
+          <th>Hora inicio</th>
+          <th>Hora fin</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (hor of horarios; track hor.id) {
+        <tr class="align-middle">
+          <td>{{ transformarDia(hor.dia_semana) }}</td>
+          <td>{{ hor.hora_inicio }}</td>
+          <td>{{ hor.hora_fin }}</td>
+          <td>
+            <div class="d-flex justify-content-start gap-2 flex-wrap">
+              <button
+                class="btn btn-warning btn-sm shadow-sm"
+                (click)="openEditDialog(hor)"
+              >
+                Actualizar
+              </button>
+              <button
+                class="btn btn-danger btn-sm shadow-sm"
+                (click)="deleteHorarioTurnoDialog(hor)"
+              >
+                Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+        } @if (horarios?.length === 0) {
+        <tr>
+          <td colspan="4" class="text-center py-4">
+            No hay horarios de turnos para mostrar.
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
   </div>
 </div>

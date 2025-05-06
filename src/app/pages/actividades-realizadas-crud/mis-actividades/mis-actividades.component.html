@@ -1,53 +1,53 @@
 <div class="container mt-4">
-  <div class="card shadow">
-    <div
-      class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
-    >
-      <h3 class="mb-0">Listado de Actividades Realizadas</h3>
-      <button class="btn btn-success" (click)="onCreate()">
-        Registrar Actividad
-      </button>
-    </div>
+  <h2 class="text-center mb-4 text-black p-3 rounded">
+    Listado de Actividades Realizadas
+  </h2>
 
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-striped table-hover table-bordered">
-          <thead class="thead-light">
-            <tr>
-              <th scope="col">Actividad</th>
-              <th scope="col">Cliente</th>
-              <th scope="col">Fecha de realización</th>
-              <th scope="col">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (ar of actividadesRealizadas; track ar.id) {
-            <tr>
-              <td>{{ ar.actividad.nombre }}</td>
-              <td>{{ ar.cliente.nombre }} {{ ar.cliente.apellido }}</td>
-              <td>{{ ar.fecha_hora | date : "dd/MM/yyyy HH:mm:ss" }}</td>
-              <td>
-                <button
-                  class="btn btn-sm btn-primary me-2"
-                  (click)="onUpdate(ar)"
-                >
-                  Editar
-                </button>
-                <button class="btn btn-sm btn-danger" (click)="onDelete(ar)">
-                  Eliminar
-                </button>
-              </td>
-            </tr>
-            }@if (actividadesRealizadas.length === 0) {
-            <tr>
-              <td colspan="4" class="text-center py-4">
-                No hay actividades registradas.
-              </td>
-            </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <button class="btn btn-success mb-3 me-3 shadow" (click)="onCreate()">
+    Registrar Actividad
+  </button>
+
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered shadow-sm">
+      <thead class="bg-primary text-white">
+        <tr>
+          <th>Actividad</th>
+          <th>Cliente</th>
+          <th>Fecha de realización</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (ar of actividadesRealizadas; track ar.id) {
+        <tr class="align-middle">
+          <td>{{ ar.actividad.nombre }}</td>
+          <td>{{ ar.cliente.nombre }} {{ ar.cliente.apellido }}</td>
+          <td>{{ ar.fecha_hora | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+          <td>
+            <div class="d-flex justify-content-start gap-2 flex-wrap">
+              <button
+                class="btn btn-warning btn-sm shadow-sm"
+                (click)="onUpdate(ar)"
+              >
+                Editar
+              </button>
+              <button
+                class="btn btn-danger btn-sm shadow-sm"
+                (click)="onDelete(ar)"
+              >
+                Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+        } @if (actividadesRealizadas.length === 0) {
+        <tr>
+          <td colspan="4" class="text-center py-4">
+            No hay actividades registradas.
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
   </div>
 </div>

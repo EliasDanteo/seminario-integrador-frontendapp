@@ -113,6 +113,7 @@ export class NoticiasListComponent {
       data: {
         nombreCompleto: noticia.titulo,
         entidad: 'noticia',
+        femenino: true,
       },
     });
 

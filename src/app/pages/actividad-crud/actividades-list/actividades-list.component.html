@@ -30,8 +30,8 @@
         <tr class="align-middle">
           <td>{{ act.nombre }}</td>
           <td>{{ act.fecha_hora_desde | date : "dd/MM/yyyy, h:mm a" }}</td>
-          <td>{{ act.cant_jus }}</td>
-          <td>${{ act.precio_pesos }}</td>
+          <td>{{ act.cant_jus.toLocaleString("es-ES") }}</td>
+          <td>${{ act.precio_pesos?.toLocaleString("es-ES") }}</td>
           <td>
             <div class="d-flex justify-content-start gap-2 flex-wrap">
               <button

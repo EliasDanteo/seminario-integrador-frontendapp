@@ -83,6 +83,15 @@
           placeholder="Ej: 1234567890"
           type="tel"
         />
+        @if (form.controls.telefono.invalid && form.controls.telefono.touched) {
+        <div class="error">
+          @if (form.controls.telefono.errors?.['required']) {
+          <div>El teléfono es obligatorio</div>
+          } @if (form.controls.telefono.errors?.['maxlength']) {
+          <div>El teléfono no puede tener más de 20 caracteres</div>
+          }
+        </div>
+        }
       </div>
 
       <div class="form-group">
@@ -94,6 +103,16 @@
           placeholder="Ej: ejemplo@email.com"
           type="email"
         />
+        @if (form.controls.email.invalid && form.controls.email.touched) {
+        <div class="error">
+          @if (form.controls.email.errors?.['required']) {
+          <div>El email es obligatorio</div>
+          } @if (form.controls.email.errors?.['email'] ||
+          form.controls.email.errors?.['pattern']) {
+          <div>Por favor ingrese un email válido</div>
+          }
+        </div>
+        }
       </div>
       } @else {
       <!-- Campos para usuarios logueados -->

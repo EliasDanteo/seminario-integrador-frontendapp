@@ -13,7 +13,7 @@ export class ConfirmDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { nombreCompleto: string; entidad: string },
+    public data: { nombreCompleto: string; entidad: string; femenino: boolean },
     private snackbarService: SnackbarService
   ) {}
 

@@ -1,14 +1,25 @@
 <div class="border-dark rounded-3 shadow-lg text-center p-5">
-  <h2 class="fw-bold mb-4">¿Estás seguro de que quieres eliminar este {{ data.entidad }}?</h2>
+  <h2 class="fw-bold mb-4">
+    ¿Estás seguro de que quieres eliminar {{ data.femenino ? "esta" : "este" }}
+    {{ data.entidad }}?
+  </h2>
 
   <p class="lead mb-4">
     {{ data.entidad.charAt(0).toUpperCase() + data.entidad.slice(1) }}:
-    <strong class="text-primary"><pre>{{ data.nombreCompleto }}</pre></strong>
+    <strong class="text-primary">
+      <pre>{{ data.nombreCompleto }}</pre>
+    </strong>
   </p>
 
-
   <div class="d-flex justify-content-center gap-4 mt-4">
-    <button class="btn btn-lg btn-outline-secondary px-4 py-2" (click)="onCancel()">Cancelar</button>
-    <button class="btn btn-lg btn-danger px-4 py-2" (click)="onConfirm()">Eliminar</button>
+    <button
+      class="btn btn-lg btn-outline-secondary px-4 py-2"
+      (click)="onCancel()"
+    >
+      Cancelar
+    </button>
+    <button class="btn btn-lg btn-danger px-4 py-2" (click)="onConfirm()">
+      Eliminar
+    </button>
   </div>
 </div>

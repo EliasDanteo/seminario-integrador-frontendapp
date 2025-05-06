@@ -77,6 +77,7 @@ export class ActividadesListComponent {
       data: {
         nombreCompleto: act.nombre,
         entidad: 'actividad',
+        femenino: true,
       },
     });
 

@@ -74,9 +74,15 @@ export class CRUDDialogComponent implements OnInit {
         nombre: new FormControl('', [Validators.required, trimValidator()]),
         apellido: new FormControl('', [Validators.required, trimValidator()]),
         email: new FormControl('', [Validators.required, Validators.email]),
-        telefono: new FormControl('', [Validators.required]),
+        telefono: new FormControl('', [
+          Validators.required,
+          Validators.maxLength(20),
+        ]),
         tipo_doc: new FormControl('', [Validators.required]),
-        nro_doc: new FormControl('', [Validators.required]),
+        nro_doc: new FormControl('', [
+          Validators.required,
+          Validators.maxLength(20),
+        ]),
         contrasena: new FormControl('', [
           Validators.required,
           Validators.minLength(4),
