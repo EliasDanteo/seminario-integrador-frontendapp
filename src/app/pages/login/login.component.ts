@@ -38,6 +38,15 @@ export class LoginComponent {
     });
   }
 
+  async ngOnInit() {
+    if (this.authService.getUser() !== null) {
+      this.router.navigate(['/home']);
+    } else {
+      if (await this.authService.extendSession())
+        this.router.navigate(['/home']);
+    }
+  }
+
   login() {
     if (this.loginForm.invalid) {
       this.snackbarService.showError('Por favor, completa todos los campos.');

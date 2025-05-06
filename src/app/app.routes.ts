@@ -104,4 +104,8 @@ export const routes: Routes = [
     canActivate: [clienteGuard], //revisar si lo dejamos asi
     component: MisCasosListComponent,
   },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];
