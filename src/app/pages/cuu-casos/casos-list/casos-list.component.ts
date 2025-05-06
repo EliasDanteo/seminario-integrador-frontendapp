@@ -12,6 +12,9 @@ import { AuthService } from '../../../core/services/auth.service.js';
 import { CommonModule } from '@angular/common';
 import { ApiResponse } from '../../../core/interfaces/IApiResponse.interface.js';
 import { FeedbackDialogComponent } from '../../feedback-dialog/feedback-dialog.component.js';
+import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
+import { CasosService } from '../../../core/services/casos.service.js';
+import { SnackbarService } from '../../../core/services/snackbar.service.js';
 @Component({
   selector: 'app-casos-list',
   standalone: true,
@@ -33,7 +36,9 @@ export class CasosListComponent {
     private http: HttpClient,
     private dialog: MatDialog,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private casoService: CasosService,
+    private snackBarService: SnackbarService
   ) {
     this.usuario = this.authService.getUser();
     authService.getUser()?.is_admin
@@ -156,12 +161,33 @@ export class CasosListComponent {
   }
 
   openDeleteDialog(caso: ICaso): void {
-    if (caso) {
-      this.openDialog(CasosCrudDialogComponent, {
-        action: 'delete',
-        caso: caso,
-      });
-    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        nombreCompleto: caso.descripcion,
+        entidad: 'caso',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.casoService.delete(caso.id).subscribe({
+          next: (response) => {
+            if (this.is_admin) {
+              this.loadCasosTotales();
+            } else {
+              this.loadCasosNoAdmin(this.usuario!.id);
+            }
+          },
+          error: (err) => {
+            if (err.error.isUserFriendly) {
+              this.snackBarService.showError(err.error.message);
+            } else
+              this.snackBarService.showError('Error al eliminar la actividad');
+          },
+        });
+      }
+    });
   }
 
   openInformeIngresosDialog(): void {
