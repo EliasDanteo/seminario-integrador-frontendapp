@@ -7,7 +7,7 @@
       <button
         class="btn btn-success shadow"
         (click)="openCreateDialog()"
-        *ngIf="caso.estado === 'En curso' && !usuario.is_admin"
+        *ngIf="caso.estado === 'En curso' && validarPermisos()"
       >
         Agregar Recordatorio
       </button>
@@ -43,8 +43,7 @@
               (click)="openEditDialog(recordatorio)"
               *ngIf="
                 caso.estado === 'En curso' &&
-                usuario.id === recordatorio.abogado.id &&
-                !usuario.is_admin
+                usuario.id === recordatorio.abogado.id
               "
               class="me-2"
             >
@@ -56,8 +55,7 @@
               (click)="openDeleteDialog(recordatorio)"
               *ngIf="
                 caso.estado === 'En curso' &&
-                usuario.id === recordatorio.abogado.id &&
-                !usuario.is_admin
+                usuario.id === recordatorio.abogado.id
               "
             >
               Eliminar
@@ -96,8 +94,7 @@
               (click)="openDeleteDialog(recordatorio)"
               *ngIf="
                 caso.estado === 'En curso' &&
-                usuario.id === recordatorio.abogado.id &&
-                !usuario.is_admin
+                usuario.id === recordatorio.abogado.id
               "
             >
               Eliminar

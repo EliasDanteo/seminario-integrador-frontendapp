@@ -6,7 +6,7 @@
         <button
           class="btn btn-success shadow"
           (click)="openCreateDialog()"
-          *ngIf="caso.estado === 'En curso' && !usuario.is_admin"
+          *ngIf="caso.estado === 'En curso' && validarPermisos()"
         >
           Agregar Nota
         </button>

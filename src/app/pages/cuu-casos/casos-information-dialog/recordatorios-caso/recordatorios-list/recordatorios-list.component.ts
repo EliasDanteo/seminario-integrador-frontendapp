@@ -124,4 +124,10 @@ export class RecordatoriosListComponent implements OnInit {
         },
       });
   }
+
+  validarPermisos() {
+    return this.caso.abogados_activos.some(
+      (abogado) => abogado.id === this.usuario.id
+    );
+  }
 }

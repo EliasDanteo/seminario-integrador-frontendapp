@@ -132,4 +132,10 @@ export class NotasCasoComponent implements OnInit {
       return nota;
     });
   }
+
+  validarPermisos() {
+    return this.caso.abogados_activos.some(
+      (abogado) => abogado.id === this.usuario.id
+    );
+  }
 }

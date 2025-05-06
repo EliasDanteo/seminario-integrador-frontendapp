@@ -5,6 +5,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../../core/services/auth.service.js';
+import { ICaso } from '../../../../../core/interfaces/ICaso.interface.js';
 
 @Component({
   selector: 'app-comentarios-unidad',
@@ -16,7 +17,7 @@ import { AuthService } from '../../../../../core/services/auth.service.js';
 export class ComentariosUnidadComponent {
   @Input() comentario!: IComentario;
   @Input() nivel: number = 0;
-  @Input() casoEstado!: string;
+  @Input() caso!: ICaso;
   @Output() delete = new EventEmitter<IComentario>();
   @Output() reply = new EventEmitter<IComentario>();
   usuario: any;
@@ -37,6 +38,11 @@ export class ComentariosUnidadComponent {
     this.reply.emit(this.comentario);
   }
 
+  validarPermisos() {
+    return this.caso.abogados_activos.some(
+      (abogado) => abogado.id === this.usuario.id
+    );
+  }
   get marginLeft(): string {
     return `${this.nivel * 30}px`;
   }
