@@ -124,7 +124,7 @@
 </ng-container>
 
 <ng-template #noCreate>
-  <ng-container *ngIf="data.action === 'end'; else delete">
+  <ng-container *ngIf="data.action === 'end'">
     <mat-card>
       <mat-card-header
         class="d-flex justify-content-between align-items-center"
@@ -150,28 +150,4 @@
       </mat-card-actions>
     </mat-card>
   </ng-container>
-
-  <ng-template #delete>
-    <mat-card>
-      <mat-card-header
-        class="d-flex justify-content-between align-items-center"
-      >
-        <mat-card-title> Eliminar Caso </mat-card-title>
-
-        <button mat-icon-button aria-label="Cerrar" (click)="onClose()">
-          <span class="material-symbols-outlined"> close </span>
-        </button>
-      </mat-card-header>
-      <hr />
-      <mat-card-content>
-        <p>¿Está seguro que desea eliminar el caso?</p>
-      </mat-card-content>
-
-      <mat-card-actions align="end">
-        <button mat-raised-button color="primary" (click)="onDelete()">
-          Eliminar
-        </button>
-      </mat-card-actions>
-    </mat-card>
-  </ng-template>
 </ng-template>

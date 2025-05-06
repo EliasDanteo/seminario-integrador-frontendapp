@@ -270,19 +270,6 @@ export class CasosCrudDialogComponent implements OnInit {
     }
   }
 
-  onDelete(): void {
-    this.casosService.delete(this.data.caso!.id).subscribe({
-      next: () => {
-        this.snackBarService.showSuccess('Caso eliminado con éxito');
-        this.onClose();
-      },
-      error: () => {
-        this.snackBarService.showError('Error al eliminar el caso');
-        this.onClose();
-      },
-    });
-  }
-
   // AUXILIARES ---------------------
 
   openDialog(dialog: ComponentType<unknown>, data: object): void {
