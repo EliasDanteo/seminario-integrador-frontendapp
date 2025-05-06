@@ -1,18 +1,14 @@
 <div
-  class="dialog-container"
-  style="min-width: 800px; margin: 20px 20px 20px 20px"
+  class="container-fluid p-3 p-md-4"
+  style="max-height: 90vh; overflow-y: auto"
 >
   <ng-container *ngIf="data.action === 'delete'; else addComment">
-    <h2 class="dialog-title">Confirmar eliminación</h2>
+    <h2 class="h4 mb-3">Confirmar eliminación</h2>
     <mat-divider></mat-divider>
-    <div class="dialog-content mt-3">
-      <p>¿Estás seguro de eliminar este comentario?</p>
-      <p class="text-muted">"{{ data.comentario?.comentario }}"</p>
+    <div class="mt-3">
+      <p>¿Estás seguro de eliminar el comentario?</p>
     </div>
-    <div
-      class="dialog-actions"
-      style="display: flex; justify-content: flex-end"
-    >
+    <div class="d-flex justify-content-end mt-4">
       <button mat-button (click)="onClose()" class="me-3">Cancelar</button>
       <button
         mat-raised-button
@@ -24,46 +20,52 @@
     </div>
   </ng-container>
 
-  <ng-template #addComment>
-    <h2 class="dialog-title">
+  <ng-template #addComment id="addComment">
+    <h2 class="h4 mb-3">
       {{
         data.action === "reply" ? "Responder comentario" : "Nuevo comentario"
       }}
     </h2>
     <mat-divider></mat-divider>
-    <div class="columnas align-items-center my-3">
-      <div class="columnas_izquierda d-flex flex-column">
-        <mat-form-field appearance="outline" class="mr-2">
-          <mat-label>Caso ID</mat-label>
-          <input matInput type="text" [value]="data.caso.id" disabled />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Fecha</mat-label>
-          <input
-            matInput
-            type="text"
-            [value]="today | date : 'dd/MM/yyyy HH:mm'"
-            disabled
-          />
-        </mat-form-field>
+    <div class="row mt-3 g-3">
+      <div class="col-12 col-md-6">
+        <div class="row g-3">
+          <div class="col-12">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Caso ID</mat-label>
+              <input matInput type="text" [value]="data.caso.id" disabled />
+            </mat-form-field>
+          </div>
+          <div class="col-12">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Fecha</mat-label>
+              <input
+                matInput
+                type="text"
+                [value]="today | date : 'dd/MM/yyyy HH:mm'"
+                disabled
+              />
+            </mat-form-field>
+          </div>
+        </div>
       </div>
 
-      <div class="columnas_derecha">
-        <mat-form-field appearance="outline" style="width: 500px">
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
           <mat-label>Descripción</mat-label>
           <textarea
             matInput
             type="text"
             [value]="data.caso.descripcion"
-            rows="4"
+            rows="5"
             disabled
           ></textarea>
         </mat-form-field>
       </div>
     </div>
+
     <form [formGroup]="comentarioForm" (ngSubmit)="addComentario()">
-      <div class="dialog-content">
+      <div class="mt-3">
         <mat-form-field appearance="fill" class="w-100">
           <textarea
             matInput
@@ -80,10 +82,7 @@
         </mat-form-field>
       </div>
 
-      <div
-        class="dialog-actions"
-        style="display: flex; justify-content: flex-end"
-      >
+      <div class="d-flex justify-content-end mt-4">
         <button mat-button type="button" (click)="onClose()" class="me-3">
           Cancelar
         </button>

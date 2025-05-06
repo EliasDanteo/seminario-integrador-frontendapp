@@ -1,11 +1,47 @@
-<div class="container" *ngIf="caso.estado === 'En curso'; else finalizado">
+<div
+  class="container-fluid"
+  *ngIf="caso.estado === 'En curso'; else finalizado"
+>
   <div class="card shadow-sm">
     <div class="card-header bg-primary text-white">
       <h2 class="mb-0">Gestión de Abogados</h2>
-      <p class="mb-0 small">Estado del caso: {{ caso.estado }}</p>
     </div>
 
     <div class="card-body">
+      <div class="mb-4 p-3 border rounded bg-light small text-muted">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="fw-bold">Abogados Activos:</span>
+          <span class="badge bg-primary-subtle text-primary"
+            >{{ abogadosCasos.length }} activos</span
+          >
+        </div>
+
+        <div class="list-group list-group-flush">
+          @for (abogadoCaso of abogadosCasos; track abogadoCaso.id) {
+          <div class="list-group-item bg-transparent p-1 border-0">
+            <div class="d-flex justify-content-between">
+              <span>
+                {{ abogadoCaso.abogado.nombre }}
+                {{ abogadoCaso.abogado.apellido }}
+
+                <span class="text-muted">
+                  - {{ abogadoCaso.abogado.email }} |
+                  {{ abogadoCaso.abogado.telefono }}
+                </span>
+                <span class="text-primary" *ngIf="abogadoCaso.es_principal"
+                  >(Principal)
+                </span>
+              </span>
+
+              <small class="text-muted"
+                >Desde: {{ abogadoCaso.fecha_alta | date : "dd/MM/yy" }}</small
+              >
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+
       <form [formGroup]="formAbogadoCaso">
         <div class="mb-4 p-3 border rounded bg-light">
           <h5 class="text-primary mb-3">Vincular Nuevo Abogado</h5>
@@ -119,7 +155,7 @@
 </div>
 
 <ng-template #finalizado>
-  <div class="container">
+  <div class="container-fluid">
     <div class="card shadow-sm">
       <div class="card-header bg-secondary text-white text-center">
         <h2 class="mb-0">Abogados Participantes</h2>
@@ -143,6 +179,15 @@
                 >
                 <div class="text-muted small">
                   Mat. {{ abogadoCaso.abogado.matricula }}
+                  <span
+                    *ngIf="abogadoCaso.es_principal"
+                    class="text-primary ms-2"
+                    >(Principal)</span
+                  >
+                </div>
+                <div class="text-muted small" *ngIf="abogadoCaso.fecha_alta">
+                  Vinculado el
+                  {{ abogadoCaso.fecha_alta | date : "dd/MM/yyyy" }}
                 </div>
               </div>
               <span class="badge bg-primary">Vinculado</span>

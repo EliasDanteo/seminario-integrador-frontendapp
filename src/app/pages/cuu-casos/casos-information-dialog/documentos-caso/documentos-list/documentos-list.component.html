@@ -1,4 +1,7 @@
-<div class="container" *ngIf="caso.estado === 'En curso'; else finalizadoDocs">
+<div
+  class="container-fluid"
+  *ngIf="caso.estado === 'En curso'; else finalizadoDocs"
+>
   <div class="card shadow-sm">
     <div
       class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
