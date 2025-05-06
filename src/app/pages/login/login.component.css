@@ -77,3 +77,43 @@ h2 {
     transform: translateY(0);
   }
 }
+
+/* Mantén todos tus estilos existentes y agrega estos al final */
+
+.password-container {
+  position: relative;
+}
+
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-password mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.toggle-password:hover {
+  color: #007bff;
+}
+
+/* Asegúrate que el input de contraseña tenga padding extra a la derecha para el botón */
+.password-input-wrapper input {
+  padding-right: 40px;
+}

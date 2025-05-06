@@ -7,19 +7,21 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthService, ILogin } from '../../core/services/auth.service.js';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SnackbarService } from '../../core/services/snackbar.service.js';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, MatIconModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  hidePassword = true; // Agregar esta propiedad
 
   constructor(
     private snackbarService: SnackbarService,

@@ -7,6 +7,32 @@
     Registrar Actividad
   </button>
 
+  <div class="row mb-3">
+    <div class="col-md-4 mb-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Filtrar por Actividad"
+        name="actividadFilter"
+        id="actividadFilter"
+        [(ngModel)]="actividadFilter"
+        (ngModelChange)="applyFilters()"
+      />
+    </div>
+
+    <div class="col-md-4 mb-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Filtrar por Cliente"
+        name="clienteFilter"
+        id="clienteFilter"
+        [(ngModel)]="clienteFilter"
+        (ngModelChange)="applyFilters()"
+      />
+    </div>
+  </div>
+  @if(filteredActividadesRealizadas.length > 0) {
   <div class="table-responsive">
     <table class="table table-hover table-bordered shadow-sm">
       <thead class="bg-primary text-white">
@@ -18,7 +44,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (ar of actividadesRealizadas; track ar.id) {
+        @for (ar of filteredActividadesRealizadas; track ar.id) {
         <tr class="align-middle">
           <td>{{ ar.actividad.nombre }}</td>
           <td>{{ ar.cliente.nombre }} {{ ar.cliente.apellido }}</td>
@@ -40,14 +66,13 @@
             </div>
           </td>
         </tr>
-        } @if (actividadesRealizadas.length === 0) {
-        <tr>
-          <td colspan="4" class="text-center py-4">
-            No hay actividades registradas.
-          </td>
-        </tr>
         }
       </tbody>
     </table>
   </div>
+  } @else {
+  <div class="alert alert-info text-center" role="alert">
+    No hay actividades realizadas para mostrar.
+  </div>
+  }
 </div>

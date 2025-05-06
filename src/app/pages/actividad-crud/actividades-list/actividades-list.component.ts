@@ -8,16 +8,21 @@ import { ActividadDialogComponent } from '../actividad-dialog/actividad-dialog.c
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
 import { CommonModule } from '@angular/common';
 import { JusDialogComponent } from '../../jus-dialog/jus-dialog.component.js';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-actividades-list',
   standalone: true,
-  imports: [HttpClientModule, CommonModule],
+  imports: [HttpClientModule, CommonModule, FormsModule],
   templateUrl: './actividades-list.component.html',
   styleUrl: './actividades-list.component.css',
 })
 export class ActividadesListComponent {
   actividades: IActividad[] | null = null;
+  filteredActividades: IActividad[] | null = null;
+  nombreFilter: string = '';
+  jusMinFilter: number | null = null;
+  jusMaxFilter: number | null = null;
 
   constructor(private http: HttpClient, private dialog: MatDialog) {
     this.getActividades();
@@ -32,8 +37,45 @@ export class ActividadesListComponent {
       .subscribe({
         next: (res) => {
           this.actividades = res.data;
+          this.filteredActividades = [...this.actividades];
+          this.applyFilters();
         },
       });
+  }
+
+  applyFilters(): void {
+    if (!this.actividades) {
+      this.filteredActividades = null;
+      return;
+    }
+
+    this.filteredActividades = [...this.actividades];
+
+    if (this.nombreFilter) {
+      const filterText = this.normalizeText(this.nombreFilter);
+      this.filteredActividades = this.filteredActividades.filter((act) =>
+        this.normalizeText(act.nombre).includes(filterText)
+      );
+    }
+
+    if (this.jusMinFilter !== null) {
+      this.filteredActividades = this.filteredActividades.filter(
+        (act) => act.cant_jus >= this.jusMinFilter!
+      );
+    }
+
+    if (this.jusMaxFilter !== null) {
+      this.filteredActividades = this.filteredActividades.filter(
+        (act) => act.cant_jus <= this.jusMaxFilter!
+      );
+    }
+  }
+
+  normalizeText(text: string): string {
+    return text
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
   }
 
   openDialog(dialog: ComponentType<unknown>, data: object): void {
