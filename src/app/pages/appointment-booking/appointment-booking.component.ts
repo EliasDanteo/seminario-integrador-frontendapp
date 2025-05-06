@@ -36,7 +36,10 @@ export class AppointmentBookingComponent {
       Validators.required,
     ]),
     nombre: new FormControl('', [Validators.required]),
-    telefono: new FormControl('', [Validators.required]),
+    telefono: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(20),
+    ]),
     email: new FormControl('', [Validators.required, Validators.email]),
   });
 
