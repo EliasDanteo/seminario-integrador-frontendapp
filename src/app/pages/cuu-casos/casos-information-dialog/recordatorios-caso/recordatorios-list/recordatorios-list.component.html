@@ -13,8 +13,9 @@
       </button>
     </div>
     <div class="card-body">
-      @if (recordatoriosCaso.length > 0) { @for (recordatorio of
-      recordatoriosCaso; track recordatorio.id) {
+      @if (recordatoriosCasoVigentes.length > 0) {
+      <h4 class="text-primary mb-3">Recordatorios Vigentes</h4>
+      @for (recordatorio of recordatoriosCasoVigentes; track recordatorio.id) {
       <div class="mb-3">
         <mat-card appearance="outlined">
           <mat-card-header>
@@ -43,8 +44,7 @@
               *ngIf="
                 caso.estado === 'En curso' &&
                 usuario.id === recordatorio.abogado.id &&
-                !usuario.is_admin &&
-                !recordatorio.vencido
+                !usuario.is_admin
               "
               class="me-2"
             >
@@ -53,7 +53,7 @@
             <button
               mat-raised-button
               color="warn"
-              (click)="deleteRecordatorio(recordatorio)"
+              (click)="openDeleteDialog(recordatorio)"
               *ngIf="
                 caso.estado === 'En curso' &&
                 usuario.id === recordatorio.abogado.id &&
@@ -65,7 +65,48 @@
           </mat-card-actions>
         </mat-card>
       </div>
-      } } @else {
+      } } @if (recordatoriosCasoPasados.length > 0) {
+      <mat-divider></mat-divider>
+      <h4 class="text-secondary mb-3 mt-4">Recordatorios Pasados</h4>
+      @for (recordatorio of recordatoriosCasoPasados; track recordatorio.id) {
+      <div class="mb-3">
+        <mat-card appearance="outlined" class="opacity-75">
+          <mat-card-header>
+            <div
+              class="d-flex justify-content-between align-items-center w-100"
+            >
+              <p class="text-muted mb-0">
+                Fecha Recordatorio:
+                {{ recordatorio.fecha_hora_limite | date : "dd/MM/yyyy HH:mm" }}
+              </p>
+              <p class="text-muted mb-0">
+                Autor: {{ recordatorio.abogado.nombre }}
+                {{ recordatorio.abogado.apellido }}
+              </p>
+            </div>
+          </mat-card-header>
+          <mat-divider></mat-divider>
+          <mat-card-content class="mt-2">
+            <p>{{ recordatorio.descripcion }}</p>
+          </mat-card-content>
+          <mat-card-actions class="d-flex justify-content-end">
+            <button
+              mat-raised-button
+              color="warn"
+              (click)="openDeleteDialog(recordatorio)"
+              *ngIf="
+                caso.estado === 'En curso' &&
+                usuario.id === recordatorio.abogado.id &&
+                !usuario.is_admin
+              "
+            >
+              Eliminar
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      } } @if (recordatoriosCasoVigentes.length === 0 &&
+      recordatoriosCasoPasados.length === 0) {
       <div class="alert alert-info">
         <p class="mb-0">No se encontraron recordatorios registrados</p>
       </div>

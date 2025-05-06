@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { IAbogadoCaso } from '../../../../../core/interfaces/IAbogadoCaso.interface.js';
 import { AuthService } from '../../../../../core/services/auth.service.js';
+import { ConfirmDialogComponent } from '../../../../../shared/confirm-dialog/confirm-dialog.component.js';
 
 @Component({
   selector: 'app-recordatorios-list',
@@ -22,7 +23,8 @@ import { AuthService } from '../../../../../core/services/auth.service.js';
   styleUrl: './recordatorios-list.component.css',
 })
 export class RecordatoriosListComponent implements OnInit {
-  recordatoriosCaso: IRecordatorio[] = [];
+  recordatoriosCasoPasados: IRecordatorio[] = [];
+  recordatoriosCasoVigentes: IRecordatorio[] = [];
   currentDate: Date = new Date();
 
   usuario: any = null;
@@ -55,18 +57,18 @@ export class RecordatoriosListComponent implements OnInit {
 
   loadRecordatorios() {
     this.httpClient
-      .get<{ message: string; data: IRecordatorio[] }>(
-        `${environment.casosUrl}/recordatorios/${this.caso.id}`
-      )
+      .get<{
+        message: string;
+        data: {
+          recordatoriosPasados: IRecordatorio[];
+          recordatoriosFuturos: IRecordatorio[];
+        };
+      }>(`${environment.casosUrl}/recordatorios/${this.caso.id}`)
       .subscribe({
         next: (response) => {
-          this.recordatoriosCaso = response.data.map((recordatorio) => {
-            return {
-              ...recordatorio,
-              vencido:
-                new Date(recordatorio.fecha_hora_limite) < this.currentDate,
-            };
-          });
+          console.log(response.data);
+          this.recordatoriosCasoPasados = response.data.recordatoriosPasados;
+          this.recordatoriosCasoVigentes = response.data.recordatoriosFuturos;
         },
         error: (err) => {
           this.snackBarService.showError(err.error.message);
@@ -87,6 +89,22 @@ export class RecordatoriosListComponent implements OnInit {
       action: 'put',
       caso: this.caso,
       recordatorio: recordatorio,
+    });
+  }
+
+  openDeleteDialog(recordatorio: IRecordatorio) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        nombreCompleto: recordatorio.descripcion,
+        entidad: 'Recordatorio',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res) {
+        this.deleteRecordatorio(recordatorio);
+      }
     });
   }
 

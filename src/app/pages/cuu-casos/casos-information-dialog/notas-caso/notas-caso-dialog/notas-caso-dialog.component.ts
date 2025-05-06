@@ -89,8 +89,8 @@ export class NotasCasoDialogComponent implements OnInit {
           this.snackBarService.showSuccess(response.message);
           this.dialogRef.close(true);
         },
-        error: () => {
-          this.snackBarService.showError('Error al actualizar la nota');
+        error: (err) => {
+          this.snackBarService.showError(err.error.message);
         },
       });
   }
@@ -115,8 +115,8 @@ export class NotasCasoDialogComponent implements OnInit {
           this.snackBarService.showSuccess(response.message);
           this.dialogRef.close(true);
         },
-        error: () => {
-          this.snackBarService.showError('Error al crear la nota');
+        error: (err) => {
+          this.snackBarService.showError(err.error.message);
         },
       });
   }

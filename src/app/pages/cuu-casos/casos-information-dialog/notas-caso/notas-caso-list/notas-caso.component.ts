@@ -13,6 +13,7 @@ import { ComponentType } from '@angular/cdk/portal';
 import { MatDialog } from '@angular/material/dialog';
 import { NotasCasoDialogComponent } from '../notas-caso-dialog/notas-caso-dialog.component.js';
 import { AuthService } from '../../../../../core/services/auth.service.js';
+import { ConfirmDialogComponent } from '../../../../../shared/confirm-dialog/confirm-dialog.component.js';
 
 @Component({
   selector: 'app-notas-caso',
@@ -88,6 +89,22 @@ export class NotasCasoComponent implements OnInit {
     });
   }
 
+  openDeleteDialog(nota: INota) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        nombreCompleto: nota.titulo,
+        entidad: 'Nota',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res) {
+        this.deleteNota(nota);
+      }
+    });
+  }
+
   deleteNota(nota: INota) {
     this.httpClient
       .delete<{ message: string }>(`${environment.casosUrl}/notas/${nota.id}`)
@@ -96,8 +113,8 @@ export class NotasCasoComponent implements OnInit {
           this.snackBarService.showSuccess(response.message);
           this.loadNotasCaso();
         },
-        error: () => {
-          this.snackBarService.showError('Error al eliminar la nota');
+        error: (err) => {
+          this.snackBarService.showError(err.error.message);
         },
       });
   }
