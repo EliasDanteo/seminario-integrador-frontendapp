@@ -15,6 +15,8 @@ import { IHorarioTurno } from '../../core/interfaces/IHorarioTurno.interface.js'
 import { IAbogado } from '../../core/interfaces/IAbogado.interface.js';
 import { AuthService } from '../../core/services/auth.service.js';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { MensajeDialogComponent } from '../../shared/mensaje-dialog/mensaje-dialog.component.js';
 
 @Component({
   selector: 'app-appointment-booking',
@@ -44,7 +46,8 @@ export class AppointmentBookingComponent {
     private snackBarService: SnackbarService,
     private turnoOtorgadoService: turnoOtorgadoService,
     private horariosTurnoService: HorarioTurnoService,
-    private auth: AuthService
+    private auth: AuthService,
+    private dialog: MatDialog
   ) {
     this.user = this.auth.getUser();
     if (this.user) {
@@ -130,6 +133,11 @@ export class AppointmentBookingComponent {
         );
 
         if (this.turnosDisponbiles.length === 0) {
+          this.dialog.open(MensajeDialogComponent, {
+            data: {
+              mensaje: 'No hay turnos disponibles para la fecha seleccionada',
+            },
+          });
           this.snackBarService.showError(
             'No hay abogados disponibles para la fecha seleccionada'
           );
