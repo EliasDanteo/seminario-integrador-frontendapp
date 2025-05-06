@@ -1,97 +1,116 @@
 <div class="container" *ngIf="caso.estado === 'En curso'; else finalizado">
   <div class="card shadow-sm">
-    <div class="card-header bg-primary text-white text-center">
-      <h2 class="mb-0">Vincular / Desvincular - Abogado/a</h2>
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Gestión de Abogados</h2>
+      <p class="mb-0 small">Estado del caso: {{ caso.estado }}</p>
     </div>
+
     <div class="card-body">
       <form [formGroup]="formAbogadoCaso">
-        <div class="form-group mt-3">
-          <label class="fw-bold" for="abogadosDisponibles"
-            >Abogados Disponibles</label
-          >
-          <mat-form-field appearance="fill" class="w-100">
-            <mat-select
-              formControlName="id_abogado"
-              (selectionChange)="formAbogadoCaso.get('abogadoActivo')?.reset()"
-              placeholder="Seleccione un abogado/a para vincular..."
-            >
-              <mat-option disabled hidden value="">
-                Seleccione un abogado/a para vincular...
-              </mat-option>
-              @if(posiblesAbogados.length === 0) {
-              <mat-option disabled value="">
-                No hay abogados disponibles para vincular
-              </mat-option>
-              } @for (abogado of posiblesAbogados; track abogado.id) {
-              <mat-option [value]="abogado.id">
-                {{ abogado.nombre }} {{ abogado.apellido }} (Mat.
-                {{ abogado.matricula }})
-              </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
+        <div class="mb-4 p-3 border rounded bg-light">
+          <h5 class="text-primary mb-3">Vincular Nuevo Abogado</h5>
+
+          <div class="form-group">
+            <label class="fw-bold text-muted">Abogados disponibles</label>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-select
+                formControlName="id_abogado"
+                (selectionChange)="
+                  formAbogadoCaso.get('abogadoActivo')?.reset()
+                "
+                placeholder="Seleccione abogado..."
+              >
+                <mat-option disabled hidden value="">
+                  Seleccione un abogado/a para vincular...
+                </mat-option>
+                @if(posiblesAbogados.length === 0) {
+                <mat-option disabled value="">
+                  No hay abogados disponibles para vincular
+                </mat-option>
+                } @for (abogado of posiblesAbogados; track abogado.id) {
+                <mat-option [value]="abogado.id">
+                  {{ abogado.nombre }} {{ abogado.apellido }} (Mat.
+                  {{ abogado.matricula }})
+                </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
         </div>
 
-        <div class="form-group mt-3">
-          <label class="fw-bold" for="abogadosActivos">Abogados Activos</label>
-          <mat-form-field appearance="fill" class="w-100">
-            <mat-select
-              formControlName="abogadoActivo"
-              (selectionChange)="formAbogadoCaso.get('id_abogado')?.reset()"
-              placeholder="Seleccione un abogado/a para desvincular..."
-            >
-              <mat-option disabled hidden value="">
-                Seleccione un abogado/a para desvincular...
-              </mat-option>
-              @if(abogadosCasos.length === 0) {
-              <mat-option disabled value="">
-                No hay abogados disponibles para desvincular
-              </mat-option>
-              } @for (abogadoCaso of abogadosCasos; track abogadoCaso.id) {
-              <mat-option [value]="abogadoCaso.id">
-                {{ abogadoCaso.abogado.nombre }}
-                {{ abogadoCaso.abogado.apellido }} (Mat.
-                {{ abogadoCaso.abogado.matricula }})
-              </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
+        <div class="mb-4 p-3 border rounded bg-light">
+          <h5 class="text-danger mb-3">Desvincular Abogado Actual</h5>
+
+          <div class="form-group">
+            <label class="fw-bold text-muted">Abogados vinculados</label>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-select
+                formControlName="abogadoActivo"
+                (selectionChange)="formAbogadoCaso.get('id_abogado')?.reset()"
+                placeholder="Seleccione abogado..."
+              >
+                <mat-option disabled hidden value="">
+                  Seleccione un abogado/a para desvincular...
+                </mat-option>
+                @if(abogadosCasos.length === 0) {
+                <mat-option disabled value="">
+                  No hay abogados vinculados
+                </mat-option>
+                } @for (abogadoCaso of abogadosCasos; track abogadoCaso.id) {
+                <mat-option [value]="abogadoCaso.id">
+                  {{ abogadoCaso.abogado.nombre }}
+                  {{ abogadoCaso.abogado.apellido }} (Mat.
+                  {{ abogadoCaso.abogado.matricula }})
+                  {{ abogadoCaso.es_principal ? "(Principal)" : "" }}
+                </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
         </div>
 
-        <div class="form-group mt-3">
-          <label class="fw-bold" for="detalle">Indicaciones / Motivo</label>
-          <mat-form-field appearance="fill" class="w-100">
+        <mat-divider></mat-divider>
+
+        <div class="mb-4">
+          <label class="fw-bold">Motivo/Indicaciones</label>
+          <mat-form-field appearance="outline" class="w-100">
             <textarea
               matInput
               formControlName="detalle"
               cdkTextareaAutosize
               rows="3"
+              placeholder="Describa el motivo de la acción..."
             ></textarea>
           </mat-form-field>
         </div>
 
-        <div class="d-flex justify-content-center gap-2 mt-4">
+        <div class="d-flex justify-content-between gap-3 mt-4">
           <button
-            class="btn btn-outline-primary"
+            class="btn btn-outline-secondary flex-grow-1"
             type="button"
-            (click)="vincularAbogado()"
-            [disabled]="
-              !formAbogadoCaso.get('id_abogado')?.value ||
-              caso.estado !== 'En curso'
-            "
+            (click)="formAbogadoCaso.reset()"
           >
-            Vincular
+            Limpiar selección
           </button>
+
           <button
-            class="btn btn-outline-primary"
+            *ngIf="formAbogadoCaso.get('abogadoActivo')?.value"
+            class="btn btn-danger flex-grow-1"
             type="button"
             (click)="desvincularAbogado()"
-            [disabled]="
-              !formAbogadoCaso.get('abogadoActivo')?.value ||
-              caso.estado !== 'En curso'
-            "
+            [disabled]="!formAbogadoCaso.get('abogadoActivo')?.value"
           >
             Desvincular
+          </button>
+
+          <button
+            *ngIf="formAbogadoCaso.get('id_abogado')?.value"
+            class="btn btn-primary flex-grow-1"
+            type="button"
+            (click)="vincularAbogado()"
+            [disabled]="!formAbogadoCaso.get('id_abogado')?.value"
+          >
+            Vincular
           </button>
         </div>
       </form>
@@ -102,23 +121,35 @@
 <ng-template #finalizado>
   <div class="container">
     <div class="card shadow-sm">
-      <div class="card-header bg-primary text-white text-center">
-        <h2 class="mb-0">Vincular / Desvincular - Abogado/a</h2>
+      <div class="card-header bg-secondary text-white text-center">
+        <h2 class="mb-0">Abogados Participantes</h2>
+        <p class="mb-0 small">Caso finalizado - Solo consulta</p>
       </div>
+
       <div class="card-body">
-        <div class="alert alert-info text-center" role="alert">
+        <div class="alert alert-warning text-center mb-4">
           El caso no se encuentra en estado <strong>En Curso</strong>. No es
-          posible vincular o desvincular abogados.
+          posible realizar modificaciones.
         </div>
-        <h4 class="text-center">Abogados Participantes</h4>
-        <ul class="list-group list-group-flush mt-3">
-          <li class="list-group-item" *ngFor="let abogadoCaso of abogadosCasos">
-            {{ abogadoCaso.abogado.nombre }} {{ abogadoCaso.abogado.apellido }}
-            <span class="text-muted"
-              >(Mat. {{ abogadoCaso.abogado.matricula }})</span
-            >
-          </li>
-        </ul>
+
+        <div class="list-group">
+          @for (abogadoCaso of abogadosCasos; track abogadoCaso.id) {
+          <div class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <strong
+                  >{{ abogadoCaso.abogado.nombre }}
+                  {{ abogadoCaso.abogado.apellido }}</strong
+                >
+                <div class="text-muted small">
+                  Mat. {{ abogadoCaso.abogado.matricula }}
+                </div>
+              </div>
+              <span class="badge bg-primary">Vinculado</span>
+            </div>
+          </div>
+          }
+        </div>
       </div>
     </div>
   </div>
