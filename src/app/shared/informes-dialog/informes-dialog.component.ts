@@ -46,6 +46,7 @@ export class InformesDialogComponent implements OnInit {
   informeForm: FormGroup;
   currentMonth: string;
   abogados: IAbogado[] = [];
+  isLoading = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -87,11 +88,11 @@ export class InformesDialogComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.isLoading = true;
     const { informeType, caso } = this.data;
 
     if (informeType === 'caso') {
       this.handleInformeCaso(caso!.id);
-      this.dialogRef.close();
       return;
     }
 
@@ -115,20 +116,22 @@ export class InformesDialogComponent implements OnInit {
     } else if (informeType === 'desempenio') {
       this.handleInformeDesempenio(informeData);
     }
-
-    this.dialogRef.close();
   }
 
   private handleInformeIngresos(data: IInforme) {
     this.informesService.solicitarInformeIngresos(data).subscribe({
-      next: (ok) =>
-        ok
-          ? this.snackBarService.showSuccess(
-              'Informe de ingresos solicitado correctamente'
-            )
-          : this.snackBarService.showError(
-              'Error al solicitar informe de ingresos'
-            ),
+      next: (ok) => {
+        if (ok) {
+          this.snackBarService.showSuccess(
+            'Informe de ingresos solicitado correctamente'
+          );
+        } else {
+          this.snackBarService.showError(
+            'Error al solicitar informe de ingresos'
+          );
+        }
+        this.dialogRef.close();
+      },
       error: () =>
         this.snackBarService.showError(
           'Error al solicitar informe de ingresos'
@@ -138,7 +141,7 @@ export class InformesDialogComponent implements OnInit {
 
   private handleInformeDesempenio(data: IInforme) {
     this.informesService.solicitarInformeDesempenio(data).subscribe({
-      next: (ok) =>
+      next: (ok) => {
         ok
           ? this.snackBarService.showSuccess(
               'Informe de desempeño solicitado correctamente'
@@ -146,6 +149,8 @@ export class InformesDialogComponent implements OnInit {
           : this.snackBarService.showError(
               'Error al solicitar informe de desempeño'
             ),
+          this.dialogRef.close();
+      },
       error: () =>
         this.snackBarService.showError(
           'Error al solicitar informe de desempeño'
@@ -155,7 +160,7 @@ export class InformesDialogComponent implements OnInit {
 
   private handleInformeCaso(casoId: number) {
     this.informesService.solicitarInformeCaso(casoId).subscribe({
-      next: (ok) =>
+      next: (ok) => {
         ok
           ? this.snackBarService.showSuccess(
               'Informe de caso solicitado correctamente'
@@ -163,6 +168,8 @@ export class InformesDialogComponent implements OnInit {
           : this.snackBarService.showError(
               'Error al solicitar informe de caso'
             ),
+          this.dialogRef.close();
+      },
       error: () =>
         this.snackBarService.showError('Error al solicitar informe de caso'),
     });

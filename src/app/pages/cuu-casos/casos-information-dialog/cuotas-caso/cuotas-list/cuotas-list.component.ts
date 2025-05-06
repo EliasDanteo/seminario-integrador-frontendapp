@@ -11,6 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { ComponentType } from '@angular/cdk/portal';
 import { MatDialog } from '@angular/material/dialog';
 import { CuotasDialogComponent } from '../cuotas-dialog/cuotas-dialog.component.js';
+import { ConfirmDialogComponent } from '../../../../../shared/confirm-dialog/confirm-dialog.component.js';
 
 @Component({
   selector: 'app-cuotas-list',
@@ -70,6 +71,26 @@ export class CuotasListComponent implements OnInit {
   cobrarCuota() {
     this.openDialog(CuotasDialogComponent, {
       caso: this.caso,
+    });
+  }
+
+  ultimaCuotaPagada(): ICuota | null {
+    return this.cuotas.find((cuota) => cuota.fecha_hora_cobro) || null;
+  }
+
+  openDeleteDialog(cuota: ICuota | null) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        nombreCompleto: cuota?.numero,
+        entidad: 'Cuota Numero',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res) {
+        this.eliminarCobroCuota();
+      }
     });
   }
 

@@ -17,7 +17,7 @@
   </button>
 
   <div class="row mb-3">
-    <div class="col-md-3 mb-2">
+    <div *ngIf="usuario.tipo_usuario !== 'cliente'" class="col-md-3 mb-2">
       <input
         type="text"
         class="form-control"
@@ -120,9 +120,10 @@
                   class="btn btn-warning btn-sm shadow-sm mt-1"
                   (click)="$event.stopPropagation(); openEditDialog(caso)"
                   *ngIf="
-                    caso.estado !== 'Finalizado' && caso.estado !== 'Cancelado'
+                    caso.estado !== 'Finalizado' &&
+                    caso.estado !== 'Cancelado' &&
+                    validarAdminPrincipal(caso)
                   "
-                  [disabled]="!validarAdminPrincipal(caso)"
                 >
                   Editar
                 </button>
@@ -130,9 +131,10 @@
                   class="btn btn-secondary btn-sm shadow-sm mt-1"
                   (click)="$event.stopPropagation(); openEndDialog(caso)"
                   *ngIf="
-                    caso.estado !== 'Finalizado' && caso.estado !== 'Cancelado'
+                    caso.estado !== 'Finalizado' &&
+                    caso.estado !== 'Cancelado' &&
+                    validarAdminPrincipal(caso)
                   "
-                  [disabled]="!validarAdminPrincipal(caso)"
                 >
                   Finalizar
                 </button>
@@ -140,12 +142,27 @@
                   class="btn btn-danger btn-sm shadow-sm mt-1"
                   (click)="$event.stopPropagation(); openDeleteDialog(caso)"
                   *ngIf="
-                    caso.estado !== 'Finalizado' && caso.estado !== 'Cancelado'
+                    caso.estado !== 'Finalizado' &&
+                    caso.estado !== 'Cancelado' &&
+                    validarAdminPrincipal(caso)
                   "
                 >
                   Eliminar
                 </button>
+                <p
+                  *ngIf="!validarAdminPrincipal(caso)"
+                  class="text-danger d-flex align-items-center"
+                >
+                  No puedes realizar ninguna acción
+                </p>
               </ng-container>
+              <button
+                class="btn btn-primary shadow-sm mt-1"
+                (click)="solicitarInformeCaso(caso!)"
+                *ngIf="usuario.tipo_usuario === 'cliente'"
+              >
+                Solicitar Informe
+              </button>
 
               <button
                 *ngIf="

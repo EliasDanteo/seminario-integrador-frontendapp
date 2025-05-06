@@ -110,7 +110,7 @@ export class ActividadDialogComponent {
         (this.data.action === 'post' || this.data.type === 'name') &&
         nombreExistente
       ) {
-        this.snackbarService.showError('Ese nombre ya existe.', 5000);
+        this.snackbarService.showError('Ese nombre ya existe.');
         return;
       }
 
@@ -171,7 +171,6 @@ export class ActividadDialogComponent {
   }
 
   onClose(): void {
-    this.snackbarService.showError('Cancelando', 5000);
     this.dialogRef.close('none');
   }
 

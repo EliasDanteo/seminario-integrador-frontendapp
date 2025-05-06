@@ -95,16 +95,15 @@ export class JusDialogComponent implements OnInit {
             throw new Error();
           }
           this.snackBarService.showSuccess(response.message);
-          this.dialogRef.close(true);
+          this.dialogRef.close('ok');
         },
-        error: () => {
-          this.snackBarService.showError('Error al guardar el precio del JUS');
+        error: (err) => {
+          this.snackBarService.showError(err.error.message);
         },
       });
   }
 
   onClose(): void {
-    this.snackBarService.showError('Cancelado');
     this.dialogRef.close();
   }
 }

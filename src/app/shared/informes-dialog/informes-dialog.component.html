@@ -27,11 +27,17 @@
       <button mat-button mat-dialog-close>Cancelar</button>
       <button
         mat-flat-button
-        color="primary"
-        [disabled]="informeForm.invalid"
         (click)="onSubmit()"
+        color="primary"
+        [disabled]="informeForm.invalid || isLoading"
       >
-        Generar Informe
+        <span *ngIf="!isLoading; else loadingIngresos">
+          <i class="bi bi-cloud-upload me-2"></i>Generar Informe
+        </span>
+        <ng-template #loadingIngresos>
+          <span class="spinner-border spinner-border-sm" role="status"></span>
+          Generando...
+        </ng-template>
       </button>
     </mat-dialog-actions>
   </form>
@@ -81,11 +87,17 @@
         <button mat-button mat-dialog-close>Cancelar</button>
         <button
           mat-flat-button
-          color="primary"
-          [disabled]="informeForm.invalid"
           (click)="onSubmit()"
+          color="primary"
+          [disabled]="informeForm.invalid || isLoading"
         >
-          Generar Informe
+          <span *ngIf="!isLoading; else loadingDesempenio">
+            <i class="bi bi-cloud-upload me-2"></i>Generar Informe
+          </span>
+          <ng-template #loadingDesempenio>
+            <span class="spinner-border spinner-border-sm" role="status"></span>
+            Generando...
+          </ng-template>
         </button>
       </mat-dialog-actions>
     </form>
@@ -110,11 +122,17 @@
       <button mat-button mat-dialog-close>Cancelar</button>
       <button
         mat-flat-button
-        color="primary"
         (click)="onSubmit()"
-        mat-dialog-close
+        color="primary"
+        [disabled]="isLoading"
       >
-        Solicitar Informe
+        <span *ngIf="!isLoading; else loadingInfoCaso">
+          <i class="bi bi-cloud-upload me-2"></i>Generar Informe
+        </span>
+        <ng-template #loadingInfoCaso>
+          <span class="spinner-border spinner-border-sm" role="status"></span>
+          Generando...
+        </ng-template>
       </button>
     </mat-dialog-actions>
   </ng-template>
