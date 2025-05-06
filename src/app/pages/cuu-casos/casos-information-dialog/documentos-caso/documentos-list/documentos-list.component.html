@@ -1,7 +1,20 @@
-<div class="container" *ngIf="caso.estado === 'En curso'; else finalizadoDocs">
+<div
+  class="container-fluid"
+  *ngIf="caso.estado === 'En curso'; else finalizadoDocs"
+>
   <div class="card shadow-sm">
-    <div class="card-header bg-primary text-white">
+    <div
+      class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
+    >
       <h3 class="mb-0">Documentos del Caso</h3>
+
+      <button
+        class="btn btn-success shadow"
+        (click)="openCreateDialog()"
+        *ngIf="caso.estado === 'En curso' && validarPermisos()"
+      >
+        Subir Documento
+      </button>
     </div>
     <div class="card-body">
       <ng-container *ngIf="documentos.length > 0; else sinDocs">
@@ -28,6 +41,7 @@
                   <button
                     class="btn btn-danger btn-sm"
                     (click)="openDeleteDialog(documento)"
+                    *ngIf="validarPermisos()"
                   >
                     Eliminar
                   </button>
@@ -46,21 +60,6 @@
 
       <div class="alert alert-info text-center mt-3" role="alert">
         Recuerda que puedes subir documentos en formato PDF, JPG o PNG.
-      </div>
-      <div class="mt-4 d-flex justify-end">
-        <div class="input-group mt-2 d-flex justify-content-end">
-          <button
-            mat-raised-button
-            class="btn btn-success"
-            type="button"
-            align="end"
-            color="primary"
-            (click)="openCreateDialog()"
-            *ngIf="caso.estado === 'En curso' && !usuario.is_admin"
-          >
-            Subir Documento
-          </button>
-        </div>
       </div>
     </div>
   </div>

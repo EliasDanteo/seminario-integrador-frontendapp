@@ -19,6 +19,12 @@ export interface ICasoCreate {
 export class CasosService {
   constructor(private httpClient: HttpClient) {}
 
+  getOne(id: string): Observable<ApiResponse<ICaso>> {
+    return this.httpClient.get<ApiResponse<ICaso>>(
+      `${environment.casosUrl}/${id}`
+    );
+  }
+
   getCasosAbogado(): Observable<ApiResponse<ICaso[]>> {
     return this.httpClient.get<ApiResponse<ICaso[]>>(
       `${environment.casosUrl}/encurso/`

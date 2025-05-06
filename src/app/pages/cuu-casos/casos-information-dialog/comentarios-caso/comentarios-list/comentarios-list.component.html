@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
   <div class="card shadow-sm">
     <div class="card-header bg-primary text-white">
       <div class="d-flex justify-content-between align-items-center">
@@ -6,7 +6,7 @@
         <button
           class="btn btn-success shadow"
           (click)="openCreateDialog('create')"
-          *ngIf="caso.estado === 'En curso' && !usuario.is_admin"
+          *ngIf="caso.estado === 'En curso' && validarPermisos()"
         >
           Agregar Comentario
         </button>
@@ -21,7 +21,7 @@
           [nivel]="0"
           (delete)="openDeleteDialog($event)"
           (reply)="openCreateDialog('reply', $event)"
-          [casoEstado]="caso.estado"
+          [caso]="caso"
         ></app-comentarios-unidad>
       </div>
       } } @else {

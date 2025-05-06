@@ -27,7 +27,7 @@
         mat-raised-button
         color="warn"
         *ngIf="
-          casoEstado === 'En curso' &&
+          caso.estado === 'En curso' &&
           comentario.abogado.id === usuario.id &&
           comentario.sePuedeEliminar
         "
@@ -39,7 +39,7 @@
       <button
         mat-raised-button
         color="primary"
-        *ngIf="casoEstado === 'En curso' && !usuario.is_admin"
+        *ngIf="caso.estado === 'En curso' && validarPermisos()"
         (click)="onReply()"
       >
         Responder
@@ -63,7 +63,7 @@
     <app-comentarios-unidad
       [comentario]="resp"
       [nivel]="nivel + 1"
-      [casoEstado]="casoEstado"
+      [caso]="caso"
       (delete)="delete.emit($event)"
       (reply)="reply.emit($event)"
     >

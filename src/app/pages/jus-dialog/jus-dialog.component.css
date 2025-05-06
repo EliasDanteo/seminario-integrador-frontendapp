@@ -1,20 +1,20 @@
 mat-form-field {
-    width: 100%;
+  width: 100%;
 }
-  
+
 .dialog-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
 }
 
 .btn-close {
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
 }
 
-.disabled {
-    font-weight: bold;
-  }
+:disabled {
+  color: #000 !important;
+}

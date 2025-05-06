@@ -13,6 +13,7 @@ import { DocumentosListComponent } from './documentos-caso/documentos-list/docum
 import { CuotasListComponent } from './cuotas-caso/cuotas-list/cuotas-list.component.js';
 import { InformesDialogComponent } from '../../../shared/informes-dialog/informes-dialog.component.js';
 import { AuthService } from '../../../core/services/auth.service.js';
+import { SnackbarService } from '../../../core/services/snackbar.service.js';
 
 @Component({
   selector: 'app-casos-information-dialog',
@@ -36,9 +37,10 @@ export class CasosInformationDialogComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient,
     private dialog: MatDialog,
-    private authService: AuthService
+    private authService: AuthService,
+    private casosService: CasosService,
+    private snackBarService: SnackbarService
   ) {
     this.usuario = this.authService.getUser();
   }
@@ -47,20 +49,34 @@ export class CasosInformationDialogComponent {
     const casoId = this.route.snapshot.paramMap.get('id');
 
     if (casoId) {
-      this.http
-        .get<{ message: string; data: ICaso }>(
-          `${environment.casosUrl}/${casoId}`
-        )
-        .subscribe({
-          next: (res) => {
-            this.caso = res.data;
-          },
-          error: (err) => {
-            console.error('Error al cargar el caso', err);
-          },
-        });
+      this.loadCaso(casoId);
     }
     this.selectedSection = localStorage.getItem('selectedSection') || null;
+  }
+
+  loadCaso(casoId: string) {
+    this.casosService.getOne(casoId).subscribe({
+      next: (response) => {
+        this.caso = response.data;
+        this.loadAbogadosCaso(this.caso.id);
+      },
+      error: (err) => {
+        this.snackBarService.showError(err.error.message);
+      },
+    });
+  }
+
+  loadAbogadosCaso(casoId: number) {
+    this.casosService.getAbogadosEnCaso(casoId).subscribe({
+      next: (response) => {
+        this.caso!.abogados_activos = response.data.map(
+          (abogadoCaso: IAbogadoCaso) => abogadoCaso.abogado
+        );
+      },
+      error: (err) => {
+        console.error('Error loading abogados:', err);
+      },
+    });
   }
 
   ngOnDestroy(): void {
