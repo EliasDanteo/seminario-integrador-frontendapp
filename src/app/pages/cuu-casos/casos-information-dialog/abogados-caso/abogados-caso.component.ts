@@ -129,11 +129,14 @@ export class AbogadosCasoComponent implements OnInit {
           this.loadAbogados();
           this.formAbogadoCaso.reset();
         },
-        error: (error) => {
-          console.error('Error:', error);
-          this.snackBarService.showError(
-            error.error?.message || 'Error al desvincular'
-          );
+        error: (err) => {
+          if (err.error.isUserFriendly) {
+            this.snackBarService.showError(err.error.message);
+          } else {
+            this.snackBarService.showError(
+              'Error al desvincular abogado. Por favor, inténtelo de nuevo más tarde.'
+            );
+          }
         },
       });
   }
@@ -154,11 +157,10 @@ export class AbogadosCasoComponent implements OnInit {
             this.loadAbogados();
             this.formAbogadoCaso.reset();
           },
-          error: (error) => {
-            console.error('Error completo:', error);
-            this.snackBarService.showError(
-              error.error?.message || 'Error al vincular abogado'
-            );
+          error: (err) => {
+            if (err.error.isUserFriendly) {
+              this.snackBarService.showError(err.error.message);
+            } else this.snackBarService.showError('Error al vincular abogado');
           },
         });
     } else {

@@ -102,11 +102,14 @@ export class PlanPagoDialogComponent {
           );
           this.onClose();
         },
-        error: (error) => {
-          this.snackBarService.showError(
-            'Error al finalizar el caso. Por favor, intente nuevamente.'
-          );
-          console.error('Error al finalizar el caso:', error);
+        error: (err) => {
+          if (err.error.isUserFriendly) {
+            this.snackBarService.showError(err.error.message);
+          } else {
+            this.snackBarService.showError(
+              'Error al finalizar el caso. Por favor, intente nuevamente.'
+            );
+          }
           this.onClose();
         },
       });

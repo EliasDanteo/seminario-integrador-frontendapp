@@ -63,7 +63,9 @@ export class LoginComponent {
       error: (err: HttpErrorResponse) => {
         if (err.status === 401) {
           this.snackbarService.showError(
-            'Correo electrónico y/o contraseña incorrectos.'
+            err.error.isUserFriendly
+              ? err.error.message
+              : 'Contraseña y/o email incorrectos.'
           );
         } else {
           this.snackbarService.showError('Error al iniciar sesión.');

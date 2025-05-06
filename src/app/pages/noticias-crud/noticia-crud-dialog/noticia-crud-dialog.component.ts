@@ -133,10 +133,11 @@ export class NoticiaCrudDialogComponent implements OnInit {
               },
               error: (err) => {
                 this.snackbarService.showError(
-                  'Error al actualizar la noticia',
+                  err.error.isUserFriendly
+                    ? err.error.message
+                    : 'Error al actualizar la noticia',
                   5000
                 );
-                console.error('Error al actualizar la noticia', err);
               },
             });
         } else if (!this.isEdit) {
@@ -149,14 +150,23 @@ export class NoticiaCrudDialogComponent implements OnInit {
               this.dialogRef.close(true);
             },
             error: (err) => {
-              this.snackbarService.showError('Error al crear la noticia', 5000);
-              console.error('Error al crear la noticia', err);
+              this.snackbarService.showError(
+                err.error.isUserFrienly
+                  ? err.error.message
+                  : 'Error al crear la noticia',
+                5000
+              );
             },
           });
         }
       }
     } catch (error: any) {
-      this.snackbarService.showError(error.message, 5000);
+      this.snackbarService.showError(
+        error.error.isUserFriendly
+          ? error.error.message
+          : 'Error al crear la noticia',
+        5000
+      );
     }
   }
 

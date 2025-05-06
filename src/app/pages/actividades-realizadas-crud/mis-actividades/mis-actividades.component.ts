@@ -54,9 +54,11 @@ export class MisActividadesComponent implements OnInit {
         this.filteredActividadesRealizadas = [...this.actividadesRealizadas];
         this.applyFilters();
       },
-      error: () => {
+      error: (err) => {
         this.snackBarService.showError(
-          'Error al cargar las actividades del abogado'
+          err.error.isUserFriendly
+            ? err.error.message
+            : 'Error al cargar actividades'
         );
       },
     });

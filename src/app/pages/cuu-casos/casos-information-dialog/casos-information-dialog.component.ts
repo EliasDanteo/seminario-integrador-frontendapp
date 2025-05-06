@@ -61,7 +61,13 @@ export class CasosInformationDialogComponent {
         this.loadAbogadosCaso(this.caso.id);
       },
       error: (err) => {
-        this.snackBarService.showError(err.error.message);
+        if (err.error.isUserFriendly) {
+          this.snackBarService.showError(err.error.message);
+        } else {
+          this.snackBarService.showError(
+            'Error cargando los detalles del caso. Por favor, inténtelo de nuevo más tarde.'
+          );
+        }
       },
     });
   }

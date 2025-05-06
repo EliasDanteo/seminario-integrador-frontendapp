@@ -155,7 +155,9 @@ export class CRUDDialogComponent implements OnInit {
       },
       error: (err) => {
         this.snackbarService.showError(
-          `Error: ${err.error.message || 'Error desconocido'}`,
+          err.error.isUserFriendly
+            ? err.error.message
+            : 'Error al crear el usuario',
           5000
         );
       },
@@ -210,7 +212,12 @@ export class CRUDDialogComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando especialidades', err);
-        this.snackbarService.showError('Error cargando especialidades');
+        this.snackbarService.showError(
+          err.error.isUserFriendly
+            ? err.error.message
+            : 'Error al cargar especialidades',
+          5000
+        );
       },
     });
   }

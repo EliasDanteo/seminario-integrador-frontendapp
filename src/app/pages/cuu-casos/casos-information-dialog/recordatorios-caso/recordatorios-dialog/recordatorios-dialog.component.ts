@@ -102,8 +102,12 @@ export class RecordatoriosDialogComponent {
               this.snackBarService.showSuccess(response.message);
               this.dialogRef.close(response.data);
             },
-            error: () => {
-              this.snackBarService.showError('Error al agregar recordatorio');
+            error: (err) => {
+              this.snackBarService.showError(
+                err.error.isUserFriendly
+                  ? err.error.message
+                  : 'Error al crear recordatorio'
+              );
             },
           });
       } else if (this.data.action === 'put') {
@@ -117,8 +121,12 @@ export class RecordatoriosDialogComponent {
               this.snackBarService.showSuccess(response.message);
               this.dialogRef.close(response.data);
             },
-            error: () => {
-              this.snackBarService.showError('Error al editar recordatorio');
+            error: (err) => {
+              this.snackBarService.showError(
+                err.error.isUserFriendly
+                  ? err.error.message
+                  : 'Error al editar recordatorio'
+              );
             },
           });
       }

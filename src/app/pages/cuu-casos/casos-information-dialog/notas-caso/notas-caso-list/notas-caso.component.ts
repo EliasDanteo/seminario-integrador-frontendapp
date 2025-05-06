@@ -68,7 +68,11 @@ export class NotasCasoComponent implements OnInit {
           this.notasCaso = this.marcarEliminables(response.data);
         },
         error: (err) => {
-          this.snackBarService.showError(err.error.message);
+          this.snackBarService.showError(
+            err.error.isuserFriendly
+              ? err.error.message
+              : 'Error cargando notas'
+          );
         },
       });
   }
@@ -114,7 +118,11 @@ export class NotasCasoComponent implements OnInit {
           this.loadNotasCaso();
         },
         error: (err) => {
-          this.snackBarService.showError(err.error.message);
+          this.snackBarService.showError(
+            err.error.isuserFriendly
+              ? err.error.message
+              : 'Error al eliminar la nota'
+          );
         },
       });
   }

@@ -76,7 +76,11 @@ export class ComentariosDialogComponent implements OnInit {
           this.dialogRef.close({ action: 'delete', data: comentario });
         },
         error: (error) => {
-          this.snackBarService.showError(error.error.message);
+          this.snackBarService.showError(
+            error.error.isUserFriendly
+              ? error.error.message
+              : 'Error al eliminar el comentario.'
+          );
           this.dialogRef.close('none');
         },
       });
@@ -105,7 +109,11 @@ export class ComentariosDialogComponent implements OnInit {
           });
         },
         error: (error) => {
-          this.snackBarService.showError(error.error.message);
+          this.snackBarService.showError(
+            error.error.isUserFriendly
+              ? error.error.message
+              : 'Error al agregar el comentario.'
+          );
           this.dialogRef.close('none');
         },
       });

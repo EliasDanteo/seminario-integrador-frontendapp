@@ -88,7 +88,11 @@ export class FeedbackDialogComponent implements OnInit {
           }));
         },
         error: (error) => {
-          this.snackBarService.showError(error.error.message);
+          this.snackBarService.showError(
+            error.error.isUserFriendly
+              ? error.error.message
+              : 'Error al cargar los abogados'
+          );
         },
       });
   }
@@ -170,7 +174,11 @@ export class FeedbackDialogComponent implements OnInit {
           this.dialogRef.close('none');
         },
         error: (error) => {
-          this.snackBarService.showError(error.error.message);
+          this.snackBarService.showError(
+            error.error.isUserFriendly
+              ? error.error.message
+              : 'Error al enviar el feedback'
+          );
         },
       });
   }

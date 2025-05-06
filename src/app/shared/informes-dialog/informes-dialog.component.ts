@@ -132,9 +132,11 @@ export class InformesDialogComponent implements OnInit {
         }
         this.dialogRef.close();
       },
-      error: () =>
+      error: (err) =>
         this.snackBarService.showError(
-          'Error al solicitar informe de ingresos'
+          err.error.isUserFriendly
+            ? err.error.message
+            : 'Error al solicitar informe de ingresos'
         ),
     });
   }
@@ -151,9 +153,11 @@ export class InformesDialogComponent implements OnInit {
             ),
           this.dialogRef.close();
       },
-      error: () =>
+      error: (err) =>
         this.snackBarService.showError(
-          'Error al solicitar informe de desempeño'
+          err.error.isUserFriendly
+            ? err.error.message
+            : 'Error al solicitar informe de desempeño'
         ),
     });
   }
@@ -170,8 +174,12 @@ export class InformesDialogComponent implements OnInit {
             ),
           this.dialogRef.close();
       },
-      error: () =>
-        this.snackBarService.showError('Error al solicitar informe de caso'),
+      error: (err) =>
+        this.snackBarService.showError(
+          err.error.isUserFriendly
+            ? err.error.message
+            : 'Error al solicitar informe de caso'
+        ),
     });
   }
 

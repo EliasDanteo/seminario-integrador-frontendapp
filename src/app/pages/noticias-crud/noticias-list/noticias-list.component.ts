@@ -133,7 +133,9 @@ export class NoticiasListComponent {
         error: (err) => {
           console.error('Error al dar de baja la noticia', err);
           this.snackBarService.showError(
-            'Error al dar de baja la noticia, intente nuevamente'
+            err.error.isUserFriendly
+              ? err.error.message
+              : 'Error al dar de baja la noticia, intente nuevamente'
           );
         },
       });

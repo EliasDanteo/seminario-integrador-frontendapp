@@ -160,8 +160,10 @@ export class CasosCrudDialogComponent implements OnInit {
       next: (response) => {
         this.clientes = response.data;
       },
-      error: () => {
-        this.snackBarService.showError('Error al cargar los clientes');
+      error: (err) => {
+        if (err.error.isUserFriendly) {
+          this.snackBarService.showError(err.error.message);
+        } else this.snackBarService.showError('Error al cargar los clientes');
       },
     });
   }
@@ -182,8 +184,11 @@ export class CasosCrudDialogComponent implements OnInit {
           );
         }
       },
-      error: () =>
-        this.snackBarService.showError('Error al cargar los abogados'),
+      error: (err) => {
+        if (err.error.isUserFriendly) {
+          this.snackBarService.showError(err.error.message);
+        } else this.snackBarService.showError('Error al cargar los abogados');
+      },
     });
   }
 
@@ -203,10 +208,14 @@ export class CasosCrudDialogComponent implements OnInit {
           next: (response) => {
             this.especialidades = response.data;
           },
-          error: () =>
-            this.snackBarService.showError(
-              'Error al cargar las especialidades'
-            ),
+          error: (err) => {
+            if (err.error.isUserFriendly) {
+              this.snackBarService.showError(err.error.message);
+            } else
+              this.snackBarService.showError(
+                'Error al cargar las especialidades'
+              );
+          },
         });
     }
   }
@@ -226,8 +235,14 @@ export class CasosCrudDialogComponent implements OnInit {
 
         this.filterAbogadosByEspecialidad(idEsp);
       },
-      error: () =>
-        this.snackBarService.showError('Error al cargar los abogados del caso'),
+      error: (err) => {
+        if (err.error.isUserFriendly) {
+          this.snackBarService.showError(err.error.message);
+        } else
+          this.snackBarService.showError(
+            'Error al cargar los abogados del caso'
+          );
+      },
     });
   }
 
@@ -250,8 +265,10 @@ export class CasosCrudDialogComponent implements OnInit {
             this.snackBarService.showSuccess('Caso creado con éxito');
             this.onClose();
           },
-          error: () => {
-            this.snackBarService.showError('Error al crear el caso');
+          error: (err) => {
+            if (err.error.isUserFriendly) {
+              this.snackBarService.showError(err.error.message);
+            } else this.snackBarService.showError('Error al crear el caso');
             this.onClose();
           },
         });
@@ -261,8 +278,11 @@ export class CasosCrudDialogComponent implements OnInit {
             this.snackBarService.showSuccess('Caso actualizado con éxito');
             this.onClose();
           },
-          error: () => {
-            this.snackBarService.showError('Error al actualizar el caso');
+          error: (err) => {
+            if (err.error.isUserFriendly) {
+              this.snackBarService.showError(err.error.message);
+            } else
+              this.snackBarService.showError('Error al actualizar el caso');
             this.onClose();
           },
         });

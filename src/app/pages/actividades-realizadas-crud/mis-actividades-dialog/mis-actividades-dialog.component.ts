@@ -104,7 +104,11 @@ export class MisActividadesDialogComponent implements OnInit {
           resolve();
         },
         error: (err) => {
-          this.snackBarService.showError('Error al cargar el precio de Jus');
+          this.snackBarService.showError(
+            err.error.isUserFriendly
+              ? err.error.message
+              : 'Error al cargar el precio del Jus'
+          );
           reject(err);
         },
       });
@@ -122,7 +126,11 @@ export class MisActividadesDialogComponent implements OnInit {
           resolve();
         },
         error: (err) => {
-          this.snackBarService.showError('Error al cargar las actividades');
+          this.snackBarService.showError(
+            err.error.isUserFriendly
+              ? err.error.message
+              : 'Error al cargar las actividades'
+          );
           reject(err);
         },
       });
@@ -134,8 +142,12 @@ export class MisActividadesDialogComponent implements OnInit {
       next: (response) => {
         this.clientes = response.data;
       },
-      error: () => {
-        this.snackBarService.showError('Error al cargar los clientes');
+      error: (err) => {
+        this.snackBarService.showError(
+          err.error.isUserFriendly
+            ? err.error.message
+            : 'Error al cargar los clientes'
+        );
       },
     });
   }
@@ -189,8 +201,12 @@ export class MisActividadesDialogComponent implements OnInit {
           this.snackBarService.showSuccess('Actividad actualizada con éxito');
           this.matDialogRef.close(response.data);
         },
-        error: () => {
-          this.snackBarService.showError('Error al actualizar la actividad');
+        error: (err) => {
+          this.snackBarService.showError(
+            err.error.isUserFriendly
+              ? err.error.message
+              : 'Error al actualizar la actividad'
+          );
         },
       });
   }
