@@ -25,7 +25,8 @@
                 {{ abogadoCaso.abogado.apellido }}
 
                 <span class="text-muted">
-                  - Mat. {{ abogadoCaso.abogado.matricula }}
+                  - {{ abogadoCaso.abogado.email }} |
+                  {{ abogadoCaso.abogado.telefono }}
                 </span>
                 <span class="text-primary" *ngIf="abogadoCaso.es_principal"
                   >(Principal)
