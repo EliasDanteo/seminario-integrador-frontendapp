@@ -7,13 +7,13 @@ import { CommonModule } from '@angular/common';
 import { ComentariosListComponent } from './comentarios-caso/comentarios-list/comentarios-list.component.js';
 import { ICaso } from '../../../core/interfaces/ICaso.interface.js';
 import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment.js';
 import { DocumentosListComponent } from './documentos-caso/documentos-list/documentos-list.component.js';
 import { CuotasListComponent } from './cuotas-caso/cuotas-list/cuotas-list.component.js';
 import { InformesDialogComponent } from '../../../shared/informes-dialog/informes-dialog.component.js';
 import { AuthService } from '../../../core/services/auth.service.js';
 import { SnackbarService } from '../../../core/services/snackbar.service.js';
+import { IAbogadoCaso } from '../../../core/interfaces/IAbogadoCaso.interface.js';
+import { CasosService } from '../../../core/services/casos.service.js';
 
 @Component({
   selector: 'app-casos-information-dialog',
