@@ -66,16 +66,5 @@
       </button>
     </mat-dialog-actions>
   </form>
-  } @else {
-  <div class="text-center">
-    <p class="lead mb-4">¿Estás seguro que deseas eliminar esta actividad?</p>
-
-    <mat-dialog-actions align="end" class="d-flex justify-content-center gap-2">
-      <button mat-button (click)="onClose()">Cancelar</button>
-      <button mat-raised-button color="warn" (click)="onSubmit()">
-        Eliminar
-      </button>
-    </mat-dialog-actions>
-  </div>
   }
 </mat-dialog-content>

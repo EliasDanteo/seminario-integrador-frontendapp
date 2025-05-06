@@ -164,8 +164,6 @@ export class MisActividadesDialogComponent implements OnInit {
       } else {
         this.snackBarService.showError('Formulario inválido');
       }
-    } else {
-      this.deleteActividad(this.data.actividad!.id);
     }
   }
 
@@ -175,8 +173,10 @@ export class MisActividadesDialogComponent implements OnInit {
         this.snackBarService.showSuccess('Actividad creada con éxito');
         this.matDialogRef.close(response.data);
       },
-      error: () => {
-        this.snackBarService.showError('Error al crear la actividad');
+      error: (err) => {
+        if (err.error.isUserFriendly) {
+          this.snackBarService.showError(err.error.message);
+        } else this.snackBarService.showError('Error al crear la actividad');
       },
     });
   }
@@ -193,18 +193,6 @@ export class MisActividadesDialogComponent implements OnInit {
           this.snackBarService.showError('Error al actualizar la actividad');
         },
       });
-  }
-
-  deleteActividad(id_actividad: number) {
-    this.actividadesAbogadoService.deleteActividad(id_actividad).subscribe({
-      next: (response) => {
-        this.snackBarService.showSuccess(response.message);
-        this.matDialogRef.close(response.data);
-      },
-      error: () => {
-        this.snackBarService.showError('Error al eliminar la actividad');
-      },
-    });
   }
 
   onClose() {

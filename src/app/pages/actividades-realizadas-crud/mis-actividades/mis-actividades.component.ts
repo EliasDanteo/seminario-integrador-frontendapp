@@ -11,6 +11,7 @@ import { AuthService } from '../../../core/services/auth.service.js';
 import { ICliente } from '../../../core/interfaces/ICliente.interface.js';
 import { ISecretario } from '../../../core/interfaces/ISecretario.interface.js';
 import { IAbogado } from '../../../core/interfaces/IAbogado.interface.js';
+import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
 
 @Component({
   selector: 'app-mis-actividades',
@@ -71,10 +72,30 @@ export class MisActividadesComponent implements OnInit {
     });
   }
 
-  onDelete(actividad: IActividadRealizada) {
-    this.openDialog(MisActividadesDialogComponent, {
-      action: 'delete',
-      actividad: actividad,
+  onDelete(actividad: IActividadRealizada): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        nombreCompleto: actividad.actividad.nombre,
+        entidad: 'actividad',
+        femenino: true,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.actividadesAbogadoService.deleteActividad(actividad.id).subscribe({
+          next: (response) => {
+            this.loadActividadesAbogado(this.idAbogado);
+          },
+          error: (err) => {
+            if (err.error.isUserFriendly) {
+              this.snackBarService.showError(err.error.message);
+            } else
+              this.snackBarService.showError('Error al eliminar la actividad');
+          },
+        });
+      }
     });
   }
 
