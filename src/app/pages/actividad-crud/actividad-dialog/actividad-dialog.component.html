@@ -1,62 +1,83 @@
-<div class="container" style="min-width: 500px;">
+<div class="container" style="min-width: 500px">
   <div class="dialog-title">
     <div class="d-flex justify-content-between align-items-center">
       <h2 mat-dialog-title>
-        {{ isEdit ? 'Editar' + ' ' + data.entityType : 'Registrar' + ' ' + data.entityType }}
+        {{
+          isEdit
+            ? "Editar" + " " + data.entityType
+            : "Registrar" + " " + data.entityType
+        }}
       </h2>
-      <button type="button" class="btn-close" title="Cerrar ventana" (click)="onClose()"></button>
+      <button
+        type="button"
+        class="btn-close"
+        title="Cerrar ventana"
+        (click)="onClose()"
+      ></button>
     </div>
   </div>
-  <hr>
+  <hr />
 
   <form [formGroup]="entityForm" (ngSubmit)="onSubmit()">
     <mat-dialog-content *ngIf="isEdit">
       <ng-container *ngIf="data.type === 'name'">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Nombre actual</mat-label>
-          <input matInput [value]="data.entity.nombre" disabled/>
+          <input matInput [value]="data.entity.nombre" disabled />
         </mat-form-field>
-      
-        <br>
-      
+
+        <br />
+
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Nombre nuevo</mat-label>
-          <input matInput formControlName="nombre" placeholder="Ingrese nuevo nombre" required/>
+          <input
+            matInput
+            formControlName="nombre"
+            placeholder="Ingrese nuevo nombre"
+            required
+          />
         </mat-form-field>
       </ng-container>
-      
+
       <ng-container *ngIf="data.type === 'price'">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Nombre</mat-label>
           <input matInput [value]="data.entity.nombre" disabled />
         </mat-form-field>
 
-        <br>
+        <br />
 
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Precio actual</mat-label>
           <input matInput [value]="data.entity.cant_jus" disabled />
         </mat-form-field>
-        
-        <br>
-        
+
+        <br />
+
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Precio nuevo</mat-label>
-          <input matInput formControlName="cant_jus" type="number" step="0.001" placeholder="Ingrese nuevo precio" required/>
+          <input
+            matInput
+            formControlName="cant_jus"
+            type="number"
+            step="0.001"
+            placeholder="Ingrese nuevo precio"
+            required
+          />
         </mat-form-field>
-      </ng-container>    
+      </ng-container>
     </mat-dialog-content>
-      
+
     <mat-dialog-content *ngIf="!isEdit" class="common-dialog">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Nombre</mat-label>
         <input matInput formControlName="nombre" type="text" />
       </mat-form-field>
 
-      <br>
+      <br />
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Fecha</mat-label>
-        <input matInput [value]="currentDateTime" disabled/>
+        <input matInput [value]="currentDateTime" disabled />
       </mat-form-field>
       <br />
 
@@ -64,15 +85,24 @@
         <mat-label>Cantidad de JUS</mat-label>
         <input matInput formControlName="cant_jus" type="number" step="0.001" />
       </mat-form-field>
-    </mat-dialog-content>    
+    </mat-dialog-content>
 
-    <mat-dialog-actions>
-      <button mat-button type="submit" [disabled]="!entityForm.valid" class="btn btn-success">
-        {{ isEdit ? 'Actualizar' : 'Crear'}}
-      </button>
-
-      <button mat-button type="button" class="btn-secondary" (click)="onClose()">
+    <mat-dialog-actions class="d-flex justify-content-end">
+      <button
+        mat-button
+        type="button"
+        class="btn-secondary"
+        (click)="onClose()"
+      >
         Cancelar
+      </button>
+      <button
+        mat-button
+        type="submit"
+        [disabled]="!entityForm.valid"
+        class="btn btn-success"
+      >
+        {{ isEdit ? "Actualizar" : "Crear" }}
       </button>
     </mat-dialog-actions>
   </form>
