@@ -78,8 +78,6 @@ h2 {
   }
 }
 
-/* Mantén todos tus estilos existentes y agrega estos al final */
-
 .password-container {
   position: relative;
 }
@@ -113,7 +111,6 @@ h2 {
   color: #007bff;
 }
 
-/* Asegúrate que el input de contraseña tenga padding extra a la derecha para el botón */
 .password-input-wrapper input {
   padding-right: 40px;
 }

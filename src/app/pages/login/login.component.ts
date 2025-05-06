@@ -21,7 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class LoginComponent {
   loginForm: FormGroup;
-  hidePassword = true; // Agregar esta propiedad
+  hidePassword = true;
 
   constructor(
     private snackbarService: SnackbarService,
