@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
 import { ICaso } from '../../../core/interfaces/ICaso.interface.js';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
-import { environment } from '../../../../environments/environment.js';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CasosCrudDialogComponent } from '../casos-crud-dialog/casos-crud-dialog.component.js';
 import { InformesDialogComponent } from '../../../shared/informes-dialog/informes-dialog.component.js';
 import { AuthService } from '../../../core/services/auth.service.js';
 import { CommonModule } from '@angular/common';
-import { ApiResponse } from '../../../core/interfaces/IApiResponse.interface.js';
 import { FeedbackDialogComponent } from '../../feedback-dialog/feedback-dialog.component.js';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component.js';
 import { CasosService } from '../../../core/services/casos.service.js';
@@ -33,7 +31,6 @@ export class CasosListComponent {
   is_admin: boolean = false;
 
   constructor(
-    private http: HttpClient,
     private dialog: MatDialog,
     private router: Router,
     private authService: AuthService,
@@ -103,35 +100,50 @@ export class CasosListComponent {
   }
 
   loadCasosTotales() {
-    this.http.get<ApiResponse<ICaso[]>>(environment.casosUrl).subscribe({
+    this.casoService.getAll().subscribe({
       next: (res) => {
         this.casos = res.data;
         this.applyFilters();
+      },
+      error: (err) => {
+        if (err.error.isUserFriendly) {
+          this.snackBarService.showError(err.error.message);
+        } else {
+          this.snackBarService.showError('Error al cargar los casos');
+        }
       },
     });
   }
 
   loadCasosNoAdmin(id: string) {
     if (this.usuario.tipo_usuario === 'abogado') {
-      this.http
-        .get<ApiResponse<ICaso[]>>(`${environment.casosUrl}/encurso/`)
-        .subscribe({
-          next: (res) => {
-            this.casos = res.data;
-            this.applyFilters();
-          },
-        });
+      this.casoService.getCasosAbogado().subscribe({
+        next: (res) => {
+          this.casos = res.data;
+          this.applyFilters();
+        },
+        error: (err) => {
+          if (err.error.isUserFriendly) {
+            this.snackBarService.showError(err.error.message);
+          } else {
+            this.snackBarService.showError('Error al cargar los casos');
+          }
+        },
+      });
     } else if (this.usuario.tipo_usuario === 'cliente') {
-      this.http
-        .get<{ message: string; data: ICaso[] }>(
-          `${environment.casosUrl}/cliente/${id}`
-        )
-        .subscribe({
-          next: (res) => {
-            this.casos = res.data;
-            this.applyFilters();
-          },
-        });
+      this.casoService.getCasosCliente(id).subscribe({
+        next: (res) => {
+          this.casos = res.data;
+          this.applyFilters();
+        },
+        error: (err) => {
+          if (err.error.isUserFriendly) {
+            this.snackBarService.showError(err.error.message);
+          } else {
+            this.snackBarService.showError('Error al cargar los casos');
+          }
+        },
+      });
     }
   }
 
