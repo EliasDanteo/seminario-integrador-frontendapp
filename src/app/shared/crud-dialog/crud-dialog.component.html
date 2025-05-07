@@ -69,7 +69,6 @@
             type="tel"
             formControlName="telefono"
             placeholder="Ej: 1234567890"
-            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
           />
           <mat-error *ngIf="form.get('telefono')?.hasError('required')">
             Campo requerido
