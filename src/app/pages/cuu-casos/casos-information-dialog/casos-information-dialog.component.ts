@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AbogadosCasoComponent } from './abogados-caso/abogados-caso.component.js';
 import { NotasCasoComponent } from './notas-caso/notas-caso-list/notas-caso.component.js';
@@ -6,7 +6,7 @@ import { RecordatoriosListComponent } from './recordatorios-caso/recordatorios-l
 import { CommonModule } from '@angular/common';
 import { ComentariosListComponent } from './comentarios-caso/comentarios-list/comentarios-list.component.js';
 import { ICaso } from '../../../core/interfaces/ICaso.interface.js';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { DocumentosListComponent } from './documentos-caso/documentos-list/documentos-list.component.js';
 import { CuotasListComponent } from './cuotas-caso/cuotas-list/cuotas-list.component.js';
 import { InformesDialogComponent } from '../../../shared/informes-dialog/informes-dialog.component.js';
@@ -14,6 +14,7 @@ import { AuthService } from '../../../core/services/auth.service.js';
 import { SnackbarService } from '../../../core/services/snackbar.service.js';
 import { IAbogadoCaso } from '../../../core/interfaces/IAbogadoCaso.interface.js';
 import { CasosService } from '../../../core/services/casos.service.js';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-casos-information-dialog',
@@ -30,10 +31,11 @@ import { CasosService } from '../../../core/services/casos.service.js';
   templateUrl: './casos-information-dialog.component.html',
   styleUrl: './casos-information-dialog.component.css',
 })
-export class CasosInformationDialogComponent {
+export class CasosInformationDialogComponent implements OnInit, OnDestroy {
   caso: ICaso | null = null;
   usuario: any = null;
   selectedSection: string | null = null;
+  private routeSub: Subscription = Subscription.EMPTY;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,12 +48,15 @@ export class CasosInformationDialogComponent {
   }
 
   ngOnInit(): void {
-    const casoId = this.route.snapshot.paramMap.get('id');
+    this.routeSub = this.route.params.subscribe((params: Params) => {
+      const casoId = params['id'];
 
-    if (casoId) {
-      this.loadCaso(casoId);
-    }
-    this.selectedSection = localStorage.getItem('selectedSection') || null;
+      if (casoId) {
+        this.selectedSection =
+          localStorage.getItem(`selectedSection_${casoId}`) || null;
+        this.loadCaso(casoId);
+      }
+    });
   }
 
   loadCaso(casoId: string) {
@@ -85,38 +90,41 @@ export class CasosInformationDialogComponent {
     });
   }
 
-  ngOnDestroy(): void {
-    localStorage.removeItem('selectedSection');
-  }
-
   showNotas() {
-    this.selectedSection = 'notas';
-    localStorage.setItem('selectedSection', 'notas');
+    this.setSelectedSection('notas');
   }
 
   showAbogados() {
-    this.selectedSection = 'abogados';
-    localStorage.setItem('selectedSection', 'abogados');
+    this.setSelectedSection('abogados');
   }
 
   showDocumentos() {
-    this.selectedSection = 'documentos';
-    localStorage.setItem('selectedSection', 'documentos');
+    this.setSelectedSection('documentos');
   }
 
   showRecordatorios() {
-    this.selectedSection = 'recordatorios';
-    localStorage.setItem('selectedSection', 'recordatorios');
+    this.setSelectedSection('recordatorios');
   }
 
   showComentarios() {
-    this.selectedSection = 'comentarios';
-    localStorage.setItem('selectedSection', 'comentarios');
+    this.setSelectedSection('comentarios');
   }
 
   showCuotas() {
-    this.selectedSection = 'cuotas';
-    localStorage.setItem('selectedSection', 'cuotas');
+    this.setSelectedSection('cuotas');
+  }
+
+  private setSelectedSection(section: string) {
+    if (!this.caso) return;
+    this.selectedSection = section;
+    localStorage.setItem(`selectedSection_${this.caso.id}`, section);
+  }
+
+  ngOnDestroy(): void {
+    this.routeSub.unsubscribe();
+    if (this.caso) {
+      localStorage.removeItem(`selectedSection_${this.caso.id}`);
+    }
   }
 
   solicitarInformeCaso(caso: ICaso) {

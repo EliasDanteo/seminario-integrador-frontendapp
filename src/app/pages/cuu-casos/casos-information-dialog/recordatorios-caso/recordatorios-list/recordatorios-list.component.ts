@@ -66,7 +66,6 @@ export class RecordatoriosListComponent implements OnInit {
       }>(`${environment.casosUrl}/recordatorios/${this.caso.id}`)
       .subscribe({
         next: (response) => {
-          console.log(response.data);
           this.recordatoriosCasoPasados = response.data.recordatoriosPasados;
           this.recordatoriosCasoVigentes = response.data.recordatoriosFuturos;
         },

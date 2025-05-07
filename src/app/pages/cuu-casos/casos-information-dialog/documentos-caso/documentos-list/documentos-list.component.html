@@ -1,6 +1,9 @@
 <div
   class="container-fluid"
-  *ngIf="caso.estado === 'En curso'; else finalizadoDocs"
+  *ngIf="
+    caso.estado === 'En curso' && caso.abogados_activos;
+    else finalizadoDocs
+  "
 >
   <div class="card shadow-sm">
     <div
