@@ -148,7 +148,11 @@
           [matMenuTriggerFor]="menu"
           class="text-black fw-light"
         >
-          {{ userSignal()?.nombre + " " + userSignal()?.apellido }}
+          {{
+            userSignal()?.nombre +
+              " " +
+              (userSignal()?.apellido ? userSignal()?.apellido : "")
+          }}
         </button>
         <mat-menu class="user-option" #menu="matMenu">
           <button mat-menu-item (click)="closeMobileMenu()">

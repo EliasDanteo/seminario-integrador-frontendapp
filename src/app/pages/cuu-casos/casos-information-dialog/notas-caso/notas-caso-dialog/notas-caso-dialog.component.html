@@ -8,6 +8,12 @@
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Título</mat-label>
         <input matInput formControlName="titulo" />
+        <mat-error *ngIf="notaForm.get('titulo')?.hasError('required')">
+          El título es requerido
+        </mat-error>
+        <mat-error *ngIf="notaForm.get('titulo')?.hasError('maxlength')">
+          El título no puede exceder los 50 caracteres
+        </mat-error>
       </mat-form-field>
     </div>
 
@@ -15,6 +21,9 @@
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Descripción</mat-label>
         <textarea matInput formControlName="descripcion" rows="6"></textarea>
+        <mat-error *ngIf="notaForm.get('descripcion')?.hasError('required')">
+          La descripción es requerida
+        </mat-error>
       </mat-form-field>
     </div>
   </mat-dialog-content>

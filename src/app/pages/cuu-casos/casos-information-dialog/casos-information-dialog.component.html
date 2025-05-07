@@ -51,7 +51,7 @@
             <button
               class="btn btn-outline-primary"
               (click)="showAbogados()"
-              *ngIf="usuario.is_admin"
+              *ngIf="validarPermisos()"
             >
               Ver Abogados
             </button>

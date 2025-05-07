@@ -11,3 +11,7 @@ mat-dialog-content {
 .full-width {
   width: 100%;
 }
+
+:disabled {
+  color: #000 !important;
+}

@@ -24,6 +24,5 @@ export class ConfirmDialogComponent {
 
   onCancel(): void {
     this.dialogRef.close(false);
-    this.snackbarService.showError('Cancelando', 5000);
   }
 }

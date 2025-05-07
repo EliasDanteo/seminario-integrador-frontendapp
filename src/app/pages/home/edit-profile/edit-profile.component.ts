@@ -56,8 +56,11 @@ export class EditProfileComponent implements OnInit {
           this.data.user?.email || '',
           [Validators.required, Validators.email],
         ],
-        telefono: [this.data.user?.telefono || ''],
-        currentPassword: [''],
+        telefono: [
+          this.data.user?.telefono || '',
+          [Validators.required, Validators.maxLength(20)],
+        ],
+        currentPassword: ['', [Validators.required]],
         newPassword: ['', [Validators.minLength(4)]],
         confirmPassword: [''],
       },

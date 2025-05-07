@@ -141,9 +141,6 @@ export class AppointmentBookingComponent {
               mensaje: 'No hay turnos disponibles para la fecha seleccionada',
             },
           });
-          this.snackBarService.showError(
-            'No hay abogados disponibles para la fecha seleccionada'
-          );
         }
       },
       error: (err) => {
@@ -223,7 +220,9 @@ export class AppointmentBookingComponent {
         .create(turnoData as ITurnoOtorgadoCreate)
         .subscribe({
           next: (response) => {
-            this.snackBarService.showSuccess('Turno creado con éxito.');
+            this.snackBarService.showSuccess(
+              'Turno creado. Se enviaron los detalles al email.'
+            );
             this.form.reset();
             this.validateIfClient();
             this.horariosDisponibles = [];

@@ -135,4 +135,14 @@ export class CasosInformationDialogComponent implements OnInit, OnDestroy {
       },
     });
   }
+
+  validarPermisos() {
+    if (
+      this.caso?.abogado_principal === this.usuario.id ||
+      this.usuario.is_admin
+    ) {
+      return true;
+    }
+    return false;
+  }
 }

@@ -5,7 +5,9 @@
         <h2 class="mb-0">{{ noticia.titulo }}</h2>
       </div>
       <div class="card-body">
-        <p class="text-muted mb-2 text-end">{{ noticia.fecha_publicacion }}</p>
+        <p class="text-muted mb-2 text-end">
+          {{ noticia.fecha_publicacion | date : "dd-MM-yyyy" }}
+        </p>
         <p class="fs-5">{{ noticia.cuerpo }}</p>
       </div>
       <div class="card-footer text-end">

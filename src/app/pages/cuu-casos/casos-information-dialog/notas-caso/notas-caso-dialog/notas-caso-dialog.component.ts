@@ -9,7 +9,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatError, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ICaso } from '../../../../../core/interfaces/ICaso.interface.js';
 import { AuthService } from '../../../../../core/services/auth.service.js';
@@ -43,7 +43,10 @@ export class NotasCasoDialogComponent implements OnInit {
   ) {
     this.usuario = this.authService.getUser();
     this.notaForm = new FormGroup({
-      titulo: new FormControl('', Validators.required),
+      titulo: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(50),
+      ]),
       descripcion: new FormControl('', Validators.required),
     });
   }

@@ -123,7 +123,7 @@ export class InformesDialogComponent implements OnInit {
       next: (ok) => {
         if (ok) {
           this.snackBarService.showSuccess(
-            'Informe de ingresos solicitado correctamente'
+            'Informe de ingresos enviado a su correo'
           );
         } else {
           this.snackBarService.showError(
@@ -146,7 +146,7 @@ export class InformesDialogComponent implements OnInit {
       next: (ok) => {
         ok
           ? this.snackBarService.showSuccess(
-              'Informe de desempeño solicitado correctamente'
+              'Informe de desempeño enviado a su correo'
             )
           : this.snackBarService.showError(
               'Error al solicitar informe de desempeño'
@@ -167,7 +167,7 @@ export class InformesDialogComponent implements OnInit {
       next: (ok) => {
         ok
           ? this.snackBarService.showSuccess(
-              'Informe de caso solicitado correctamente'
+              'Informe de caso enviado a su correo'
             )
           : this.snackBarService.showError(
               'Error al solicitar informe de caso'

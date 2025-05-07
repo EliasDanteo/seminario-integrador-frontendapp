@@ -4,12 +4,17 @@
     {{ data.entidad }}?
   </h2>
 
-  <p class="lead mb-4">
+  <div class="lead mb-4">
     {{ data.entidad.charAt(0).toUpperCase() + data.entidad.slice(1) }}:
-    <strong class="text-primary">
-      <pre>{{ data.nombreCompleto }}</pre>
-    </strong>
-  </p>
+    <div class="overflow-y-auto" style="max-height: 150px; overflow-x: hidden">
+      <p
+        class="text-primary"
+        style="white-space: normal; word-wrap: break-word; width: 100%"
+      >
+        {{ data.nombreCompleto }}
+      </p>
+    </div>
+  </div>
 
   <div class="d-flex justify-content-center gap-4 mt-4">
     <button

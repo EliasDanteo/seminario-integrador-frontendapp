@@ -24,7 +24,6 @@ import { ConfirmDialogComponent } from '../../../../../shared/confirm-dialog/con
 })
 export class NotasCasoComponent implements OnInit {
   notasCaso: INota[] = [];
-  formNota: FormGroup;
   usuario: any = null;
 
   @Input() caso!: ICaso;
@@ -35,10 +34,6 @@ export class NotasCasoComponent implements OnInit {
     private authService: AuthService,
     private dialog: MatDialog
   ) {
-    this.formNota = new FormGroup({
-      titulo: new FormControl('', Validators.required),
-      descripcion: new FormControl('', Validators.required),
-    });
     this.usuario = this.authService.getUser();
   }
 
