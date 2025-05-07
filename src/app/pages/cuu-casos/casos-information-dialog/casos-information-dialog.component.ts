@@ -50,10 +50,11 @@ export class CasosInformationDialogComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe((params: Params) => {
       const casoId = params['id'];
+      const section = this.route.snapshot.queryParams['section'];
 
       if (casoId) {
         this.selectedSection =
-          localStorage.getItem(`selectedSection_${casoId}`) || null;
+          section || localStorage.getItem(`selectedSection_${casoId}`) || null;
         this.loadCaso(casoId);
       }
     });

@@ -102,6 +102,7 @@ export class CasosListComponent {
   loadCasosTotales() {
     this.casoService.getAll().subscribe({
       next: (res) => {
+        console.log(res.data);
         this.casos = res.data;
         this.applyFilters();
       },
@@ -226,6 +227,12 @@ export class CasosListComponent {
         caso: caso,
         informeType: 'caso',
       },
+    });
+  }
+
+  verCuotas(caso: ICaso) {
+    this.router.navigate(['/casos', caso.id], {
+      queryParams: { section: 'cuotas' },
     });
   }
 }

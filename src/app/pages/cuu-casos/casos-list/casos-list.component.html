@@ -116,6 +116,24 @@
           <td>
             <div class="d-flex justify-content-start gap-2 flex-wrap">
               <ng-container *ngIf="usuario.tipo_usuario !== 'cliente'">
+                <div
+                  *ngIf="caso.estado === 'Finalizado' && usuario.is_admin"
+                  class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center"
+                >
+                  <button
+                    class="btn btn-primary btn-sm mb-2 mb-sm-0 me-sm-3"
+                    (click)="verCuotas(caso)"
+                  >
+                    Ver Cuotas
+                  </button>
+                  <p class="mb-0 text-danger" *ngIf="caso.deuda_jus > 0">
+                    Adeuda <span class="fw-bold">{{ caso.deuda_jus }}</span> JUS
+                  </p>
+                  <p class="mb-0 text-success" *ngIf="!caso.deuda_jus">
+                    No adeuda cuotas
+                  </p>
+                </div>
+
                 <button
                   class="btn btn-warning btn-sm shadow-sm mt-1"
                   (click)="$event.stopPropagation(); openEditDialog(caso)"

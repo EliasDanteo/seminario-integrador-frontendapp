@@ -79,7 +79,15 @@ export class CuotasListComponent implements OnInit {
   }
 
   ultimaCuotaPagada(): ICuota | null {
-    return this.cuotas.find((cuota) => cuota.fecha_hora_cobro) || null;
+    const cuotasPagadas = this.cuotas
+      .filter((cuota) => cuota.fecha_hora_cobro)
+      .sort(
+        (a, b) =>
+          new Date(b.fecha_hora_cobro!).getTime() -
+          new Date(a.fecha_hora_cobro!).getTime()
+      );
+
+    return cuotasPagadas[0] || null;
   }
 
   openDeleteDialog(cuota: ICuota | null) {

@@ -15,6 +15,8 @@ export interface ICaso {
   fecha_estado: string;
   abogado_principal: IAbogado;
   abogados_activos: IAbogado[];
+  deuda_jus: number;
+  monto_jus: number;
 }
 
 export interface IFinalizarCaso {
