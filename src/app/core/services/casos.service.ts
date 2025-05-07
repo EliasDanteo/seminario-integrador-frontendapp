@@ -19,6 +19,12 @@ export interface ICasoCreate {
 export class CasosService {
   constructor(private httpClient: HttpClient) {}
 
+  getAll(): Observable<ApiResponse<ICaso[]>> {
+    return this.httpClient.get<ApiResponse<ICaso[]>>(
+      `${environment.casosUrl}/`
+    );
+  }
+
   getOne(id: string): Observable<ApiResponse<ICaso>> {
     return this.httpClient.get<ApiResponse<ICaso>>(
       `${environment.casosUrl}/${id}`
@@ -31,7 +37,7 @@ export class CasosService {
     );
   }
 
-  getCasosCliente(id: number): Observable<ApiResponse<ICaso[]>> {
+  getCasosCliente(id: string): Observable<ApiResponse<ICaso[]>> {
     return this.httpClient.get<ApiResponse<ICaso[]>>(
       `${environment.casosUrl}/cliente/${id}`
     );
@@ -71,6 +77,22 @@ export class CasosService {
     return this.httpClient.patch<ApiResponse<ICaso>>(
       `${environment.casosUrl}/${id}/cancelar`,
       {}
+    );
+  }
+
+  desvincularAbogado(
+    id_abogado_caso: number
+  ): Observable<ApiResponse<IAbogadoCaso>> {
+    return this.httpClient.patch<ApiResponse<IAbogadoCaso>>(
+      `${environment.casosUrl}/abogados-casos/${id_abogado_caso}/desvincular`,
+      {}
+    );
+  }
+
+  vincularAbogado(data: any): Observable<ApiResponse<IAbogadoCaso>> {
+    return this.httpClient.post<ApiResponse<IAbogadoCaso>>(
+      `${environment.casosUrl}/abogados-casos/`,
+      data
     );
   }
 }
