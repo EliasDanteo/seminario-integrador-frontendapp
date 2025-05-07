@@ -1,0 +1,38 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4 text-black p-3 rounded">
+    Listado de Turnos Otorgados
+  </h2>
+
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered shadow-sm">
+      <thead class="bg-success text-white">
+        <tr>
+          <th>Fecha turno</th>
+          <th>Hora inicio</th>
+          <th>Hora fin</th>
+          <th>Cliente</th>
+          <th>Contacto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let turno of turnos" class="align-middle">
+          <td>{{ turno.fecha_turno | date : "dd/MM/yyyy" }}</td>
+          <td>{{ turno.hora_inicio }}</td>
+          <td>{{ turno.hora_fin }}</td>
+          <td>
+            {{ turno.cliente.nombre }}
+          </td>
+          <td>
+            {{ turno.cliente.email }} <br />
+            {{ turno.cliente.telefono }}
+          </td>
+        </tr>
+        <tr *ngIf="turnos.length === 0">
+          <td colspan="4" class="text-center py-4">
+            No hay turnos para mostrar.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

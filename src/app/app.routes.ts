@@ -20,6 +20,7 @@ import { authGuard } from './core/guards/auth.guard.js';
 import { clienteGuard } from './core/guards/cliente.guard.js';
 import { HomeComponent } from './pages/home/home.component.js';
 import { secretarioAbogadoGuard } from './core/guards/secretario-abogado.guard.js';
+import { TurnosListComponent } from './pages/turnos-list/turnos-list.component.js';
 
 export const routes: Routes = [
   {
@@ -97,6 +98,11 @@ export const routes: Routes = [
     path: 'mis-actividades',
     canActivate: [abogadoGuard],
     component: MisActividadesComponent,
+  },
+  {
+    path: 'mis-turnos',
+    canActivate: [abogadoGuard],
+    component: TurnosListComponent,
   },
   {
     path: '**',

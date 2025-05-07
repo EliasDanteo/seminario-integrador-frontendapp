@@ -25,6 +25,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
 import { SnackbarService } from '../../../../core/services/snackbar.service.js';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment.js';
+import { ApiResponse } from '../../../../core/interfaces/IApiResponse.interface.js';
+
+interface PoliticasResponse {
+  max_cuotas: number;
+}
 
 @Component({
   selector: 'app-plan-pago-dialog',
@@ -44,8 +51,9 @@ import { SnackbarService } from '../../../../core/services/snackbar.service.js';
   styleUrl: './plan-pago-dialog.component.css',
 })
 export class PlanPagoDialogComponent {
-  planPagoForm: FormGroup;
+  planPagoForm: FormGroup = new FormGroup({});
   currentDate = new Date();
+  cantMaxCuotas: number = 1;
   frecuenciasPago: string[] = [
     'Semanal',
     'Quincenal',
@@ -59,8 +67,14 @@ export class PlanPagoDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: { caso: ICaso },
     private casoService: CasosService,
     private snackBarService: SnackbarService,
+    private httpClient: HttpClient,
     private dialogRef: MatDialogRef<PlanPagoDialogComponent>
   ) {
+    this.initializeForm();
+    this.loadPoliticas();
+  }
+
+  private initializeForm(): void {
     this.planPagoForm = new FormGroup({
       cant_jus: new FormControl(0, [
         Validators.required,
@@ -72,12 +86,37 @@ export class PlanPagoDialogComponent {
         this.minDateValidator(this.currentDate),
       ]),
       frecuencia_cobro: new FormControl('', [Validators.required]),
-      num_cuotas: new FormControl(1, [
+      num_cuotas: new FormControl(1, [Validators.required, Validators.min(1)]),
+    });
+  }
+
+  private loadPoliticas(): void {
+    this.httpClient
+      .get<ApiResponse<PoliticasResponse>>(environment.politicasUrl)
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          this.cantMaxCuotas = data.data.max_cuotas;
+          this.updateCuotasValidator();
+        },
+        error: (err) => {
+          this.snackBarService.showError('Error cargando políticas');
+          this.cantMaxCuotas = 12;
+          this.updateCuotasValidator();
+        },
+      });
+  }
+
+  private updateCuotasValidator(): void {
+    const cuotasControl = this.planPagoForm.get('num_cuotas');
+    if (cuotasControl) {
+      cuotasControl.setValidators([
         Validators.required,
         Validators.min(1),
-        Validators.max(12),
-      ]),
-    });
+        Validators.max(this.cantMaxCuotas),
+      ]);
+      cuotasControl.updateValueAndValidity();
+    }
   }
 
   minDateValidator(minDate: Date): ValidatorFn {

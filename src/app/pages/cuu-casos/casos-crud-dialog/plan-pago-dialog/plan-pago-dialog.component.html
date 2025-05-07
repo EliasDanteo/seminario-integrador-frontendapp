@@ -49,7 +49,7 @@
             El valor mínimo es 1
           </mat-error>
           <mat-error *ngIf="planPagoForm.get('num_cuotas')?.hasError('max')">
-            El máximo permitido es 12
+            El máximo permitido es {{ cantMaxCuotas }}
           </mat-error>
         </mat-form-field>
       </div>

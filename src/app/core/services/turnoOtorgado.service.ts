@@ -23,10 +23,10 @@ export class turnoOtorgadoService {
   constructor(private http: HttpClient) {}
 
   private readonly url = environment.turnosUrl;
-
-  findByAbogado(id: string): Observable<ApiResponse<IHorarioTurno[]>> {
-    return this.http.get<ApiResponse<IHorarioTurno[]>>(
-      `${this.url}/abogado/${id}`
+  //TURNOS OTORGADOS
+  findByAbogado(id_abogado: string): Observable<ApiResponse<ITurnoOtorgado[]>> {
+    return this.http.get<ApiResponse<ITurnoOtorgado[]>>(
+      `${this.url}/${id_abogado}`
     );
   }
 

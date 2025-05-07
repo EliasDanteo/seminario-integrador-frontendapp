@@ -11,6 +11,7 @@ export const environment = {
   actividadesUrl: apiUrl + '/actividades',
   noticiasUrl: apiUrl + '/misc/noticias',
   jusUrl: apiUrl + '/misc/precios-jus',
+  politicasUrl: apiUrl + '/misc/politicas',
   feedbackUrl: apiUrl + '/feedbacks',
   documentosUrl: apiUrl + '/casos/documentos',
   turnosUrl: apiUrl + '/turnos',

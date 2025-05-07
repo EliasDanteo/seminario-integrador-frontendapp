@@ -60,7 +60,7 @@ export class NoticiaCrudDialogComponent implements OnInit {
     this.newsForm = new FormGroup({
       titulo: new FormControl('', [
         Validators.required,
-        Validators.maxLength(75),
+        Validators.maxLength(255),
       ]),
       cuerpo: new FormControl('', [Validators.required]),
       fecha_publicacion: new FormControl(null),
