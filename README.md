@@ -1,27 +1,91 @@
-# SeminarioIntegradorFrontendapp
+# Frontend GitLaw
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.3.
+Este proyecto fue desarrollado con **Angular v18**, **TypeScript** y **Angular Material** como parte del trabajo final para la asignatura Seminario Integrador de la **Universidad Tecnológica Nacional – Facultad Regional Rosario**.
 
-## Development server
+Es una aplicación web que consume una API REST creada en Node.js. El sistema permite a visitantes, clientes, abogados y administradores interactuar con el sistema jurídico desde una interfaz moderna y responsiva.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+👉 **Link al backend:** [Repositorio Backend GitLaw](https://github.com/AaronDeBernardo/seminario-integrador-backendapp.git)
 
-## Code scaffolding
+---
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Accesos y funcionalidades
 
-## Build
+La interfaz adapta su contenido según el tipo de usuario autenticado:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Administradores
 
-## Running unit tests
+- Gestión completa (CRUD) de abogados, clientes, secretarios, turnos, actividades, casos y más.
+- Acceso a reportes de desempeño e ingresos.
+- Registro de cobros y seguimiento de pagos.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Abogados
 
-## Running end-to-end tests
+- Gestión de sus turnos disponibles.
+- Edición y carga de documentos, notas y recordatorios de los casos.
+- Registro de actividades relacionadas a sus clientes.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Clientes
 
-## Further help
+- Seguimiento del estado de sus casos.
+- Solicitud de turnos con abogados.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Visitantes
+
+- Lectura de noticias legales y novedades del estudio.
+- Acceso al formulario de solicitud de turnos sin necesidad de registrarse.
+
+---
+
+## Requisitos
+
+- **Node.js**: Versión 20.19.1. [Descargar desde nodejs.org](https://nodejs.org/)
+- **npm**: Se instala con Node.js. Para actualizarlo:
+
+```bash
+npm install -g npm
+```
+
+## Instalación
+
+1. Clona este repositorio en tu computadora:
+
+```
+git clone https://github.com/EliasDanteo/seminario-integrador-frontendapp.git
+```
+
+2. Accede al directorio del proyecto:
+
+```
+cd seminario-integrador-frontendapp
+```
+
+3. Instala las dependencias:
+
+```
+npm install
+```
+
+---
+
+## Ejecución
+
+Para iniciar el proyecto en modo desarrollo, asegurate de tener Angular CLI instalado y ejecutá:
+
+```bash
+ng serve
+```
+---
+
+## Integrantes
+
+Este proyecto fue desarrollado por estudiantes de la **Universidad Tecnológica Nacional – Facultad Regional Rosario**, como parte del Seminario Integrador:
+
+- **Borsato, Milton Rubén** - <borsatomilton@gmail.com>
+- **Danteo, Elías Tomás** - <elias.danteo.tomas@hotmail.com>
+- **De Bernardo, Aarón** - <aarondebernardo@gmail.com>
+- **Gramaglia, Francisca** - <franciscagramaglia714@gmail.com>
+- **Spini, Santiago** - <santiagospini@gmail.com>
+
+
+
+
