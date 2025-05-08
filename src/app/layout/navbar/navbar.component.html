@@ -1,6 +1,10 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/home" routerLinkActive="active-link"
+    <a
+      class="navbar-brand"
+      style="margin-right: 10px !important"
+      routerLink="/home"
+      routerLinkActive="active-link"
       >Sistema Jurídico</a
     >
 
@@ -26,6 +30,7 @@
             class="nav-link animated-link"
             routerLink="/"
             routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: true }"
             (click)="closeMobileMenu()"
             >Iniciar Sesión</a
           >
