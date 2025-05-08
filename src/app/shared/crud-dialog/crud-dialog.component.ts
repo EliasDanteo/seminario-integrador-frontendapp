@@ -242,7 +242,10 @@ export class CRUDDialogComponent implements OnInit {
         );
         this.form.addControl(
           'foto',
-          new FormControl<File | null>(null, Validators.required)
+          new FormControl<File | null>(
+            null,
+            this.dialogData.action === 'post' ? Validators.required : null
+          )
         );
         break;
 
