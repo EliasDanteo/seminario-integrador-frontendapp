@@ -1,8 +1,9 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/home">Sistema Jurídico</a>
+    <a class="navbar-brand" routerLink="/home" routerLinkActive="active-link"
+      >Sistema Jurídico</a
+    >
 
-    <!-- Botón para móviles -->
     <button
       class="navbar-toggler"
       type="button"
@@ -13,28 +14,28 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Contenido del navbar -->
     <div
       class="navbar-collapse"
       [class.show]="mobileMenuOpen"
       id="navbarContent"
     >
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <!-- Menú para usuarios no autenticados -->
         @if(userSignal() === null){
-        <li class="nav-item">
-          <a class="nav-link animated-link" href="/" (click)="closeMobileMenu()"
-            >Iniciar Sesión</a
-          >
-        </li>
-        }
-
-        <!-- Menú para administradores -->
-        @if(esAdmin()){
         <li class="nav-item">
           <a
             class="nav-link animated-link"
-            href="/abogados-list"
+            routerLink="/"
+            routerLinkActive="active-link"
+            (click)="closeMobileMenu()"
+            >Iniciar Sesión</a
+          >
+        </li>
+        } @if(esAdmin()){
+        <li class="nav-item">
+          <a
+            class="nav-link animated-link"
+            routerLink="/abogados-list"
+            routerLinkActive="active-link"
             (click)="closeMobileMenu()"
             >Abogados</a
           >
@@ -42,7 +43,8 @@
         <li class="nav-item">
           <a
             class="nav-link animated-link"
-            href="/clientes-list"
+            routerLink="/clientes-list"
+            routerLinkActive="active-link"
             (click)="closeMobileMenu()"
             >Clientes</a
           >
@@ -50,7 +52,8 @@
         <li class="nav-item">
           <a
             class="nav-link animated-link"
-            href="/secretarios-list"
+            routerLink="/secretarios-list"
+            routerLinkActive="active-link"
             (click)="closeMobileMenu()"
             >Secretarios</a
           >
@@ -58,7 +61,8 @@
         <li class="nav-item">
           <a
             class="nav-link animated-link"
-            href="/actividades-list"
+            routerLink="/actividades-list"
+            routerLinkActive="active-link"
             (click)="closeMobileMenu()"
             >Actividades</a
           >
@@ -66,31 +70,28 @@
         <li class="nav-item">
           <a
             class="nav-link animated-link"
-            href="/noticias-list"
+            routerLink="/noticias-list"
+            routerLinkActive="active-link"
             (click)="closeMobileMenu()"
-            >Crear noticia</a
+            >Crear Noticia</a
           >
         </li>
-        }
-
-        <!-- Menú común para abogados, secretarios y admin -->
-        @if(esAbogado() || esSecretario() || esAdmin()){
+        } @if(esAbogado() || esSecretario() || esAdmin()){
         <li class="nav-item">
           <a
             class="nav-link animated-link"
-            href="/casos-list"
+            routerLink="/casos-list"
+            routerLinkActive="active-link"
             (click)="closeMobileMenu()"
             >Casos</a
           >
         </li>
-        }
-
-        <!-- Menú específico para abogados -->
-        @if(esAbogado()){
+        } @if(esAbogado()){
         <li class="nav-item">
           <a
             class="nav-link animated-link"
-            href="/mis-actividades"
+            routerLink="/mis-actividades"
+            routerLinkActive="active-link"
             (click)="closeMobileMenu()"
             >Mis Actividades</a
           >
@@ -98,7 +99,8 @@
         <li class="nav-item">
           <a
             class="nav-link animated-link"
-            href="/horarios-turnos"
+            routerLink="/horarios-turnos"
+            routerLinkActive="active-link"
             (click)="closeMobileMenu()"
             >Horarios de turnos</a
           >
@@ -106,49 +108,45 @@
         <li class="nav-item">
           <a
             class="nav-link animated-link"
-            href="/mis-turnos"
+            routerLink="/mis-turnos"
+            routerLinkActive="active-link"
             (click)="closeMobileMenu()"
             >Turnos</a
           >
         </li>
-        }
-
-        <!-- Menú para clientes -->
-        @if(esCliente()){
+        } @if(esCliente()){
         <li class="nav-item">
           <a
             class="nav-link animated-link"
-            href="/casos-list"
+            routerLink="/casos-list"
+            routerLinkActive="active-link"
             (click)="closeMobileMenu()"
             >Mis Casos</a
           >
         </li>
-        }
-
-        <!-- Menú para usuarios no abogados/admin/secretarios -->
-        @if(!esAbogado() && !esAdmin() && !esSecretario()){
+        } @if(!esAbogado() && !esAdmin() && !esSecretario()){
         <li class="nav-item">
           <a
             class="nav-link animated-link"
-            href="/obtener-turnos"
+            routerLink="/obtener-turnos"
+            routerLinkActive="active-link"
             (click)="closeMobileMenu()"
             >Obtener turno abogado</a
           >
         </li>
         }
 
-        <!-- Menú común a todos -->
         <li class="nav-item">
           <a
             class="nav-link animated-link"
-            href="/noticias-blog"
+            routerLink="/noticias-blog"
+            routerLinkActive="active-link"
             (click)="closeMobileMenu()"
             >Noticias Blog</a
           >
         </li>
       </ul>
 
-      <!-- Menú de usuario -->
       @if(userSignal() !== null){
       <div class="user-menu">
         <button
@@ -164,7 +162,12 @@
         </button>
         <mat-menu class="user-option" #menu="matMenu">
           <button mat-menu-item (click)="closeMobileMenu()">
-            <a class="nav-link" href="/home">Mi Perfil</a>
+            <a
+              class="nav-link"
+              routerLink="/home"
+              routerLinkActive="active-link"
+              >Mi Perfil</a
+            >
           </button>
           <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
         </mat-menu>

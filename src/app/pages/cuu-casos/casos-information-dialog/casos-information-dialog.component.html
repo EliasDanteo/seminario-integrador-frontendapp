@@ -45,37 +45,59 @@
         </div>
         <div class="card-body">
           <div class="d-flex flex-column gap-2">
-            <button class="btn btn-outline-primary" (click)="showNotas()">
-              Ver Notas
-            </button>
             <button
               class="btn btn-outline-primary"
+              [class.active]="selectedSection === 'notas'"
+              (click)="showNotas()"
+            >
+              Ver Notas
+            </button>
+
+            <button
+              class="btn btn-outline-primary"
+              [class.active]="selectedSection === 'abogados'"
               (click)="showAbogados()"
               *ngIf="validarPermisos()"
             >
               Ver Abogados
             </button>
-            <button class="btn btn-outline-primary" (click)="showDocumentos()">
-              Ver Documentos
-            </button>
+
             <button
               class="btn btn-outline-primary"
+              [class.active]="selectedSection === 'documentos'"
+              (click)="showDocumentos()"
+            >
+              Ver Documentos
+            </button>
+
+            <button
+              class="btn btn-outline-primary"
+              [class.active]="selectedSection === 'recordatorios'"
               (click)="showRecordatorios()"
             >
               Ver Recordatorios
             </button>
-            <button class="btn btn-outline-primary" (click)="showComentarios()">
-              Ver Comentarios
-            </button>
+
             <button
               class="btn btn-outline-primary"
+              [class.active]="selectedSection === 'comentarios'"
+              (click)="showComentarios()"
+            >
+              Ver Comentarios
+            </button>
+
+            <button
+              class="btn btn-outline-primary"
+              [class.active]="selectedSection === 'cuotas'"
               *ngIf="caso?.estado === 'Finalizado' && usuario.is_admin"
               (click)="showCuotas()"
             >
               Ver Cuotas
             </button>
+
             <button
               class="btn btn-outline-primary"
+              [class.active]="selectedSection === 'informe'"
               (click)="solicitarInformeCaso(caso!)"
               *ngIf="usuario.is_admin"
             >

@@ -1,5 +1,5 @@
 import { Component, effect, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service.js';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
@@ -9,7 +9,7 @@ import { TipoUsuarioEnum } from '../../core/utils/enums.js';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [MatMenuModule, CommonModule, MatButtonModule],
+  imports: [MatMenuModule, CommonModule, MatButtonModule, RouterModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
